@@ -53,8 +53,8 @@ Feel free to view our project demonstration here :
 
 ## About Team 9
 
-- 2302993 | Lin Zhenming (Team Lead & Fullstack Developer) [LinkedIn](https://www.linkedin.com/in/elz-ming/)
-- 2302964 | Chua Zong Han, Lionel (Smart Contract Developer) [LinkedIn](https://www.linkedin.com/in/lionelchuazh/)
-- 2302974 | Tiang Soon Long (Smart Contract Developer) [LinkedIn](https://www.linkedin.com/in/soon-long-tiang/)
-- 2302952 | Koh Yao Hao (Layer 2 Solution Engineer) [LinkedIn](https://www.linkedin.com/in/koh-yao-hao/)
-- 2303006 | Toh Zhen Wei (Zero-Knowledge Proof Engineer) [LinkedIn](https://www.linkedin.com/in/tohzhenwei/)
+- 2302993 | [Lin Zhenming](https://www.linkedin.com/in/elz-ming/)          | (Team Lead & Fullstack Developer)
+- 2302964 | [Chua Zong Han, Lionel](https://www.linkedin.com/in/lionelchuazh/) | (Smart Contract Developer)
+- 2302974 | [Tiang Soon Long](https://www.linkedin.com/in/soon-long-tiang/)       | (Smart Contract Developer)
+- 2302952 | [Koh Yao Hao](https://www.linkedin.com/in/koh-yao-hao/)           | (Layer 2 Solution Engineer) 
+- 2303006 | [Toh Zhen Wei](https://www.linkedin.com/in/tohzhenwei/)          | (Zero-Knowledge Proof Engineer)
