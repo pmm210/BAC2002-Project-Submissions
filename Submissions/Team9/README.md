@@ -14,6 +14,7 @@ There are two components to our project :
 - Smart Contracts ([repo](https://github.com/VeriZKP/smart-contracts))
 - NFT-issuer ([repo](https://github.com/VeriZKP/nft-issuer)) ([website](https://nft-issuer.vercel.app/))
 - ZKP-generator ([repo](https://github.com/VeriZKP/zkp-generator)) ([website](https://zkp-generator.vercel.app/))
+- ZKP-offchain ([repo](https://github.com/VeriZKP/zkp-offchain))
 
 ## Description
 
