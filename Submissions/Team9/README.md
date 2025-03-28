@@ -46,7 +46,9 @@ With the above in mind, we'd propose a new framework that utilizes the strength 
 
 ## Demonstration
 
-Feel free to view our project demonstration on this [YouTube Link](https://www.youtube.com/watch?v=yVlxf9BjzJQ).
+Feel free to view our project demonstration here : 
+- [NFT Minting Video](https://www.youtube.com/watch?v=yVlxf9BjzJQ)
+- [ZKP Verification Video](https://www.youtube.com/watch?v=V1nBA3htWek)
 
 ## About Team 9
 
