@@ -1,0 +1,344 @@
+{% extends "base.html" %}
+
+{% block title %}My Policies - DecentraFlight{% endblock %}
+
+{% block content %}
+<style>
+    .table-pagination {
+        padding: 10px;
+        font-size: 14px;
+        color: #333;
+        border-top: 1px solid #ddd;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pagination-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .table-pagination button {
+        border: none;
+        background: none;
+        padding: 5px 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .table-pagination button:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .policies-container {
+        background: url("{{ url_for('static', filename='images/3.jpg') }}") no-repeat center center fixed;
+        background-size: cover;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 10%;
+    }
+    
+    .policies-box {
+        background-color: white;
+        border-radius: 10px;
+        padding: 30px;
+        width: 90%;
+        max-width: 1000px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .status-scheduled { background-color: #e3f2fd; color: #0d47a1; }
+    .status-active { background-color: #e8f5e9; color: #1b5e20; }
+    .status-delayed { background-color: #fff3e0; color: #e65100; }
+    .status-completed { background-color: #f5f5f5; color: #424242; }
+    .status-compensated { background-color: #ffebee; color: #b71c1c; }
+
+    .wallet-message {
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .policy-id-link {
+        color: #007bff;  
+        text-decoration: underline;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .policy-id-link:hover {
+        color: #0056b3;  
+        text-decoration: underline;
+    }
+
+    .filter-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .status-filter {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+</style>
+
+<div class="policies-container">
+    <div class="policies-box">
+        <h2 class="mb-4">My Policies</h2>
+        
+        <div class="filter-section">
+            <div class="status-filter">
+                <label for="statusFilter">Filter by Status:</label>
+                <select id="statusFilter" class="form-control" style="width: auto;">
+                    <option value="ALL">All Policies</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="SCHEDULED">Scheduled</option>
+                    <option value="COMPENSATED">Compensated</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="walletStatusMessage" class="wallet-message">
+            <i class="fas fa-exclamation-triangle mr-2"></i>
+            Please connect your wallet to view your policies.
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Policy ID</th>
+                        <th>Flight Number</th>
+                        <th>Departure Date</th>
+                        <th>Premium</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="policiesTableBody">
+                    <tr>
+                        <td colspan="5" class="text-center">Loading policies...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="table-pagination">
+            <div class="pagination-controls">
+                <button id="prevPage" disabled>&lt;</button>
+                <span id="paginationInfo">Page 1</span>
+                <button id="nextPage" disabled>&gt;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentPage = 1;
+    let policiesPerPage = 5;
+    let allPolicies = [];
+    let filteredPolicies = [];
+
+    async function loadPolicies() {
+        let walletAddress = localStorage.getItem("walletConnected");
+        
+        if (!walletAddress) {
+            document.getElementById("walletStatusMessage").style.display = "block";
+            document.getElementById("policiesTableBody").innerHTML = `<tr><td colspan="5" class="text-center">Connect your wallet to view policies.</td></tr>`;
+            return;
+        }
+        
+        try {
+            const normalizedWalletAddress = walletAddress.toLowerCase();
+            let response = await fetch("/get_policies", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ wallet_address: normalizedWalletAddress }),
+            });
+            
+            let data = await response.json();
+            
+            if (data.error) {
+                document.getElementById("walletStatusMessage").style.display = "block";
+                document.getElementById("policiesTableBody").innerHTML = `<tr><td colspan="5" class="text-center">${data.error}</td></tr>`;
+                return;
+            }
+            
+            // Process and transform policy statuses
+            allPolicies = data.map(policy => {
+                const today = new Date();
+                const departureDate = policy.departure_date ? new Date(policy.departure_date) : null;
+
+                // Transform status
+                if (policy.status === "ACTIVE") {
+                    if (departureDate && departureDate < today) {
+                        policy.displayStatus = "COMPLETED";
+                    } else {
+                        policy.displayStatus = "SCHEDULED";
+                    }
+                } else if (policy.status === "DELAYED") {
+                    policy.displayStatus = "DELAYED";
+                } else if (policy.status === "COMPENSATED") {
+                    policy.displayStatus = "COMPENSATED";
+                } else if (policy.status === "COMPLETED") {
+                    policy.displayStatus = "COMPLETED";
+                } else if (policy.status === "CANCELLED") {
+                    policy.displayStatus = "CANCELLED";
+                }
+
+                return policy;
+            });
+
+            // Sort policies by date (most recent first)
+            allPolicies.sort((a, b) => {
+                const dateA = a.departure_date ? new Date(a.departure_date) : new Date(0);
+                const dateB = b.departure_date ? new Date(b.departure_date) : new Date(0);
+                return dateB - dateA;
+            });
+
+            // Initial filter and display
+            document.getElementById("statusFilter").value = "ALL";
+            filterPolicies("ALL");
+        } catch (error) {
+            console.error("Error loading policies:", error);
+            document.getElementById("policiesTableBody").innerHTML = `<tr><td colspan="5" class="text-center">Error fetching policies.</td></tr>`;
+        }
+    }
+
+    function filterPolicies(status) {
+        if (status === "ALL") {
+            filteredPolicies = allPolicies;
+        } else {
+            filteredPolicies = allPolicies.filter(policy => policy.displayStatus === status);
+        }
+
+        currentPage = 1;
+        updateTable();
+    }
+
+    function updateTable() {
+        let tableBody = document.getElementById("policiesTableBody");
+        tableBody.innerHTML = "";
+
+        if (filteredPolicies.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="6" class="text-center">No policies found.</td></tr>`;
+            updatePaginationControls();
+            return;
+        }
+
+        let start = (currentPage - 1) * policiesPerPage;
+        let end = start + policiesPerPage;
+        let paginatedPolicies = filteredPolicies.slice(start, end);
+
+        paginatedPolicies.forEach(policy => {
+            let statusDisplay = policy.displayStatus;
+            let statusClass = "";
+
+            switch(statusDisplay) {
+                case "SCHEDULED":
+                    statusClass = "status-scheduled";
+                    break;
+                case "DELAYED":
+                    statusClass = "status-delayed";
+                    break;
+                case "COMPENSATED":
+                    statusClass = "status-compensated";
+                    break;
+                case "COMPLETED":
+                    statusClass = "status-completed";
+                    break;
+                case "CANCELLED":
+                    statusClass = "status-delayed";
+                    break;
+                default:
+                    statusClass = "status-active";
+            }
+
+            let displayPolicyId = policy.id;
+            if (typeof displayPolicyId === 'string' && displayPolicyId.length > 16) {
+                displayPolicyId = displayPolicyId.substring(0, 8) + '...' + displayPolicyId.substring(displayPolicyId.length - 8);
+            }
+
+            // Create a link to Polygon Amoy transaction explorer for the policy ID
+            let policyIdLink = policy.transaction_id 
+                ? `<a href="https://amoy.polygonscan.com/tx/${policy.transaction_id}" 
+                      target="_blank" 
+                      class="policy-id-link"
+                      title="View transaction on PolygonScan">${displayPolicyId}</a>` 
+                : displayPolicyId;
+
+            // Format departure date to remove time
+            let formattedDate = "N/A";
+            if (policy.departure_date) {
+                if (policy.departure_date.includes(":")) {
+                    const dateParts = policy.departure_date.split(" ");
+                    if (dateParts.length >= 3) {
+                        formattedDate = `${dateParts[0]} ${dateParts[1]} ${dateParts[2]}`;
+                    } else {
+                        formattedDate = policy.departure_date.split(" ")[0];
+                    }
+                } else {
+                    formattedDate = policy.departure_date;
+                }
+            }
+
+            let row = `<tr>
+                <td>${policyIdLink}</td>
+                <td>${policy.flight_id}</td>
+                <td>${formattedDate}</td>
+                <td>${policy.premium}</td>
+                <td><span class="status-badge ${statusClass}">${statusDisplay}</span></td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+
+        updatePaginationControls();
+    }
+
+    function updatePaginationControls() {
+        let totalPages = Math.ceil(filteredPolicies.length / policiesPerPage);
+        document.getElementById("paginationInfo").textContent = `Page ${currentPage} of ${totalPages || 1}`;
+        document.getElementById("prevPage").disabled = currentPage === 1;
+        document.getElementById("nextPage").disabled = currentPage === totalPages || totalPages === 0;
+    }
+
+    document.getElementById("prevPage").addEventListener("click", () => {
+        if (currentPage > 1) {
+            currentPage--;
+            updateTable();
+        }
+    });
+
+    document.getElementById("nextPage").addEventListener("click", () => {
+        if (currentPage < Math.ceil(filteredPolicies.length / policiesPerPage)) {
+            currentPage++;
+            updateTable();
+        }
+    });
+
+    document.getElementById("statusFilter").addEventListener("change", (event) => {
+        filterPolicies(event.target.value);
+    });
+
+    window.onload = loadPolicies;
+</script>
+
+{% endblock %}

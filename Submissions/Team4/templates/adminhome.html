@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel Login</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.1/css/boxicons.min.css" rel="stylesheet"> 
+<style>
+  .login-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .login-header img {
+    height: 40px;
+  }
+
+  .site-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #252652;
+  }
+
+  body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('{{ url_for('static', filename='images/bg-01.jpg') }}'); 
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .login-panel {
+    background-color: #f1fdf7;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 300px;
+    position: relative;
+  }
+
+  .login-panel h2 {
+    color: #252652;
+    text-align: center;
+    margin-top: 0;
+  }
+
+  .login-panel p {
+    color: #252652;
+    text-align: center;
+    font-size: 0.8em;
+    margin-top: -15px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .form-control {
+    width: calc(100% - 40px);
+    padding: 10px 10px 10px 30px;
+    border-radius: 5px;
+    border: none;
+    margin-top: 8px;
+    background-color: transparent;
+    border-bottom: 2px solid #252652; 
+    color: #252652; 
+  }
+
+  .form-group i {
+    position: absolute;
+    left: 10px;
+    bottom: 12px;
+    color: #252652; 
+  }
+
+  .btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2980b9;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .btn:hover {
+    background-color: #3498db;
+  }
+
+  .alert {
+    display: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .alert-success {
+    background-color: #28a745;
+    color: white;
+  }
+
+  .alert-error {
+    background-color: #dc3545;
+    color: white;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-panel">
+    <div class="login-header">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        <span class="site-title">DecentraFlight</span>
+    </div>
+
+    <h2>ADMIN PANEL</h2>
+    <p>Control panel login</p>
+
+    <div id="alertBox" class="alert"></div>
+
+    <form id="adminLoginForm">
+        <div class="form-group">
+            <i class='bx bx-user'></i>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" maxlength="45" required>
+        </div>
+        <div class="form-group">
+            <i class='bx bx-lock-alt'></i>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" maxlength="45" required>
+        </div>
+        <button type="submit" class="btn">Login</button>
+    </form>
+</div>
+
+<script>
+document.getElementById("adminLoginForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
+    let alertBox = document.getElementById("alertBox");
+
+    alertBox.style.display = "none"; // Hide previous messages
+
+    try {
+        let response = await fetch("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+            credentials: "include" // Ensures session cookies are stored
+        });
+
+        let data = await response.json();
+
+        if (data.status === "success") {
+            alertBox.innerText = "Login successful! Redirecting...";
+            alertBox.className = "alert alert-success";
+            alertBox.style.display = "block";
+
+            setTimeout(() => {
+                window.location.href = "/admindashboard";
+            }, 1500);
+        } else {
+            alertBox.innerText = data.error || "Invalid credentials";
+            alertBox.className = "alert alert-error";
+            alertBox.style.display = "block";
+        }
+    } catch (error) {
+        console.error("Error logging in:", error);
+        alertBox.innerText = "Server error. Please try again later.";
+        alertBox.className = "alert alert-error";
+        alertBox.style.display = "block";
+    }
+});
+
+</script>
+
+</body>
+</html>

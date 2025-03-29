@@ -1,0 +1,1733 @@
+{% extends "base.html" %}
+
+{% block title %}DecentraFlight - Flight Delay Insurance{% endblock %}
+
+{% block content %}
+<!-- Include Select2 CSS & JS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+<style>
+    .navbar {
+        background-color: transparent;
+    }
+
+    /* Select2 Dropdown Styling */
+    .select2-container--default .select2-selection--single {
+        height: 38px;
+        padding: 6px 12px;
+        font-size: 16px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+    }
+
+    .select2-container--default .select2-selection__rendered {
+        line-height: normal;
+        padding-left: 0;
+    }
+    
+    .select2-container--default .select2-selection__arrow {
+        height: 36px;
+    }
+    
+    .select2-container {
+        width: 100% !important;
+    }
+    
+    .select2-dropdown {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 9999; /* Higher z-index to appear above carousel */
+    }
+    
+    .select2-results__option {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    /* Fix carousel indicators */
+    .carousel-indicators {
+        z-index: 5; /* Lower z-index */
+    }
+    
+    .carousel-indicators li {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin: 0 5px;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .carousel-indicators .active {
+        background-color: #fff;
+    }
+
+    /* Error Messages */
+    .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+        padding: 8px 12px;
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 4px;
+    }
+    
+    /* Form Alert Box */
+    .form-alert {
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 15px 20px;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 1050;
+        max-width: 90%;
+        width: auto;
+        transition: all 0.3s ease;
+        opacity: 0;
+        visibility: hidden;
+    }
+    
+    .form-alert.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .form-alert.error {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+    }
+    
+    .form-alert.success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+    }
+    
+    .form-alert.warning {
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
+        color: #856404;
+    }
+    
+    .form-alert.info {
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        color: #0c5460;
+    }
+    
+    .form-alert .alert-content {
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-alert .alert-icon {
+        margin-right: 10px;
+        font-size: 18px;
+    }
+    
+    .form-alert .alert-btn {
+        margin-left: 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    
+    .form-alert .close-btn {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 0 0 0 15px;
+        opacity: 0.7;
+    }
+    
+    .form-alert .close-btn:hover {
+        opacity: 1;
+    }
+    
+    /* Transaction Status Box */
+    .tx-status-box {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        display: none;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* When displayed, use flex layout */
+    .tx-status-box.pending,
+    .tx-status-box.success,
+    .tx-status-box.error {
+        display: flex;
+    }
+
+    .tx-status-box.pending {
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
+    }
+
+    .tx-status-box.success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+    }
+
+    .tx-status-box.error {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+    }
+
+    .tx-status-title {
+        font-weight: bold;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tx-status-title i {
+        font-size: 1.2em;
+        margin-right: 10px;
+    }
+
+    .tx-status-details {
+        font-size: 14px;
+    }
+
+    .tx-link {
+        display: inline-block;
+        margin-top: 10px;
+        color: #007bff;
+        text-decoration: underline;
+    }
+
+
+   
+    @media (max-width: 768px) {
+        .carousel-caption {
+            display: block !important; 
+            background: transparent;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .carousel-caption h5 {
+            font-size: 35px !important;
+        }
+
+        .carousel-caption p {
+            font-size: 20px !important;
+        }
+    }
+
+</style>
+
+
+<div class="carousel slide" data-ride="carousel" data-interval="10000" id="carouselExampleIndicators">
+    <ol class="carousel-indicators">
+        <li class="active" data-slide-to="0" data-target="#carouselExampleIndicators"></li>
+        <li data-slide-to="1" data-target="#carouselExampleIndicators"></li>
+        <li data-slide-to="2" data-target="#carouselExampleIndicators"></li>
+    </ol>
+
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img alt="Flight Protection" class="d-block w-100" src="static/images/1.jpg">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Flight Delays? We've Got You Covered.</h5>
+                <p>Instant Payouts For Delays, No Paperwork Needed.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img alt="Travel Security" class="d-block w-100" src="static/images/2.jpg">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Travel Worry-Free With Decentralized Insurance.</h5>
+                <p>Smart Contract-Based Insurance, No Middlemen.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img alt="Blockchain Insurance" class="d-block w-100" src="static/images/3.jpg">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Borderless Coverage, Fully Automated.</h5>
+                <p>Insurance On-Chain, Instant And Transparent.</p>
+            </div>
+        </div>
+    </div>
+
+    <a class="carousel-control-prev" data-slide="prev" href="#carouselExampleIndicators" role="button">
+        <span aria-hidden="true" class="carousel-control-prev-icon"></span> 
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" data-slide="next" href="#carouselExampleIndicators" role="button">
+        <span aria-hidden="true" class="carousel-control-next-icon"></span> 
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+
+<!-- Custom Alert Box -->
+<div id="formAlert" class="form-alert">
+    <div class="alert-content">
+        <span class="alert-icon"></span>
+        <span class="alert-message"></span>
+    </div>
+    <button class="close-btn">&times;</button>
+</div>
+
+
+
+<!-- FLIGHT INSURANCE FORM -->
+<div class="container d-flex justify-content-center mt-5 mb-5">
+    <div class="flight-insurance-box">
+        <h2 class="text-center title">DecentraFlight Delay Protection</h2>
+        <p class="text-center subtitle">Enter airline, flight number, and departure date to get a quote for flight delay protection.</p>
+
+        <form id="flightInsuranceForm">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="airline">Airline</label>
+                    <select id="airline" class="form-control airline-dropdown">
+                        <option value="">Select Airline</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="flightNumber">Flight Number</label>
+                    <input type="text" id="flightNumber" class="form-control" placeholder="e.g., AV43">
+                    <div id="flightError" class="error-message">❌ Flight not found. Please check details.</div>
+                </div>
+                <div class="col-md-4">
+                    <label for="departureDate">Departure Date</label>
+                    <input type="date" id="departureDate" class="form-control">
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="button" class="btn btn-primary purchase-btn w-100">
+                    <i class="fa-solid fa-cart-shopping"></i> Buy Insurance
+                </button>
+            </div>
+            
+            <!-- Transaction Status Box -->
+            <div id="txStatusBox" class="tx-status-box">
+                <div class="tx-status-title">
+                    <i id="txStatusIcon" class="fas fa-circle-notch fa-spin"></i>
+                    <span id="txStatusTitle">Processing Transaction</span>
+                </div>
+                <div id="txStatusDetails" class="tx-status-details">
+                    Your transaction is being processed on the Polygon network. This typically completes within a minute.
+                </div>
+                <a id="txLink" href="#" target="_blank" class="tx-link">View on PolygonScan</a>
+            </div>
+            
+            <!-- Transaction Action Buttons -->
+            <div class="text-center mt-3" id="txActions" style="display: none;">
+                <button type="button" id="checkTxBtn" class="btn btn-secondary btn-sm mx-2">
+                    <i class="fas fa-sync"></i> Refresh Status
+                </button>
+                <button type="button" id="clearTxBtn" class="btn btn-outline-danger btn-sm mx-2">
+                    <i class="fas fa-times"></i> Clear Pending
+                </button>
+                <button type="button" id="checkExplorerBtn" class="btn btn-info btn-sm mx-2">
+                    <i class="fas fa-external-link-alt"></i> View in Explorer
+                </button>
+            </div>
+            
+            <!-- Additional Status Info -->
+            <div id="additionalInfo" class="text-muted small mt-2 text-center" style="display: none;"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", async function () {
+    // Add extra CSS styling to make sure alerts display properly
+    const styleFixElement = document.createElement('style');
+    styleFixElement.textContent = `
+        .form-alert {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1050;
+            max-width: 90%;
+            width: auto;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .form-alert.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .form-alert.error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .form-alert.success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .form-alert.warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+        }
+        
+        .form-alert.info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+    `;
+    document.head.appendChild(styleFixElement);
+    
+    let web3;
+    let contract;
+    const contractAddress = "0x1159d7d7F1f55C8c31265a59Bb6A952917896C8E"; 
+    let userWallet = null;
+    
+    // Status box elements
+    const txStatusBox = document.getElementById("txStatusBox");
+    const txStatusIcon = document.getElementById("txStatusIcon");
+    const txStatusTitle = document.getElementById("txStatusTitle");
+    const txStatusDetails = document.getElementById("txStatusDetails");
+    const txLink = document.getElementById("txLink");
+    const txActions = document.getElementById("txActions");
+    const additionalInfo = document.getElementById("additionalInfo");
+    
+    // Make additionalInfo globally accessible for the monitoring function
+    window.additionalInfo = additionalInfo;
+    
+    // Consistent timestamp calculation for flight dates
+    function calculateFlightTimestamp(dateString) {
+        const dateObj = new Date(dateString);
+        dateObj.setHours(12, 0, 0, 0);
+        return Math.floor(dateObj.getTime() / 1000);
+    }
+    
+    // Check if wallet is connected from localStorage
+    const savedWallet = localStorage.getItem("walletConnected");
+    if (savedWallet) {
+        userWallet = savedWallet;
+        await initializeWeb3WithWallet(userWallet);
+    }
+
+    /// ================ TRANSACTION & POLICY HANDLING FUNCTIONS ================
+
+    // Logs detailed information about transaction receipts
+    function debugLogReceipt(receipt, txHash) {
+        console.log("==== DEBUG: Transaction Receipt ====");
+        console.log("Transaction Hash:", txHash);
+        console.log("Block Number:", receipt.blockNumber);
+        console.log("Status:", receipt.status ? "Success" : "Failed");
+        console.log("Gas Used:", receipt.gasUsed);
+        
+        // Log all event logs
+        if (receipt.logs && receipt.logs.length > 0) {
+            console.log("Event Logs:", receipt.logs.length);
+            receipt.logs.forEach((log, index) => {
+                console.log(`Log #${index}:`);
+                console.log("  Address:", log.address);
+                console.log("  Topics:", log.topics);
+                console.log("  Data:", log.data);
+                
+                // Try to decode each log
+                try {
+                    // Try various event signatures
+                    const possibleEvents = [
+                        {
+                            name: "PolicyPurchased(address,bytes32,string)",
+                            params: [
+                                { indexed: true, name: 'user', type: 'address' },
+                                { indexed: false, name: 'policyId', type: 'bytes32' },
+                                { indexed: false, name: 'flightNumber', type: 'string' }
+                            ]
+                        },
+                        {
+                            name: "PolicyCreated(bytes32,address,string,uint256,uint256)",
+                            params: [
+                                { indexed: false, name: 'policyId', type: 'bytes32' },
+                                { indexed: true, name: 'policyholder', type: 'address' },
+                                { indexed: false, name: 'flightIata', type: 'string' },
+                                { indexed: false, name: 'premium', type: 'uint256' },
+                                { indexed: false, name: 'protocolFee', type: 'uint256' }
+                            ]
+                        }
+                    ];
+                    
+                    possibleEvents.forEach(event => {
+                        try {
+                            const eventSig = web3.utils.keccak256(event.name);
+                            if (log.topics[0].toLowerCase() === eventSig.toLowerCase()) {
+                                console.log(`  Matched event: ${event.name}`);
+                                
+                                // Separate indexed and non-indexed parameters
+                                const indexedParams = event.params.filter(p => p.indexed);
+                                const nonIndexedParams = event.params.filter(p => !p.indexed);
+                                
+                                // Create an array of types for non-indexed params
+                                const types = nonIndexedParams.map(p => p.type);
+                                
+                                // Decode the non-indexed parameters from data
+                                if (log.data && log.data !== '0x') {
+                                    const decoded = web3.eth.abi.decodeParameters(types, log.data);
+                                    console.log("  Decoded data:", decoded);
+                                    
+                                    // If this is the PolicyPurchased or PolicyCreated event, extract the policyId
+                                    if (event.name.includes("PolicyPurchased") || event.name.includes("PolicyCreated")) {
+                                        let policyId;
+                                        
+                                        // Check where policyId is in the decoded data
+                                        if (decoded['0'] && decoded['0'].startsWith('0x')) {
+                                            policyId = decoded['0'];
+                                        } else if (decoded['policyId']) {
+                                            policyId = decoded['policyId'];
+                                        }
+                                        
+                                        if (policyId) {
+                                            console.log("  FOUND POLICY ID:", policyId);
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (decodeError) {
+                            console.log(`  Failed to decode as ${event.name}:`, decodeError.message);
+                        }
+                    });
+                } catch (e) {
+                    console.log("  Error decoding log:", e.message);
+                }
+            });
+        } else {
+            console.log("No event logs found in receipt");
+        }
+        console.log("==== END DEBUG ====");
+    }
+
+    // Updated policy extraction function that matches your smart contract's implementation
+    async function extractPolicyIdFromReceipt(receipt, txHash) {
+        console.log("==== EXTRACT POLICY ID [matching contract] ====");
+        console.log("Transaction Hash:", txHash);
+        
+        if (!receipt || !receipt.logs || receipt.logs.length === 0) {
+            console.log("No logs found in receipt");
+            return null;
+        }
+        
+        // Based on contract events from your testing script
+        const policyPurchasedSig = web3.utils.keccak256("PolicyPurchased(address,bytes32,string)");
+        const policyCreatedSig = web3.utils.keccak256("PolicyCreated(bytes32,address,string,uint256,uint256)");
+        
+        console.log("Looking for contract events:");
+        console.log("- PolicyPurchased:", policyPurchasedSig);
+        console.log("- PolicyCreated:", policyCreatedSig);
+
+        console.log(`Receipt has ${receipt.logs.length} logs`);
+        
+        // First look for the known event types
+        for (const log of receipt.logs) {
+            try {
+                if (!log.topics || log.topics.length === 0) continue;
+                
+                const topicSig = log.topics[0].toLowerCase();
+                console.log(`Checking log with topic: ${topicSig}`);
+                
+                // Check for PolicyPurchased event
+                if (topicSig === policyPurchasedSig.toLowerCase()) {
+                    console.log("Found PolicyPurchased event");
+                    
+                    try {
+                        // The event structure is:
+                        // event PolicyPurchased(
+                        //     address indexed user,
+                        //     bytes32 policyId,
+                        //     string flightNumber
+                        // );
+                        
+                        // Extract indexed parameters from topics and non-indexed from data
+                        const decoded = web3.eth.abi.decodeParameters(
+                            ['bytes32', 'string'], // Non-indexed params: policyId, flightNumber
+                            log.data
+                        );
+                        
+                        const policyId = decoded['0'];
+                        if (policyId) {
+                            console.log("Successfully extracted policy ID:", policyId);
+                            console.log("This is the EXACT policy ID from the contract event");
+                            return policyId;
+                        }
+                    } catch (decodeError) {
+                        console.log("Error decoding PolicyPurchased event:", decodeError.message);
+                    }
+                }
+                
+                // Check for PolicyCreated event
+                if (topicSig === policyCreatedSig.toLowerCase()) {
+                    console.log("Found PolicyCreated event");
+                    
+                    try {
+                        // The event structure is:
+                        // event PolicyCreated(
+                        //     bytes32 policyId, 
+                        //     address indexed policyholder, 
+                        //     string flightIata, 
+                        //     uint256 premium,
+                        //     uint256 protocolFee
+                        // );
+                        
+                        // Extract params from data (non-indexed)
+                        const decoded = web3.eth.abi.decodeParameters(
+                            ['bytes32', 'string', 'uint256', 'uint256'], // policyId, flightIata, premium, protocolFee
+                            log.data
+                        );
+                        
+                        const policyId = decoded['0'];
+                        if (policyId) {
+                            console.log("Successfully extracted policy ID:", policyId);
+                            console.log("This is the EXACT policy ID from the contract event");
+                            return policyId;
+                        }
+                    } catch (decodeError) {
+                        console.log("Error decoding PolicyCreated event:", decodeError.message);
+                    }
+                }
+            } catch (logError) {
+                console.log("Error processing log:", logError.message);
+            }
+        }
+        
+        // If we couldn't extract the policy ID from known events, try to find it by reconstructing
+        // exactly how the contract creates it.
+        console.log("No policy ID found in events, trying to reconstruct using contract algorithm");
+        
+        try {
+            const tx = await web3.eth.getTransaction(txHash);
+            if (!tx || !tx.from) {
+                console.log("Could not get transaction details");
+                return null;
+            }
+            
+            const pendingTx = localStorage.getItem('pendingTransaction');
+            if (!pendingTx) {
+                console.log("No pending transaction details in localStorage");
+                return null;
+            }
+            
+            const txDetails = JSON.parse(pendingTx);
+            if (!txDetails.details) {
+                console.log("Transaction details incomplete");
+                return null;
+            }
+            
+            console.log("Transaction found with data:");
+            console.log("- From address:", tx.from);
+            console.log("- Flight number:", txDetails.details.flightNumber);
+            console.log("- Departure date:", txDetails.details.departureDate);
+            console.log("- Timestamp:", txDetails.timestamp);
+            
+            // From your smart contract (FlightDelayInsurance.sol):
+            // bytes32 policyId = keccak256(
+            //     abi.encodePacked(msg.sender, flightIata, flightDate, block.timestamp)
+            // );
+            
+            // Calculate the flight timestamp (12:00 noon on the flight date)
+            const flightTimestamp = calculateFlightTimestamp(txDetails.details.departureDate);
+            console.log("- Calculated flight timestamp:", flightTimestamp);
+            
+            // Try multiple combinations to find the correct one:
+            
+            // 1. Standard format with block timestamp
+            const standardPolicyId = web3.utils.soliditySha3(
+                {type: 'address', value: tx.from},
+                {type: 'string', value: txDetails.details.flightNumber},
+                {type: 'uint256', value: flightTimestamp},
+                {type: 'uint256', value: Math.floor(txDetails.timestamp / 1000)} // Convert JS timestamp to seconds
+            );
+            console.log("Reconstructed policy ID (standard):", standardPolicyId);
+            
+            // 2. Without block timestamp
+            const withoutTimestampPolicyId = web3.utils.soliditySha3(
+                {type: 'address', value: tx.from},
+                {type: 'string', value: txDetails.details.flightNumber},
+                {type: 'uint256', value: flightTimestamp}
+            );
+            console.log("Reconstructed policy ID (without timestamp):", withoutTimestampPolicyId);
+            
+            // 3. Using string encoding for everything
+            const stringEncodingPolicyId = web3.utils.soliditySha3(
+                {type: 'string', value: tx.from},
+                {type: 'string', value: txDetails.details.flightNumber},
+                {type: 'string', value: flightTimestamp.toString()},
+                {type: 'string', value: Math.floor(txDetails.timestamp / 1000).toString()}
+            );
+            console.log("Reconstructed policy ID (string encoding):", stringEncodingPolicyId);
+            
+            // 4. Try with abi.encodePacked simulation
+            // This is the most likely match for how the contract creates policy IDs
+            const encodedData = web3.eth.abi.encodeParameters(
+                ['address', 'string', 'uint256', 'uint256'],
+                [tx.from, txDetails.details.flightNumber, flightTimestamp, Math.floor(txDetails.timestamp / 1000)]
+            );
+            
+            const encodedPackedPolicyId = web3.utils.keccak256(encodedData);
+            console.log("Reconstructed policy ID (encodePacked simulation):", encodedPackedPolicyId);
+            
+            // Return the standard policy ID as the most likely match
+            return standardPolicyId;
+            
+        } catch (error) {
+            console.log("Error reconstructing policy ID:", error.message);
+            return null;
+        }
+    }
+
+    // Store policy function with fixed policy ID extraction
+    async function storePolicy(receipt, txHash) {
+        console.log("==== POLICY STORAGE ====");
+        
+        try {
+            // Extract policy ID using our fixed function
+            const policyId = await extractPolicyIdFromReceipt(receipt, txHash);
+            console.log("Extracted Policy ID:", policyId);
+            
+            // Get transaction details from localStorage
+            const pendingTx = localStorage.getItem('pendingTransaction');
+            if (!pendingTx) {
+                console.error("No pending transaction details found");
+                showAlert("Transaction confirmed, but policy details not found.", "warning");
+                return false;
+            }
+            
+            const txDetails = JSON.parse(pendingTx);
+            console.log("Pending transaction details:", txDetails);
+            
+            // Prepare the policy data
+            const policyData = {
+                wallet_address: userWallet || txDetails.wallet,
+                flight_id: txDetails.details.flightNumber,
+                departure_date: txDetails.details.departureDate,
+                premium: "0.00001 MATIC",
+                status: "ACTIVE",
+                transaction_id: txHash
+            };
+            
+            // Add blockchain_policy_id if available
+            if (policyId) {
+                policyData.blockchain_policy_id = policyId;
+            }
+            
+            console.log("Preparing to store policy with data:", policyData);
+            
+            // Always store the policy, even without a policy ID
+            let attempts = 0;
+            const maxAttempts = 3;
+            
+            while (attempts < maxAttempts) {
+                try {
+                    console.log(`Attempt ${attempts + 1} to store policy`);
+                    
+                    const response = await fetch("/store_policy", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(policyData)
+                    });
+                    
+                    console.log("Response status:", response.status);
+                    
+                    // Get the full response text for debugging
+                    const responseText = await response.text();
+                    console.log("Raw response:", responseText);
+                    
+                    // Try to parse the response as JSON
+                    let result;
+                    try {
+                        result = JSON.parse(responseText);
+                        console.log("Parsed response:", result);
+                    } catch (jsonError) {
+                        console.error("Error parsing response as JSON:", jsonError);
+                        console.log("Response was not valid JSON");
+                        throw new Error("Invalid JSON response from server");
+                    }
+                    
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${result.message || response.statusText}`);
+                    }
+                    
+                    console.log("Policy stored successfully:", result);
+                    
+                    showAlert("Policy saved successfully!", "success", true, "View My Policies", function() {
+                        window.location.href = "/policies";
+                    });
+                    
+                    return true;
+                } catch (error) {
+                    console.error(`Attempt ${attempts + 1} failed:`, error);
+                    attempts++;
+                    
+                    if (attempts >= maxAttempts) {
+                        showAlert("Transaction confirmed, but there was an error storing your policy. Please contact support with your transaction ID: " + txHash, "warning", true, "Copy TX ID", function() {
+                            navigator.clipboard.writeText(txHash);
+                            showAlert("Transaction ID copied to clipboard!", "info");
+                        });
+                        return false;
+                    }
+                    
+                    // Wait before trying again
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+            }
+        } catch (e) {
+            console.error("Error in storePolicy function:", e);
+            showAlert("Transaction confirmed, but there was an error storing your policy. Please contact support.", "warning");
+            return false;
+        } finally {
+            console.log("==== END POLICY STORAGE ====");
+        }
+    }
+
+    // Handle successful transaction
+    async function handleSuccessfulTransaction(result, txHash) {
+        showTxStatus("success", txHash);
+        additionalInfo.textContent = `Transaction confirmed in block ${result.receipt.blockNumber}`;
+        
+        // Use our fixed storage function
+        await storePolicy(result.receipt, txHash);
+        
+        // Clear pending transaction regardless of policy storage success
+        localStorage.removeItem('pendingTransaction');
+    }
+        
+    // IMPROVED: Monitor transaction with better error handling
+    async function monitorTransaction(txHash, maxWaitTime = 300000) { // 5 minutes max wait
+        return new Promise((resolve, reject) => {
+            const startTime = Date.now();
+            let checkCount = 0;
+            
+            const checkTransactionReceipt = async () => {
+                try {
+                    checkCount++;
+                    console.log(`Checking transaction status (attempt ${checkCount}): ${txHash}`);
+                    
+                    // First verify the hash is valid
+                    if (!txHash || !txHash.startsWith('0x') || txHash.length !== 66) {
+                        console.log("Invalid transaction hash format:", txHash);
+                        reject({
+                            success: false,
+                            error: "Invalid transaction hash format"
+                        });
+                        return;
+                    }
+                    
+                    // Get the receipt to check if it's been mined
+                    const receipt = await web3.eth.getTransactionReceipt(txHash);
+                    
+                    if (receipt) {
+                        // Transaction is confirmed
+                        if (receipt.status) {
+                            console.log("Transaction successful:", receipt);
+                            resolve({
+                                success: true,
+                                receipt: receipt
+                            });
+                        } else {
+                            console.log("Transaction failed on-chain:", receipt);
+                            reject({
+                                success: false,
+                                error: "Transaction failed on-chain"
+                            });
+                        }
+                    } else {
+                        // No receipt means transaction is still pending
+                        const elapsedTime = Date.now() - startTime;
+                        console.log(`Transaction pending. Elapsed time: ${Math.floor(elapsedTime/1000)} seconds`);
+                        
+                        // Check if the transaction exists in the mempool
+                        try {
+                            const tx = await web3.eth.getTransaction(txHash);
+                            if (!tx) {
+                                // Transaction not found after multiple attempts
+                                if (checkCount > 3) {
+                                    console.log("Transaction not found on network after multiple attempts");
+                                    reject({
+                                        success: false,
+                                        error: "Transaction not found on network. It may have been dropped."
+                                    });
+                                    return;
+                                }
+                            } else {
+                                // Transaction exists but not mined yet
+                                console.log("Transaction found in mempool, blockNumber:", tx.blockNumber);
+                                
+                                // Update UI with additional info if available
+                                if (window.additionalInfo) {
+                                    if (tx.blockNumber) {
+                                        window.additionalInfo.textContent = `Transaction included in block ${tx.blockNumber} but not confirmed yet.`;
+                                    } else {
+                                        window.additionalInfo.textContent = `Transaction in mempool, waiting to be mined. Nonce: ${tx.nonce}`;
+                                    }
+                                }
+                            }
+                        } catch (txError) {
+                            console.error("Error getting transaction:", txError);
+                        }
+                        
+                        // Handle timeout
+                        if (elapsedTime > maxWaitTime) {
+                            console.log("Transaction monitoring timed out after", Math.floor(maxWaitTime/60000), "minutes");
+                            reject({
+                                success: false,
+                                error: `Transaction monitoring timed out after ${Math.floor(maxWaitTime/60000)} minutes, but the transaction may still be confirmed later.`
+                            });
+                        } else {
+                            // Calculate dynamic delay based on elapsed time
+                            let nextCheckDelay;
+                            if (elapsedTime < 30000) { // First 30 seconds: check every 3 seconds
+                                nextCheckDelay = 3000;
+                            } else if (elapsedTime < 60000) { // First minute: check every 5 seconds
+                                nextCheckDelay = 5000;
+                            } else if (elapsedTime < 120000) { // Up to 2 minutes: check every 10 seconds
+                                nextCheckDelay = 10000;
+                            } else { // After 2 minutes: check every 15 seconds
+                                nextCheckDelay = 15000;
+                            }
+                            
+                            console.log(`Next check in ${nextCheckDelay/1000} seconds`);
+                            setTimeout(checkTransactionReceipt, nextCheckDelay);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error checking transaction:", error);
+                    
+                    // Don't immediately fail on network errors
+                    const elapsedTime = Date.now() - startTime;
+                    if (elapsedTime > maxWaitTime) {
+                        reject({
+                            success: false,
+                            error: error.message
+                        });
+                    } else {
+                        // Try again in 5 seconds on error
+                        setTimeout(checkTransactionReceipt, 5000);
+                    }
+                }
+            };
+            
+            // Start checking
+            checkTransactionReceipt();
+        });
+    }
+    
+    // Show transaction status
+    function showTxStatus(status, hash) {
+        txStatusBox.style.display = "flex";
+        txStatusBox.className = "tx-status-box " + status;
+        
+        if (status === "pending") {
+            txStatusIcon.className = "fas fa-circle-notch fa-spin";
+            txStatusTitle.textContent = "Transaction Pending";
+            txStatusDetails.textContent = "Your transaction is being processed on the Polygon network. This typically completes within a minute.";
+        } else if (status === "success") {
+            txStatusIcon.className = "fas fa-check-circle";
+            txStatusTitle.textContent = "Transaction Confirmed";
+            txStatusDetails.textContent = "Your flight insurance has been purchased successfully! The policy details will be available in your account.";
+        } else if (status === "error") {
+            txStatusIcon.className = "fas fa-exclamation-circle";
+            txStatusTitle.textContent = "Transaction Failed";
+            txStatusDetails.textContent = "There was an error processing your transaction. Please try again.";
+        }
+        
+        if (hash) {
+            txLink.href = `https://amoy.polygonscan.com/tx/${hash}`;
+            txLink.style.display = "inline-block";
+            
+            // Show action buttons when we have a transaction hash
+            txActions.style.display = "block";
+            
+            // Update the explorer button to use this hash
+            document.getElementById("checkExplorerBtn").onclick = function() {
+                window.open(`https://amoy.polygonscan.com/tx/${hash}`, '_blank');
+            };
+        } else {
+            txLink.style.display = "none";
+            txActions.style.display = "none";
+        }
+    }
+    
+    // Hide transaction status
+    function hideTxStatus() {
+        txStatusBox.style.display = "none";
+        txActions.style.display = "none";
+        additionalInfo.style.display = "none";
+    }
+
+    // Add this function to manually check a transaction status
+    function manuallyCheckTransaction(txHash) {
+        if (!txHash) return;
+        
+        if (!web3) {
+            showAlert("Web3 not initialized. Please connect your wallet first.", "error");
+            return;
+        }
+        
+        // Show pending status initially
+        showTxStatus("pending", txHash);
+        additionalInfo.style.display = "block";
+        additionalInfo.textContent = "Manually checking transaction status...";
+        
+        monitorTransaction(txHash)
+            .then(async (result) => {
+                if (result.success) {
+                    // Use the improved handlers
+                    await handleSuccessfulTransaction(result, txHash);
+                }
+            })
+            .catch((error) => {
+                showTxStatus("error", txHash);
+                additionalInfo.textContent = `Error: ${error.error || "Unknown error"}`;
+                showAlert(`Transaction status: ${error.error || "Unknown error"}`, "error");
+            });
+    }
+
+    // Add this utility function to help users clear stuck transactions
+    function clearPendingTransaction() {
+        localStorage.removeItem('pendingTransaction');
+        hideTxStatus();
+        showAlert("Pending transaction cleared", "info");
+    }
+
+    async function checkPersistentTransaction() {
+        const pendingTx = localStorage.getItem('pendingTransaction');
+        
+        if (pendingTx) {
+            try {
+                const txDetails = JSON.parse(pendingTx);
+                
+                // Check if transaction is too old (> 24 hours)
+                if (Date.now() - txDetails.timestamp > 24 * 60 * 60 * 1000) {
+                    console.log("Removing old pending transaction");
+                    localStorage.removeItem('pendingTransaction');
+                    hideTxStatus();
+                    return;
+                }
+
+                console.log("Found pending transaction:", txDetails.hash);
+                
+                // Only show status if we're coming back to the page with an actual transaction
+                if (txDetails.hash && txDetails.hash.startsWith("0x")) {
+                    // Make sure Web3 is initialized before checking transaction
+                    if (!web3) {
+                        console.log("Web3 not initialized yet, waiting...");
+                        setTimeout(checkPersistentTransaction, 1000);
+                        return;
+                    }
+                    
+                    // Try to get transaction receipt
+                    try {
+                        const receipt = await web3.eth.getTransactionReceipt(txDetails.hash);
+                        
+                        if (receipt) {
+                            console.log("Found receipt for transaction:", receipt);
+                            // Transaction is no longer pending
+                            if (receipt.status) {
+                                // Use our improved handling for successful transactions
+                                await handleSuccessfulTransaction({ success: true, receipt }, txDetails.hash);
+                            } else {
+                                // Failed transaction
+                                showTxStatus("error", txDetails.hash);
+                                showAlert("Transaction failed on the blockchain", "error");
+                                localStorage.removeItem('pendingTransaction');
+                            }
+                        } else {
+                            // Still pending - show status and continue monitoring
+                            showTxStatus("pending", txDetails.hash);
+                            
+                            // Try to get transaction to verify it exists
+                            try {
+                                const tx = await web3.eth.getTransaction(txDetails.hash);
+                                if (!tx) {
+                                    // Transaction hash may be invalid
+                                    additionalInfo.style.display = "block";
+                                    additionalInfo.textContent = "Warning: Transaction not found on network. It may have been dropped or never broadcast.";
+                                    showAlert("Transaction not found on the blockchain. It may have been dropped or never broadcast.", "warning", true, "Clear Status", function() {
+                                        localStorage.removeItem('pendingTransaction');
+                                        hideTxStatus();
+                                    });
+                                    return;
+                                }
+                            } catch (txError) {
+                                console.error("Error getting transaction:", txError);
+                            }
+                            
+                            // Continue monitoring the transaction with improved handling
+                            monitorTransaction(txDetails.hash)
+                                .then(async (result) => {
+                                    if (result.success) {
+                                        await handleSuccessfulTransaction(result, txDetails.hash);
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.log("Transaction monitoring error:", error);
+                                    
+                                    // Only show error if it's a definitive failure
+                                    if (error.error && (error.error.includes("failed") || error.error.includes("timed out") || error.error.includes("not found"))) {
+                                        showTxStatus("error", txDetails.hash);
+                                        showAlert(`Transaction issue: ${error.error}`, "error", true, "Clear Status", function() {
+                                            localStorage.removeItem('pendingTransaction');
+                                            hideTxStatus();
+                                        });
+                                    } else {
+                                        // For network errors, keep tx in localStorage but don't show error
+                                        showAlert(`Checking transaction status...`, "info");
+                                    }
+                                });
+                        }
+                    } catch (receiptError) {
+                        console.error("Error getting transaction receipt:", receiptError);
+                        showAlert("Error checking transaction status. Please try refreshing the page.", "error");
+                    }
+                } else {
+                    // Invalid transaction hash, remove it
+                    console.log("Invalid transaction hash in localStorage:", txDetails.hash);
+                    localStorage.removeItem('pendingTransaction');
+                    hideTxStatus();
+                }
+            } catch (error) {
+                console.error("Error checking pending transaction:", error);
+                localStorage.removeItem('pendingTransaction');
+                hideTxStatus();
+            }
+        }
+    }
+
+    // Custom alert function
+    function showAlert(message, type, hasButton = false, buttonText = "OK", callback = null) {
+        const alertBox = document.getElementById("formAlert");
+        const alertIcon = alertBox.querySelector(".alert-icon");
+        const alertMessage = alertBox.querySelector(".alert-message");
+        
+        // Remove any existing action button
+        const existingBtn = alertBox.querySelector(".alert-btn");
+        if (existingBtn) existingBtn.remove();
+        
+        // Set icon and color based on type
+        if (type === "error") {
+            alertIcon.innerHTML = "❌";
+            alertBox.className = "form-alert error show";
+        } else if (type === "success") {
+            alertIcon.innerHTML = "✅";
+            alertBox.className = "form-alert success show";
+        } else if (type === "warning") {
+            alertIcon.innerHTML = "⚠️";
+            alertBox.className = "form-alert warning show";
+        } else if (type === "info") {
+            alertIcon.innerHTML = "ℹ️";
+            alertBox.className = "form-alert info show";
+        }
+        
+        alertMessage.textContent = message;
+        
+        // Add action button if needed
+        if (hasButton) {
+            const btn = document.createElement("button");
+            btn.className = "alert-btn";
+            btn.textContent = buttonText;
+            btn.onclick = function() {
+                alertBox.classList.remove("show");
+                if (callback) callback();
+                return true;
+            };
+            alertBox.querySelector(".alert-content").appendChild(btn);
+        }
+        
+        // Close button functionality
+        const closeBtn = alertBox.querySelector(".close-btn");
+        closeBtn.onclick = function() {
+            alertBox.classList.remove("show");
+        };
+        
+        // Auto-hide after 5 seconds if no button
+        if (!hasButton) {
+            setTimeout(function() {
+                alertBox.classList.remove("show");
+            }, 5000);
+        }
+    }
+
+    // Initialize web3 using the existing wallet connection
+    async function initializeWeb3WithWallet(walletAddress) {
+        if (window.ethereum) {
+            web3 = new Web3(window.ethereum);
+            try {
+                // Initialize contract with user wallet
+                if (walletAddress) {
+                    userWallet = walletAddress;
+                    
+                    // Initialize contract
+                    await initContract();
+                    
+                    // Check for pending transactions
+                    await checkPersistentTransaction();
+                    
+                    return true;
+                }
+            } catch (error) {
+                console.error("❌ Error initializing web3:", error);
+                return false;
+            }
+        } else {
+            console.log("MetaMask not detected");
+            return false;
+        }
+    }
+    
+    // Initialize contract
+    async function initContract() {
+        try {
+            const contractABI = [
+                {
+                    "inputs": [
+                        {"internalType": "string", "name": "_flightNumber", "type": "string"},
+                        {"internalType": "uint256", "name": "_departureDate", "type": "uint256"},
+                        {"internalType": "uint256", "name": "_premium", "type": "uint256"},
+                        {"internalType": "string", "name": "_currency", "type": "string"}
+                    ],
+                    "name": "buyInsurance",
+                    "outputs": [],
+                    "stateMutability": "payable",
+                    "type": "function"
+                },
+                {
+                    "inputs": [
+                        {"internalType": "address", "name": "user", "type": "address"},
+                        {"internalType": "string", "name": "flightIata", "type": "string"},
+                        {"internalType": "uint256", "name": "flightDate", "type": "uint256"}
+                    ],
+                    "name": "hasPolicyForFlight",
+                    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "anonymous": false,
+                    "inputs": [
+                        {"indexed": true, "internalType": "address", "name": "user", "type": "address"},
+                        {"indexed": false, "internalType": "bytes32", "name": "policyId", "type": "bytes32"},
+                        {"indexed": false, "internalType": "string", "name": "flightNumber", "type": "string"}
+                    ],
+                    "name": "PolicyPurchased",
+                    "type": "event"
+                },
+                {
+                    "inputs": [],
+                    "name": "totalPolicies",
+                    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                    "stateMutability": "view",
+                    "type": "function"
+                },
+                {
+                    "inputs": [{"internalType": "address", "name": "_owner", "type": "address"}],
+                    "name": "getPoliciesByOwner",
+                    "outputs": [{"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}],
+                    "stateMutability": "view",
+                    "type": "function"
+                }
+            ];
+            
+            contract = new web3.eth.Contract(contractABI, contractAddress);
+            console.log("✅ Contract Loaded:", contractAddress);
+            
+            return true;
+        } catch (error) {
+            console.error("❌ Failed to load contract:", error);
+            showAlert("Failed to load smart contract. Please try again later.", "error");
+            return false;
+        }
+    }
+
+    // Listen for wallet connection events from the navbar
+    window.addEventListener('walletConnected', function(e) {
+        if (e.detail && e.detail.address) {
+            userWallet = e.detail.address;
+            initializeWeb3WithWallet(userWallet);
+        }
+    });
+    
+    // Listen for wallet disconnection events from the navbar
+    window.addEventListener('walletDisconnected', function() {
+        userWallet = null;
+        web3 = null;
+    });
+
+    // Setup action buttons for transaction status
+    document.getElementById('checkTxBtn').addEventListener('click', function() {
+        const pendingTx = localStorage.getItem('pendingTransaction');
+        if (pendingTx) {
+            try {
+                const txDetails = JSON.parse(pendingTx);
+                if (txDetails.hash) {
+                    manuallyCheckTransaction(txDetails.hash);
+                } else {
+                    showAlert("Invalid transaction hash", "error");
+                }
+            } catch (e) {
+                console.error("Error parsing pending transaction:", e);
+                showAlert("Error parsing transaction data", "error");
+            }
+        } else {
+            showAlert("No pending transaction found", "info");
+        }
+    });
+
+    document.getElementById('clearTxBtn').addEventListener('click', function() {
+        clearPendingTransaction();
+    });
+
+    document.getElementById('checkExplorerBtn').addEventListener('click', function() {
+        const pendingTx = localStorage.getItem('pendingTransaction');
+        if (pendingTx) {
+            try {
+                const txDetails = JSON.parse(pendingTx);
+                if (txDetails.hash) {
+                    window.open(`https://amoy.polygonscan.com/tx/${txDetails.hash}`, '_blank');
+                } else {
+                    showAlert("Invalid transaction hash", "error");
+                }
+            } catch (e) {
+                console.error("Error parsing pending transaction:", e);
+                showAlert("Error parsing transaction data", "error");
+            }
+        } else {
+            showAlert("No pending transaction found", "info");
+        }
+    });
+
+    // Load airlines into Select2 dropdown with formatting
+    $(".airline-dropdown").select2({
+        placeholder: "Start typing airline name...",
+        allowClear: true,
+        templateResult: formatAirline,
+        templateSelection: formatAirline,
+        dropdownParent: $("body") // Attach to body for proper positioning
+    });
+    
+    // Format airline display in dropdown
+    function formatAirline(airline) {
+        if (!airline.id) return airline.text;
+        return $(`<span>${airline.text}</span>`);
+    }
+
+    // Temporarily hide carousel indicators when dropdown opens
+    $(".airline-dropdown").on('select2:open', function() {
+        $('.carousel-indicators').addClass('temp-hidden').css({
+            'visibility': 'hidden',
+            'opacity': '0'
+        });
+    });
+
+    // Restore carousel indicators when dropdown closes
+    $(".airline-dropdown").on('select2:close', function() {
+        $('.carousel-indicators').removeClass('temp-hidden').css({
+            'visibility': 'visible',
+            'opacity': '1'
+        });
+        
+        // Ensure indicators maintain their dot appearance
+        $('.carousel-indicators li').css({
+            'width': '10px',
+            'height': '10px',
+            'border-radius': '50%',
+            'margin': '0 5px'
+        });
+    });
+
+    // Load airlines from API
+    fetch("/api/airlines")
+        .then(response => response.json())
+        .then(airlines => {
+            airlines.forEach(airline => {
+                let displayText = `${airline.name} (${airline.iata})`;
+                let newOption = new Option(displayText, airline.iata, false, false);
+                $("#airline").append(newOption);
+            });
+            $("#airline").trigger("change");
+        })
+        .catch(error => {
+            console.error("Error loading airlines:", error);
+            showAlert("Failed to load airlines. Please try again later.", "error");
+        });
+                
+    // Real-time flight validation on input
+    const flightNumberInput = document.getElementById("flightNumber");
+    const flightError = document.getElementById("flightError");
+    
+    flightNumberInput.addEventListener("blur", async function() {
+        const airline = document.getElementById("airline").value;
+        const flightNumber = flightNumberInput.value;
+        const departureDate = document.getElementById("departureDate").value;
+        
+        if (airline && flightNumber && departureDate) {
+            try {
+                // Check if wallet is connected first
+                if (!userWallet) {
+                    showAlert("Please connect your wallet to verify flights", "warning", true, "Connect Wallet", function() {
+                        document.getElementById("connectWalletBtn").click();
+                    });
+                    return;
+                }
+                
+                let verifyResponse = await fetch("/api/verify-flight", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        airline_iata: airline,
+                        flight_number: flightNumber,
+                        departure_date: departureDate,
+                    }),
+                });
+
+                let verifyData = await verifyResponse.json();
+                if (!verifyData.valid) {
+                    flightError.style.display = "block";
+                } else {
+                    flightError.style.display = "none";
+                }
+            } catch (error) {
+                console.error("Error verifying flight:", error);
+            }
+        }
+    });
+    
+    // Handle purchase button click
+    const purchaseBtn = document.querySelector(".purchase-btn");
+    
+    purchaseBtn.addEventListener("click", async function () {
+        // Hide any previous transaction status
+        hideTxStatus();
+        
+        // Check if wallet is connected
+        if (!userWallet) {
+            showAlert("Please connect your wallet to buy insurance", "warning", true, "Connect Wallet", function() {
+                // Trigger the existing connect wallet function from your navbar
+                document.getElementById("connectWalletBtn").click();
+            });
+            return;
+        }
+        
+        const airline = document.getElementById("airline").value;
+        const flightNumber = document.getElementById("flightNumber").value;
+        const departureDateInput = document.getElementById("departureDate").value;
+
+        // Validate form fields
+        if (!airline || !flightNumber || !departureDateInput) {
+            showAlert("Please fill in all fields", "error");
+            return;
+        }
+        
+        // Validate that selected date is in the future
+        const today = new Date();
+        const selectedDate = new Date(departureDateInput);
+        if (selectedDate < today) {
+            showAlert("Cannot purchase insurance for past flights. Please select a future date.", "error");
+            return;
+        }
+
+        // Check for duplicate policy first - FIXED VERSION USING calculateFlightTimestamp
+        try {
+            console.log("Checking duplicate policy with:", {
+                userWallet: userWallet,
+                flightNumber: flightNumber,
+                timestamp: calculateFlightTimestamp(departureDateInput)
+            });
+
+            if (!contract) {
+                console.error("Contract not initialized");
+                showAlert("Contract not loaded. Please reconnect wallet.", "error");
+                return;
+            }
+
+            const hasDuplicatePolicy = await contract.methods.hasPolicyForFlight(
+                userWallet, 
+                flightNumber, 
+                calculateFlightTimestamp(departureDateInput)
+            ).call({
+                from: userWallet  
+            });
+
+            console.log("Duplicate policy check result:", hasDuplicatePolicy);
+
+            if (hasDuplicatePolicy) {
+                showAlert("You already have an active insurance policy for this flight.", "warning");
+                return;
+            }
+        } catch (contractError) {
+            console.error("Full contract error:", contractError);
+            
+            // More detailed error handling
+            if (contractError.message.includes("Web3 validator")) {
+                showAlert("Invalid input for policy check.", "error");
+            } else if (contractError.message.includes("not a valid address")) {
+                showAlert("Invalid wallet address.", "error");
+            } else {
+                showAlert(`Error verifying flight policy: ${contractError.message}`, "error");
+            }
+            return;
+        }
+
+        // Verify flight exists
+        try {
+            purchaseBtn.disabled = true;
+            purchaseBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying Flight...';
+            
+            let verifyResponse = await fetch("/api/verify-flight", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    airline_iata: airline,
+                    flight_number: flightNumber,
+                    departure_date: departureDateInput,
+                }),
+            });
+
+            let verifyData = await verifyResponse.json();
+            
+            purchaseBtn.disabled = false;
+            purchaseBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Buy Insurance';
+            
+            if (!verifyData.valid) {
+                flightError.style.display = "block";
+                return;
+            } else {
+                flightError.style.display = "none";
+                
+                // Calculate premium
+                const premiumAmount = web3.utils.toWei("0.00001", "ether");
+
+                // Calculate departure timestamp using our consistent function
+                const departureDate = calculateFlightTimestamp(departureDateInput);
+                
+                // Confirm purchase
+                showAlert(`Flight Verified! Proceed to buy insurance for ${flightNumber} on ${departureDateInput}?`, "success", true, "Purchase Now", async function() {
+                    try {
+                        // Show pending status
+                        showAlert("Submitting transaction to blockchain...", "info");
+                        showTxStatus("pending");
+                        
+                        // Track when we started the transaction
+                        const txStartTime = Date.now();
+                        
+                        // Create the transaction but don't send it yet
+                        const txObject = contract.methods.buyInsurance(
+                            flightNumber,
+                            departureDate,
+                            premiumAmount,
+                            "MATIC"
+                        );
+                        
+                        // Estimate gas first for better reliability
+                        let estimatedGas;
+                        try {
+                            estimatedGas = await txObject.estimateGas({
+                                from: userWallet,
+                                value: premiumAmount
+                            });
+                            console.log("Estimated gas:", estimatedGas);
+                            // Add 30% buffer to gas estimate
+                            estimatedGas = Math.ceil(estimatedGas * 1.3);
+                        } catch (gasError) {
+                            console.error("Gas estimation error:", gasError);
+                            // Use a safe default if estimation fails
+                            estimatedGas = 1000000;
+                        }
+                        
+                        // Now send the transaction with our own custom promise handling
+                        let txHash;
+                        
+                        // First, get the transaction hash
+                        txObject.send({
+                            from: userWallet,
+                            value: premiumAmount,
+                            gas: estimatedGas,
+                            gasPrice: web3.utils.toWei("100", "gwei"),
+                
+                        })
+                        .on('transactionHash', function(hash) {
+                            txHash = hash;
+                            console.log("Transaction hash:", hash);
+                            
+                            // Store transaction details in localStorage with wallet address
+                            localStorage.setItem('pendingTransaction', JSON.stringify({
+                                hash: hash,
+                                timestamp: Date.now(),
+                                wallet: userWallet,
+                                details: {
+                                    airline: airline,
+                                    flightNumber: flightNumber,
+                                    departureDate: departureDateInput
+                                }
+                            }));
+                            
+                            showTxStatus("pending", hash);
+                            additionalInfo.style.display = "block";
+                            additionalInfo.textContent = `Transaction Hash: ${hash}`;
+                            
+                            // Use the improved transaction monitoring
+                            monitorTransaction(hash)
+                                .then(async (result) => {
+                                    if (result.success) {
+                                        await handleSuccessfulTransaction(result, hash);
+                                    }
+                                })
+                                .catch((error) => {
+                                    // Don't treat the "not mined within 50 blocks" as a real error
+                                    if (error.error && error.error.includes("not mined within")) {
+                                        // Just show that we're still waiting
+                                        additionalInfo.textContent = `Still waiting for confirmation. This may take some time.`;
+                                        showAlert("Transaction submitted, but still waiting for confirmation. Check status below.", "info");
+                                    } else {
+                                        showTxStatus("error", hash);
+                                        additionalInfo.textContent = `Error: ${error.error || "Unknown error"}`;
+                                        showAlert(`Transaction status uncertain: ${error.error}`, "warning", true, "Check Status", () => {
+                                            window.open(`https://amoy.polygonscan.com/tx/${hash}`, '_blank');
+                                        });
+                                    }
+                                });
+                        })
+                        .on('error', function(error) {
+                            // This handles errors that occur BEFORE getting a transaction hash
+                            // (like rejected transactions or gas estimation failures)
+                            if (!txHash) {
+                                console.error("Transaction error before hash generated:", error);
+                                hideTxStatus();
+                                showAlert(`Transaction failed: ${error.message}`, "error");
+                                localStorage.removeItem('pendingTransaction');
+                            } else if (error.message && error.message.includes("not mined within")) {
+                                // This is the 50 block timeout error - ignore it since we have our own monitoring
+                                console.log("Ignoring Web3 timeout error, using our own monitoring");
+                            } else {
+                                // Some other error occurred after we got the hash
+                                console.error("Transaction error after hash:", error);
+                                // Don't hide the status since we're still monitoring with our own code
+                                showAlert(`Transaction may have issues: ${error.message}. We'll continue monitoring.`, "warning");
+                            }
+                        });
+                    } catch (error) {
+                        console.error("Transaction submission error:", error);
+                        localStorage.removeItem('pendingTransaction');
+                        hideTxStatus();
+                        showAlert(`Transaction failed: ${error.message}`, "error");
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error processing request:", error);
+            purchaseBtn.disabled = false;
+            purchaseBtn.innerHTML = '<i class="fa-solid fa-cart-shopping"></i> Buy Insurance';
+            showAlert("Error processing request. Please try again.", "error");
+        }
+    });
+    
+    // Listen for changes to the wallet from the navbar
+    if (window.ethereum) {
+        window.ethereum.on('accountsChanged', function (accounts) {
+            if (accounts.length > 0) {
+                userWallet = accounts[0];
+                initializeWeb3WithWallet(userWallet);
+            } else {
+                userWallet = null;
+                web3 = null;
+            }
+        });
+        
+        // Handle chain changes
+        window.ethereum.on('chainChanged', function (chainId) {
+            // Reload the page when chain changes
+            window.location.reload();
+        });
+    }
+    
+    // Dispatch custom events for existing wallet connection script
+    // This makes your existing navbar wallet connection interact with this script
+    function dispatchWalletEvent(connected, address = null) {
+        if (connected) {
+            window.dispatchEvent(new CustomEvent('walletConnected', {
+                detail: { address: address }
+            }));
+        } else {
+            window.dispatchEvent(new CustomEvent('walletDisconnected'));
+        }
+    }
+    
+    // Extend the existing connectWallet function in navbar.js
+    const originalConnectWallet = window.connectWallet;
+    if (typeof originalConnectWallet === 'function') {
+        window.connectWallet = async function() {
+            const result = await originalConnectWallet();
+            if (result && localStorage.getItem("walletConnected")) {
+                dispatchWalletEvent(true, localStorage.getItem("walletConnected"));
+            }
+            return result;
+        };
+    }
+    
+    // Extend the existing disconnectWallet function in navbar.js
+    const originalDisconnectWallet = window.disconnectWallet;
+    if (typeof originalDisconnectWallet === 'function') {
+        window.disconnectWallet = function() {
+            const result = originalDisconnectWallet();
+            dispatchWalletEvent(false);
+            return result;
+        };
+    }
+});
+
+window.onscroll = function() {
+    var navbar = document.querySelector('.navbar');
+    if (window.scrollY > 120) { 
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+};
+
+$(document).ready(function() {
+    $(".airline-dropdown").on("select2:open", function() {
+        $("body").css("overflow", "hidden");
+    });
+
+    $(".airline-dropdown").on("select2:close", function() {
+        $("body").css("overflow", "auto"); 
+    });
+});
+
+
+            
+</script>
+
+{% endblock %}

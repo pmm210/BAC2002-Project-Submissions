@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DecentraFlight</title>
+    <!-- Include Web3.js from a CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
+</head>
+<body>
+<style>
+
+@media (max-width: 991px) { 
+    .wallet-info {
+        justify-content: center !important;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .wallet-balance {
+        display: block; 
+        margin-top: 5px;
+    }
+
+    .disconnect-btn {
+        margin-left: 0 !important;
+        margin-top: 10px;
+    }
+}
+
+
+</style>
+<nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 50px;">
+            <span class="site-title">DecentraFlight</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('home') }}">Insurance</a>
+                </li>
+                <li class="nav-item" id="myPoliciesLink" style="display: none;">
+                    <a class="nav-link" href="{{ url_for('policies') }}">My Policies</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item" id="walletInfoContainer" style="display: none;">
+                    <div class="wallet-info d-flex flex-wrap align-items-center p-2">
+                        <i class="fa-solid fa-wallet wallet-icon"></i>
+                        <span id="walletAddress" class="wallet-text text-truncate"></span>
+                        <span id="walletBalance" class="wallet-balance text-truncate"> | 0 MATIC </span>
+                        <button id="disconnectWalletBtn" class="disconnect-btn btn btn-sm ml-2" onclick="disconnectWallet()">
+                            <i class="fa-solid fa-power-off disconnect-icon"></i>
+                        </button>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <button id="connectWalletBtn" class="btn btn-primary btn-sm" onclick="connectWallet()">
+                        <i class="fa-solid fa-wallet"></i> Connect
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+window.addEventListener('load', function() {
+    checkWalletConnection();
+    // Listen for account changes
+    if (window.ethereum) {
+        window.ethereum.on('accountsChanged', function (accounts) {
+            if (accounts.length > 0) {
+                updateWalletUI(accounts[0]);
+                fetchPOLBalance(accounts[0]);
+            } else {
+                updateWalletUI(null);
+            }
+        });
+    }
+});
+
+async function connectWallet() {
+    if (window.ethereum) {
+        try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+            if (accounts.length > 0) {
+                let walletAddress = accounts[0];
+                localStorage.setItem("walletConnected", walletAddress);
+                updateWalletUI(walletAddress);
+                fetchPOLBalance(walletAddress);
+                document.getElementById("myPoliciesLink").style.display = "block";
+            }
+        } catch (error) {
+            console.error("Wallet connection failed:", error);
+            alert("Wallet connection failed! Check your MetaMask.");
+        }
+    } else {
+        alert("MetaMask not detected. Please install MetaMask.");
+    }
+}
+
+async function checkWalletConnection() {
+    if (window.ethereum) {
+        try {
+            let accounts = await window.ethereum.request({ method: 'eth_accounts' });
+            if (accounts.length > 0) {
+                let walletAddress = accounts[0];
+                localStorage.setItem("walletConnected", walletAddress);
+                updateWalletUI(walletAddress);
+                fetchPOLBalance(walletAddress);
+                document.getElementById("myPoliciesLink").style.display = "block";
+            } else {
+                localStorage.removeItem("walletConnected");
+                updateWalletUI(null);
+            }
+        } catch (error) {
+            console.error("Error checking wallet connection:", error);
+        }
+    }
+}
+
+function updateWalletUI(walletAddress) {
+    let policiesLink = document.getElementById("myPoliciesLink");
+    let connectWalletBtn = document.getElementById("connectWalletBtn");
+    let walletInfoContainer = document.getElementById("walletInfoContainer");
+    let walletAddressSpan = document.getElementById("walletAddress");
+
+    if (walletAddress) {
+        connectWalletBtn.style.display = "none";
+        walletInfoContainer.style.display = "flex";
+        walletAddressSpan.innerText = walletAddress;
+        policiesLink.style.display = "block";
+    } else {
+        connectWalletBtn.style.display = "block";
+        walletInfoContainer.style.display = "none";
+        policiesLink.style.display = "none";
+    }
+}
+
+async function fetchPOLBalance(walletAddress) {
+    try {
+        if (!window.ethereum) {
+            console.error("MetaMask not detected!");
+            document.getElementById('walletBalance').innerText = " | 0 POL ";
+            return;
+        }
+
+        const web3 = new Web3(window.ethereum); 
+        let balanceWei = await web3.eth.getBalance(walletAddress); 
+        let balancePOL = web3.utils.fromWei(balanceWei, 'ether');  
+        
+        console.log(`POL Balance for ${walletAddress}:`, balancePOL);
+        
+        document.getElementById('walletBalance').innerText = ` | ${parseFloat(balancePOL).toFixed(4)} MATIC `;
+    } catch (error) {
+        console.error("Error fetching POL balance:", error);
+        document.getElementById('walletBalance').innerText = " | 0 MATIC ";
+    }
+}
+
+
+function disconnectWallet() {
+    localStorage.removeItem("walletConnected");
+    updateWalletUI(null);
+}
+</script>
+</body>
+</html>
