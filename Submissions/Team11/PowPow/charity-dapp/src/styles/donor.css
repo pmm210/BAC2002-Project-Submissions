@@ -1,0 +1,63 @@
+@import './base.css';
+
+.donor-container {
+    max-width: 600px;
+    margin: 140px auto 60px; 
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 1.25rem;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+  }
+  
+  
+.donor-container h1 {
+font-size: 2.5rem;
+font-weight: bold;
+color: #315B8D;
+margin-bottom: 1rem;
+}
+
+.donor-container .form-label {
+font-weight: 600;
+color: #333;
+}
+
+.donor-container .form-control {
+border-radius: 0.5rem;
+padding: 0.75rem;
+}
+
+.donor-container .btn-donate {
+background-color: #D4F0FF;
+color: #05668D;
+border: 1.5px solid #05668D;
+border-radius: 1rem;
+transition: all 0.3s ease;
+padding: 0.6rem 1.25rem;
+}
+
+.donor-container .btn-donate:hover {
+background-color: #EAF6FD;
+color: #034D6A;
+border-color: #034D6A;
+transform: translateY(-2px);
+}
+
+.btn-buttons {
+background-color: #05668D !important;
+color: #ffffff!important;
+border: 1.5px solid #ffffff !important;
+border-radius: 1rem;
+transition: all 0.3s ease;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.btn-buttons:hover {
+background-color: rgba(234, 246, 253, 0.884);
+color: #034D6A;
+border-color: #034D6A;
+transform: translateY(-2px);
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}

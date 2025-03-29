@@ -1,0 +1,4193 @@
+{
+  "version": "3.4",
+  "log": [
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/interfaces/IERC1363.sol:IERC1363": {
+        "src": "@openzeppelin\\contracts\\interfaces\\IERC1363.sol:16",
+        "inherit": [
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20"
+        ],
+        "libraries": [],
+        "methods": [
+          "transferAndCall(address,uint256)",
+          "transferAndCall(address,uint256,bytes)",
+          "transferFromAndCall(address,address,uint256)",
+          "transferFromAndCall(address,address,uint256,bytes)",
+          "approveAndCall(address,uint256)",
+          "approveAndCall(address,uint256,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol:SafeERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\utils\\SafeERC20.sol:18",
+        "version": {
+          "withMetadata": "5cf89772ad17bcec6ac6d5a5bdd860d8a1e5b3a53a1664670bc47c1bcbe5a1c3",
+          "withoutMetadata": "5cf89772ad17bcec6ac6d5a5bdd860d8a1e5b3a53a1664670bc47c1bcbe5a1c3",
+          "linkedWithoutMetadata": "5cf89772ad17bcec6ac6d5a5bdd860d8a1e5b3a53a1664670bc47c1bcbe5a1c3"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard": {
+        "src": "@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol:25",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ReentrancyGuard",
+            "src": "@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol:47"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "ReentrancyGuard",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol:40"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165": {
+        "src": "@openzeppelin\\contracts\\utils\\introspection\\IERC165.sol:15",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "supportsInterface(bytes4)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:10",
+        "version": {
+          "withMetadata": "2c67144bc8f8138f194341545012d723e0b5a6d27eb0ab50b308abdd127875ff",
+          "withoutMetadata": "2c67144bc8f8138f194341545012d723e0b5a6d27eb0ab50b308abdd127875ff",
+          "linkedWithoutMetadata": "2c67144bc8f8138f194341545012d723e0b5a6d27eb0ab50b308abdd127875ff"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard",
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "addCharity(address,string)",
+          "removeCharity(address)",
+          "getActiveCharities()",
+          "donate(address,uint256,uint256[2],uint256[2][2],uint256[2],uint256[3])",
+          "withdraw(uint256,string)",
+          "emergencyWithdraw(address,uint256)",
+          "getCharityBalance(address)",
+          "getContractBalance()",
+          "getCharities()",
+          "getCharityWithdrawals(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:49"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)315",
+              "src": "contracts\\charityDonation.sol:13"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)1650",
+              "src": "contracts\\charityDonation.sol:14"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charities",
+              "type": "t_mapping(t_address,t_struct(Charity)867_storage)",
+              "src": "contracts\\charityDonation.sol:38"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allDonations",
+              "type": "t_array(t_struct(Donation)876_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:39"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allWithdrawals",
+              "type": "t_array(t_struct(Withdrawal)885_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:40"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityList",
+              "type": "t_array(t_address)dyn_storage",
+              "src": "contracts\\charityDonation.sol:41"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)315": {
+              "label": "contract IERC20"
+            },
+            "t_contract(Groth16Verifier)1650": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_struct(Charity)867_storage)": {
+              "label": "mapping(address => struct CharityDonation.Charity)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_struct(Charity)867_storage": {
+              "label": "struct CharityDonation.Charity",
+              "members": [
+                {
+                  "label": "wallet",
+                  "type": "t_address"
+                },
+                {
+                  "label": "name",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "exists",
+                  "type": "t_bool"
+                },
+                {
+                  "label": "active",
+                  "type": "t_bool"
+                },
+                {
+                  "label": "balance",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_array(t_struct(Donation)876_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)876_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            },
+            "t_array(t_struct(Withdrawal)885_storage)dyn_storage": {
+              "label": "struct CharityDonation.Withdrawal[]"
+            },
+            "t_struct(Withdrawal)885_storage": {
+              "label": "struct CharityDonation.Withdrawal",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "purpose",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "withoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "linkedWithoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/interfaces/IERC1363.sol:IERC1363": {
+        "src": "@openzeppelin\\contracts\\interfaces\\IERC1363.sol:16",
+        "inherit": [
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20"
+        ],
+        "libraries": [],
+        "methods": [
+          "transferAndCall(address,uint256)",
+          "transferAndCall(address,uint256,bytes)",
+          "transferFromAndCall(address,address,uint256)",
+          "transferFromAndCall(address,address,uint256,bytes)",
+          "approveAndCall(address,uint256)",
+          "approveAndCall(address,uint256,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol:SafeERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\utils\\SafeERC20.sol:18",
+        "version": {
+          "withMetadata": "5cf89772ad17bcec6ac6d5a5bdd860d8a1e5b3a53a1664670bc47c1bcbe5a1c3",
+          "withoutMetadata": "5cf89772ad17bcec6ac6d5a5bdd860d8a1e5b3a53a1664670bc47c1bcbe5a1c3",
+          "linkedWithoutMetadata": "5cf89772ad17bcec6ac6d5a5bdd860d8a1e5b3a53a1664670bc47c1bcbe5a1c3"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard": {
+        "src": "@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol:25",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ReentrancyGuard",
+            "src": "@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol:47"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "ReentrancyGuard",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol:40"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165": {
+        "src": "@openzeppelin\\contracts\\utils\\introspection\\IERC165.sol:15",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "supportsInterface(bytes4)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:10",
+        "version": {
+          "withMetadata": "de9bbae2c288dedfd964b0fc2e2d58d6bb0a9fe99c7e055a69ef3e144eb644fc",
+          "withoutMetadata": "de9bbae2c288dedfd964b0fc2e2d58d6bb0a9fe99c7e055a69ef3e144eb644fc",
+          "linkedWithoutMetadata": "de9bbae2c288dedfd964b0fc2e2d58d6bb0a9fe99c7e055a69ef3e144eb644fc"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard",
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "addCharity(address,string)",
+          "removeCharity(address)",
+          "getActiveCharities()",
+          "donate(address,uint256,uint256[2],uint256[2][2],uint256[2],uint256[3])",
+          "withdraw(uint256,string)",
+          "emergencyWithdraw(address,uint256)",
+          "getCharityBalance(address)",
+          "getContractBalance()",
+          "getCharities()",
+          "getCharityWithdrawals(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:49"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)315",
+              "src": "contracts\\charityDonation.sol:13"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)1659",
+              "src": "contracts\\charityDonation.sol:14"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charities",
+              "type": "t_mapping(t_address,t_struct(Charity)867_storage)",
+              "src": "contracts\\charityDonation.sol:38"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allDonations",
+              "type": "t_array(t_struct(Donation)876_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:39"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allWithdrawals",
+              "type": "t_array(t_struct(Withdrawal)885_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:40"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityList",
+              "type": "t_array(t_address)dyn_storage",
+              "src": "contracts\\charityDonation.sol:41"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)315": {
+              "label": "contract IERC20"
+            },
+            "t_contract(Groth16Verifier)1659": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_struct(Charity)867_storage)": {
+              "label": "mapping(address => struct CharityDonation.Charity)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_struct(Charity)867_storage": {
+              "label": "struct CharityDonation.Charity",
+              "members": [
+                {
+                  "label": "wallet",
+                  "type": "t_address"
+                },
+                {
+                  "label": "name",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "exists",
+                  "type": "t_bool"
+                },
+                {
+                  "label": "active",
+                  "type": "t_bool"
+                },
+                {
+                  "label": "balance",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_array(t_struct(Donation)876_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)876_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            },
+            "t_array(t_struct(Withdrawal)885_storage)dyn_storage": {
+              "label": "struct CharityDonation.Withdrawal[]"
+            },
+            "t_struct(Withdrawal)885_storage": {
+              "label": "struct CharityDonation.Withdrawal",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "purpose",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "withoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "linkedWithoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/interfaces/IERC1363.sol:IERC1363": {
+        "src": "@openzeppelin\\contracts\\interfaces\\IERC1363.sol:16",
+        "inherit": [
+          "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165",
+          "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20"
+        ],
+        "libraries": [],
+        "methods": [
+          "transferAndCall(address,uint256)",
+          "transferAndCall(address,uint256,bytes)",
+          "transferFromAndCall(address,address,uint256)",
+          "transferFromAndCall(address,address,uint256,bytes)",
+          "approveAndCall(address,uint256)",
+          "approveAndCall(address,uint256,bytes)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol:SafeERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\utils\\SafeERC20.sol:18",
+        "version": {
+          "withMetadata": "5cf89772ad17bcec6ac6d5a5bdd860d8a1e5b3a53a1664670bc47c1bcbe5a1c3",
+          "withoutMetadata": "5cf89772ad17bcec6ac6d5a5bdd860d8a1e5b3a53a1664670bc47c1bcbe5a1c3",
+          "linkedWithoutMetadata": "5cf89772ad17bcec6ac6d5a5bdd860d8a1e5b3a53a1664670bc47c1bcbe5a1c3"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard": {
+        "src": "@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol:25",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "ReentrancyGuard",
+            "src": "@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol:47"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "ReentrancyGuard",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "@openzeppelin\\contracts\\utils\\ReentrancyGuard.sol:40"
+            }
+          ],
+          "types": {
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/introspection/IERC165.sol:IERC165": {
+        "src": "@openzeppelin\\contracts\\utils\\introspection\\IERC165.sol:15",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "supportsInterface(bytes4)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:10",
+        "version": {
+          "withMetadata": "0295f752aeb13daf153ebc4f54ea841b0ea4b53365ca41ea13a9790112055f78",
+          "withoutMetadata": "0295f752aeb13daf153ebc4f54ea841b0ea4b53365ca41ea13a9790112055f78",
+          "linkedWithoutMetadata": "0295f752aeb13daf153ebc4f54ea841b0ea4b53365ca41ea13a9790112055f78"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/utils/ReentrancyGuard.sol:ReentrancyGuard",
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "addCharity(address,string)",
+          "removeCharity(address)",
+          "getActiveCharities()",
+          "donate(address,uint256,uint256[2],uint256[2][2],uint256[2],uint256[3])",
+          "withdraw(uint256,string)",
+          "emergencyWithdraw(address,uint256)",
+          "getCharityBalance(address)",
+          "getContractBalance()",
+          "getCharities()",
+          "getCharityWithdrawals(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:49"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)315",
+              "src": "contracts\\charityDonation.sol:13"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)1659",
+              "src": "contracts\\charityDonation.sol:14"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charities",
+              "type": "t_mapping(t_address,t_struct(Charity)867_storage)",
+              "src": "contracts\\charityDonation.sol:38"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allDonations",
+              "type": "t_array(t_struct(Donation)876_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:39"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allWithdrawals",
+              "type": "t_array(t_struct(Withdrawal)885_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:40"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityList",
+              "type": "t_array(t_address)dyn_storage",
+              "src": "contracts\\charityDonation.sol:41"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)315": {
+              "label": "contract IERC20"
+            },
+            "t_contract(Groth16Verifier)1659": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_struct(Charity)867_storage)": {
+              "label": "mapping(address => struct CharityDonation.Charity)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_struct(Charity)867_storage": {
+              "label": "struct CharityDonation.Charity",
+              "members": [
+                {
+                  "label": "wallet",
+                  "type": "t_address"
+                },
+                {
+                  "label": "name",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "exists",
+                  "type": "t_bool"
+                },
+                {
+                  "label": "active",
+                  "type": "t_bool"
+                },
+                {
+                  "label": "balance",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_array(t_struct(Donation)876_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)876_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            },
+            "t_array(t_struct(Withdrawal)885_storage)dyn_storage": {
+              "label": "struct CharityDonation.Withdrawal[]"
+            },
+            "t_struct(Withdrawal)885_storage": {
+              "label": "struct CharityDonation.Withdrawal",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "purpose",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "withoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "linkedWithoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:8",
+        "version": {
+          "withMetadata": "ec7c964498664eec167345db762fedfe55cac0cd4f851d2abcbf540be5e08c53",
+          "withoutMetadata": "ec7c964498664eec167345db762fedfe55cac0cd4f851d2abcbf540be5e08c53",
+          "linkedWithoutMetadata": "ec7c964498664eec167345db762fedfe55cac0cd4f851d2abcbf540be5e08c53"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "addCharity(address,string)",
+          "removeCharity(address)",
+          "getActiveCharities()",
+          "donate(address,uint256,uint256[2],uint256[2][2],uint256[2],uint256[3])",
+          "withdraw(uint256,string)",
+          "getCharityBalance(address)",
+          "getContractBalance()",
+          "getCharities()",
+          "getCharityWithdrawals(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:44"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)225",
+              "src": "contracts\\charityDonation.sol:9"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)986",
+              "src": "contracts\\charityDonation.sol:10"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charities",
+              "type": "t_mapping(t_address,t_struct(Charity)279_storage)",
+              "src": "contracts\\charityDonation.sol:34"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allDonations",
+              "type": "t_array(t_struct(Donation)288_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:35"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allWithdrawals",
+              "type": "t_array(t_struct(Withdrawal)297_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:36"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityList",
+              "type": "t_array(t_address)dyn_storage",
+              "src": "contracts\\charityDonation.sol:37"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)225": {
+              "label": "contract IERC20"
+            },
+            "t_contract(Groth16Verifier)986": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_struct(Charity)279_storage)": {
+              "label": "mapping(address => struct CharityDonation.Charity)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_struct(Charity)279_storage": {
+              "label": "struct CharityDonation.Charity",
+              "members": [
+                {
+                  "label": "wallet",
+                  "type": "t_address"
+                },
+                {
+                  "label": "name",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "exists",
+                  "type": "t_bool"
+                },
+                {
+                  "label": "active",
+                  "type": "t_bool"
+                },
+                {
+                  "label": "balance",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_array(t_struct(Donation)288_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)288_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            },
+            "t_array(t_struct(Withdrawal)297_storage)dyn_storage": {
+              "label": "struct CharityDonation.Withdrawal[]"
+            },
+            "t_struct(Withdrawal)297_storage": {
+              "label": "struct CharityDonation.Withdrawal",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "purpose",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "withoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "linkedWithoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:8",
+        "version": {
+          "withMetadata": "713f2a3e551221fb33790917ba8afa9336a657a505f6109a523fc9e921c921c4",
+          "withoutMetadata": "713f2a3e551221fb33790917ba8afa9336a657a505f6109a523fc9e921c921c4",
+          "linkedWithoutMetadata": "713f2a3e551221fb33790917ba8afa9336a657a505f6109a523fc9e921c921c4"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "addCharity(address,string)",
+          "removeCharity(address)",
+          "getActiveCharities()",
+          "donate(address,uint256,uint256[2],uint256[2][2],uint256[2],uint256[3])",
+          "withdraw(uint256,string)",
+          "getCharityBalance(address)",
+          "getCharities()",
+          "getCharityWithdrawals(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:43"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)225",
+              "src": "contracts\\charityDonation.sol:9"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)948",
+              "src": "contracts\\charityDonation.sol:10"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charities",
+              "type": "t_mapping(t_address,t_struct(Charity)277_storage)",
+              "src": "contracts\\charityDonation.sol:33"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allDonations",
+              "type": "t_array(t_struct(Donation)286_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:34"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allWithdrawals",
+              "type": "t_array(t_struct(Withdrawal)295_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:35"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityList",
+              "type": "t_array(t_address)dyn_storage",
+              "src": "contracts\\charityDonation.sol:36"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)225": {
+              "label": "contract IERC20"
+            },
+            "t_contract(Groth16Verifier)948": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_struct(Charity)277_storage)": {
+              "label": "mapping(address => struct CharityDonation.Charity)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_struct(Charity)277_storage": {
+              "label": "struct CharityDonation.Charity",
+              "members": [
+                {
+                  "label": "wallet",
+                  "type": "t_address"
+                },
+                {
+                  "label": "name",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "exists",
+                  "type": "t_bool"
+                },
+                {
+                  "label": "active",
+                  "type": "t_bool"
+                }
+              ]
+            },
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_array(t_struct(Donation)286_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)286_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            },
+            "t_array(t_struct(Withdrawal)295_storage)dyn_storage": {
+              "label": "struct CharityDonation.Withdrawal[]"
+            },
+            "t_struct(Withdrawal)295_storage": {
+              "label": "struct CharityDonation.Withdrawal",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "purpose",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "withoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "linkedWithoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:8",
+        "version": {
+          "withMetadata": "ff10dfd95b934dc1f903f584a315dc3728c3f2611a6828a0192697ca06c84bbf",
+          "withoutMetadata": "ff10dfd95b934dc1f903f584a315dc3728c3f2611a6828a0192697ca06c84bbf",
+          "linkedWithoutMetadata": "ff10dfd95b934dc1f903f584a315dc3728c3f2611a6828a0192697ca06c84bbf"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "addCharity(address,string)",
+          "removeCharity(address)",
+          "donate(address,uint256,uint256[2],uint256[2][2],uint256[2],uint256[3])",
+          "withdraw(uint256,string)",
+          "getCharityBalance(address)",
+          "getCharities()",
+          "getCharityWithdrawals(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:42"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)225",
+              "src": "contracts\\charityDonation.sol:9"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)850",
+              "src": "contracts\\charityDonation.sol:10"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charities",
+              "type": "t_mapping(t_address,t_struct(Charity)275_storage)",
+              "src": "contracts\\charityDonation.sol:32"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allDonations",
+              "type": "t_array(t_struct(Donation)284_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:33"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allWithdrawals",
+              "type": "t_array(t_struct(Withdrawal)293_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:34"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityList",
+              "type": "t_array(t_address)dyn_storage",
+              "src": "contracts\\charityDonation.sol:35"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)225": {
+              "label": "contract IERC20"
+            },
+            "t_contract(Groth16Verifier)850": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_struct(Charity)275_storage)": {
+              "label": "mapping(address => struct CharityDonation.Charity)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_struct(Charity)275_storage": {
+              "label": "struct CharityDonation.Charity",
+              "members": [
+                {
+                  "label": "wallet",
+                  "type": "t_address"
+                },
+                {
+                  "label": "name",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "exists",
+                  "type": "t_bool"
+                }
+              ]
+            },
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_array(t_struct(Donation)284_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)284_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            },
+            "t_array(t_struct(Withdrawal)293_storage)dyn_storage": {
+              "label": "struct CharityDonation.Withdrawal[]"
+            },
+            "t_struct(Withdrawal)293_storage": {
+              "label": "struct CharityDonation.Withdrawal",
+              "members": [
+                {
+                  "label": "charity",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "purpose",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "withoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484",
+          "linkedWithoutMetadata": "4d9bd3e2445d483dc18fcef447048a09ef33c0394d4dd3d6e6e8c6d25adcd484"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:8",
+        "version": {
+          "withMetadata": "7a2aec38588cc1b7e8db05cbf75412b827a0a47013bd788e94eee9f59402a5fc",
+          "withoutMetadata": "7a2aec38588cc1b7e8db05cbf75412b827a0a47013bd788e94eee9f59402a5fc",
+          "linkedWithoutMetadata": "7a2aec38588cc1b7e8db05cbf75412b827a0a47013bd788e94eee9f59402a5fc"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "addCharity(address)",
+          "donateWithProof(uint256,uint256[2],uint256[2][2],uint256[2],uint256[2])",
+          "withdraw(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:32"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)225",
+              "src": "contracts\\charityDonation.sol:9"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)642",
+              "src": "contracts\\charityDonation.sol:10"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "isCharity",
+              "type": "t_mapping(t_address,t_bool)",
+              "src": "contracts\\charityDonation.sol:20"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityList",
+              "type": "t_array(t_address)dyn_storage",
+              "src": "contracts\\charityDonation.sol:21"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allDonations",
+              "type": "t_array(t_struct(Donation)277_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:24"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "userDonations",
+              "type": "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)",
+              "src": "contracts\\charityDonation.sol:25"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "totalDonations",
+              "type": "t_uint256",
+              "src": "contracts\\charityDonation.sol:26"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)225": {
+              "label": "contract IERC20"
+            },
+            "t_contract(Groth16Verifier)642": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_bool)": {
+              "label": "mapping(address => bool)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_array(t_address)dyn_storage": {
+              "label": "address[]"
+            },
+            "t_array(t_struct(Donation)277_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)277_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            },
+            "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)": {
+              "label": "mapping(address => struct CharityDonation.Donation[])"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "withoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "linkedWithoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[2])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:8",
+        "version": {
+          "withMetadata": "bdabb85181390fc725416119996f193be696e185454563c7fc5c9e4c82838160",
+          "withoutMetadata": "bdabb85181390fc725416119996f193be696e185454563c7fc5c9e4c82838160",
+          "linkedWithoutMetadata": "bdabb85181390fc725416119996f193be696e185454563c7fc5c9e4c82838160"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address[])",
+          "donateWithProof(uint256,uint256,uint256[2],uint256[2][2],uint256[2],uint256[2])",
+          "withdraw(uint256,string)",
+          "getCharityInfo(uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:44"
+          },
+          {
+            "kind": "state-variable-assignment",
+            "name": "nextCharityId",
+            "src": "contracts\\charityDonation.sol:30"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)225",
+              "src": "contracts\\charityDonation.sol:9"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)670",
+              "src": "contracts\\charityDonation.sol:10"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charities",
+              "type": "t_mapping(t_address,t_struct(Charity)277_storage)",
+              "src": "contracts\\charityDonation.sol:27"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityById",
+              "type": "t_mapping(t_uint256,t_address)",
+              "src": "contracts\\charityDonation.sol:28"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_array(t_struct(Donation)288_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:29"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "nextCharityId",
+              "type": "t_uint256",
+              "src": "contracts\\charityDonation.sol:30"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)225": {
+              "label": "contract IERC20"
+            },
+            "t_contract(Groth16Verifier)670": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_struct(Charity)277_storage)": {
+              "label": "mapping(address => struct CharityDonation.Charity)"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_struct(Charity)277_storage": {
+              "label": "struct CharityDonation.Charity",
+              "members": [
+                {
+                  "label": "id",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "name",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "description",
+                  "type": "t_string_storage"
+                },
+                {
+                  "label": "exists",
+                  "type": "t_bool"
+                }
+              ]
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_string_storage": {
+              "label": "string"
+            },
+            "t_bool": {
+              "label": "bool"
+            },
+            "t_mapping(t_uint256,t_address)": {
+              "label": "mapping(uint256 => address)"
+            },
+            "t_array(t_struct(Donation)288_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)288_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                },
+                {
+                  "label": "charityId",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "withoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "linkedWithoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[2])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:8",
+        "version": {
+          "withMetadata": "bdc8358c3cea2d5d14b4c88fd96852efe51d74150d5fe6c63f6b737b5245c373",
+          "withoutMetadata": "bdc8358c3cea2d5d14b4c88fd96852efe51d74150d5fe6c63f6b737b5245c373",
+          "linkedWithoutMetadata": "bdc8358c3cea2d5d14b4c88fd96852efe51d74150d5fe6c63f6b737b5245c373"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "donateWithProof(uint256,uint256[2],uint256[2][2],uint256[2],uint256[2])",
+          "donateSimple(uint256)",
+          "withdraw(uint256)",
+          "getDonationHistory()",
+          "getUserDonations(address)",
+          "setVerifier(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:26"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)225",
+              "src": "contracts\\charityDonation.sol:9"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)695",
+              "src": "contracts\\charityDonation.sol:10"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "allDonations",
+              "type": "t_array(t_struct(Donation)277_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:19"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "userDonations",
+              "type": "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)",
+              "src": "contracts\\charityDonation.sol:20"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "totalDonations",
+              "type": "t_uint256",
+              "src": "contracts\\charityDonation.sol:21"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)225": {
+              "label": "contract IERC20"
+            },
+            "t_contract(Groth16Verifier)695": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_array(t_struct(Donation)277_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)277_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            },
+            "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)": {
+              "label": "mapping(address => struct CharityDonation.Donation[])"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "withoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "linkedWithoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[2])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:8",
+        "version": {
+          "withMetadata": "0fff9f3fb3facaed3a28d9faf1dda94a9116e9d192af95d64b34e6acb1537178",
+          "withoutMetadata": "0fff9f3fb3facaed3a28d9faf1dda94a9116e9d192af95d64b34e6acb1537178",
+          "linkedWithoutMetadata": "0fff9f3fb3facaed3a28d9faf1dda94a9116e9d192af95d64b34e6acb1537178"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address)",
+          "donate(uint256,uint256[2],uint256[2][2],uint256[2],uint256[2])",
+          "withdraw(uint256)",
+          "getContractBalance()",
+          "setCharity(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "usdcToken",
+              "type": "t_contract(IERC20)225",
+              "src": "contracts\\charityDonation.sol:9"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charity",
+              "type": "t_address",
+              "src": "contracts\\charityDonation.sol:10"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)638",
+              "src": "contracts\\charityDonation.sol:11"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)",
+              "src": "contracts\\charityDonation.sol:19"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "totalDonations",
+              "type": "t_uint256",
+              "src": "contracts\\charityDonation.sol:20"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)225": {
+              "label": "contract IERC20"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_contract(Groth16Verifier)638": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)": {
+              "label": "mapping(address => struct CharityDonation.Donation[])"
+            },
+            "t_array(t_struct(Donation)277_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)277_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                }
+              ]
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "withoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "linkedWithoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[2])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:8",
+        "version": {
+          "withMetadata": "1b575698970cbcb6cf97f5945c7ce0d27a096a6ec62eb3b1484bb32d914b957c",
+          "withoutMetadata": "1b575698970cbcb6cf97f5945c7ce0d27a096a6ec62eb3b1484bb32d914b957c",
+          "linkedWithoutMetadata": "1b575698970cbcb6cf97f5945c7ce0d27a096a6ec62eb3b1484bb32d914b957c"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address)",
+          "donate(uint256,uint256[2],uint256[2][2],uint256[2],uint256[2])",
+          "withdraw(uint256)",
+          "getContractBalance()",
+          "setCharity(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "usdcToken",
+              "type": "t_contract(IERC20)225",
+              "src": "contracts\\charityDonation.sol:9"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charity",
+              "type": "t_address",
+              "src": "contracts\\charityDonation.sol:10"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)639",
+              "src": "contracts\\charityDonation.sol:11"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)",
+              "src": "contracts\\charityDonation.sol:19"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "totalDonations",
+              "type": "t_uint256",
+              "src": "contracts\\charityDonation.sol:20"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)225": {
+              "label": "contract IERC20"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_contract(Groth16Verifier)639": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)": {
+              "label": "mapping(address => struct CharityDonation.Donation[])"
+            },
+            "t_array(t_struct(Donation)277_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)277_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                }
+              ]
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "withoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107",
+          "linkedWithoutMetadata": "e89a366ff04c2414aa73d3f1c9ef133b873aaad08fd5beccb88aab3fa554c107"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[2])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/access/Ownable.sol:Ownable": {
+        "src": "@openzeppelin\\contracts\\access\\Ownable.sol:20",
+        "inherit": [
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "owner()",
+          "renounceOwnership()",
+          "transferOwnership(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "Ownable",
+            "src": "@openzeppelin\\contracts\\access\\Ownable.sol:38"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "Ownable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts\\access\\Ownable.sol:21"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "@openzeppelin/contracts/utils/Context.sol:Context": {
+        "src": "@openzeppelin\\contracts\\utils\\Context.sol:16",
+        "inherit": [],
+        "libraries": [],
+        "methods": [],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:8",
+        "version": {
+          "withMetadata": "a81512af116f695785cb554aae80003a4ad063b1302edbe4a6f58e2819934746",
+          "withoutMetadata": "a81512af116f695785cb554aae80003a4ad063b1302edbe4a6f58e2819934746",
+          "linkedWithoutMetadata": "a81512af116f695785cb554aae80003a4ad063b1302edbe4a6f58e2819934746"
+        },
+        "inherit": [
+          "@openzeppelin/contracts/access/Ownable.sol:Ownable",
+          "@openzeppelin/contracts/utils/Context.sol:Context"
+        ],
+        "libraries": [],
+        "methods": [
+          "(address,address,address)",
+          "donate(uint256,uint256[2],uint256[2][2],uint256[2],uint256[1])",
+          "withdraw(uint256)",
+          "getContractBalance()",
+          "setCharity(address)"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "usdcToken",
+              "type": "t_contract(IERC20)225",
+              "src": "contracts\\charityDonation.sol:9"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charity",
+              "type": "t_address",
+              "src": "contracts\\charityDonation.sol:10"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_contract(Groth16Verifier)627",
+              "src": "contracts\\charityDonation.sol:11"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)",
+              "src": "contracts\\charityDonation.sol:19"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "totalDonations",
+              "type": "t_uint256",
+              "src": "contracts\\charityDonation.sol:20"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)225": {
+              "label": "contract IERC20"
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_contract(Groth16Verifier)627": {
+              "label": "contract Groth16Verifier"
+            },
+            "t_mapping(t_address,t_array(t_struct(Donation)277_storage)dyn_storage)": {
+              "label": "mapping(address => struct CharityDonation.Donation[])"
+            },
+            "t_array(t_struct(Donation)277_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)277_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "commitment",
+                  "type": "t_bytes32"
+                }
+              ]
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_bytes32": {
+              "label": "bytes32"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "218f2abedb4a620c1cb81ec4b19ebd284acf7bbdec071086a89c5604d9b902eb",
+          "withoutMetadata": "218f2abedb4a620c1cb81ec4b19ebd284acf7bbdec071086a89c5604d9b902eb",
+          "linkedWithoutMetadata": "218f2abedb4a620c1cb81ec4b19ebd284acf7bbdec071086a89c5604d9b902eb"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[1])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:13",
+        "version": {
+          "withMetadata": "30bf5b0c86621fd69b09ef0f8a7832e5bf0111f42a19626f863f9868444b16ae",
+          "withoutMetadata": "30bf5b0c86621fd69b09ef0f8a7832e5bf0111f42a19626f863f9868444b16ae",
+          "linkedWithoutMetadata": "30bf5b0c86621fd69b09ef0f8a7832e5bf0111f42a19626f863f9868444b16ae"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "donate(address,uint256,bytes32[2],bytes32[2][2],bytes32[2],uint256[])",
+          "withdraw(uint256)",
+          "getBalance()",
+          "()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:29"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "owner",
+              "type": "t_address",
+              "src": "contracts\\charityDonation.sol:14"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "verifier",
+              "type": "t_contract(IVerifier)24",
+              "src": "contracts\\charityDonation.sol:15"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "balances",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\charityDonation.sol:18"
+            }
+          ],
+          "types": {
+            "t_address": {
+              "label": "address"
+            },
+            "t_contract(IVerifier)24": {
+              "label": "contract IVerifier"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:IVerifier": {
+        "src": "contracts\\charityDonation.sol:4",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(bytes32[2],bytes32[2][2],bytes32[2],uint256[])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:10",
+        "version": {
+          "withMetadata": "5f112e768662560d4a3673cebadf2a8aa3e33ed7fb5893fd1f30701afe7659bd",
+          "withoutMetadata": "5f112e768662560d4a3673cebadf2a8aa3e33ed7fb5893fd1f30701afe7659bd",
+          "linkedWithoutMetadata": "5f112e768662560d4a3673cebadf2a8aa3e33ed7fb5893fd1f30701afe7659bd"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "donate(address,uint256,uint256[2],uint256[2][2],uint256[2],uint256[3])",
+          "withdraw(uint256)",
+          "getDonationHistory()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:30"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)77",
+              "src": "contracts\\charityDonation.sol:18"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_array(t_struct(Donation)113_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:19"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityBalances",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\charityDonation.sol:20"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "verifier",
+              "type": "t_contract(IVerifier)104",
+              "src": "contracts\\charityDonation.sol:23"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)77": {
+              "label": "contract IERC20"
+            },
+            "t_array(t_struct(Donation)113_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)113_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "recipient",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_contract(IVerifier)104": {
+              "label": "contract IVerifier"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:IVerifier": {
+        "src": "contracts\\charityDonation.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:10",
+        "version": {
+          "withMetadata": "a1432a35048e09d876674f70b389318a5b3c8c644a0a01686f7adec293329b54",
+          "withoutMetadata": "a1432a35048e09d876674f70b389318a5b3c8c644a0a01686f7adec293329b54",
+          "linkedWithoutMetadata": "a1432a35048e09d876674f70b389318a5b3c8c644a0a01686f7adec293329b54"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "donate(address,uint256,uint256[2],uint256[2][2],uint256[2],uint256[3])",
+          "withdraw(uint256)",
+          "getDonationHistory()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:25"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)77",
+              "src": "contracts\\charityDonation.sol:18"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_array(t_struct(Donation)113_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:19"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityBalances",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\charityDonation.sol:20"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "verifier",
+              "type": "t_contract(IVerifier)104",
+              "src": "contracts\\charityDonation.sol:23"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)77": {
+              "label": "contract IERC20"
+            },
+            "t_array(t_struct(Donation)113_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)113_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "recipient",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            },
+            "t_contract(IVerifier)104": {
+              "label": "contract IVerifier"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:IVerifier": {
+        "src": "contracts\\charityDonation.sol:6",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:6",
+        "version": {
+          "withMetadata": "fbbd3dafcdf6687303514539484df014c266b5ca567657bd9205d6a446c24882",
+          "withoutMetadata": "fbbd3dafcdf6687303514539484df014c266b5ca567657bd9205d6a446c24882",
+          "linkedWithoutMetadata": "fbbd3dafcdf6687303514539484df014c266b5ca567657bd9205d6a446c24882"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "donate(address,uint256,bytes32)",
+          "withdraw(uint256)",
+          "getDonationHistory()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:21"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)77",
+              "src": "contracts\\charityDonation.sol:14"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_array(t_struct(Donation)89_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:15"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityBalances",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\charityDonation.sol:16"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_address",
+              "src": "contracts\\charityDonation.sol:19"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)77": {
+              "label": "contract IERC20"
+            },
+            "t_array(t_struct(Donation)89_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)89_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "recipient",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:6",
+        "version": {
+          "withMetadata": "a04996f2930cad01047977ff0b8265c8f82c9520cf117bf7465674bc5e754d06",
+          "withoutMetadata": "a04996f2930cad01047977ff0b8265c8f82c9520cf117bf7465674bc5e754d06",
+          "linkedWithoutMetadata": "a04996f2930cad01047977ff0b8265c8f82c9520cf117bf7465674bc5e754d06"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address,address)",
+          "donate(address,uint256,bytes32)",
+          "withdraw(uint256)",
+          "getDonationHistory()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:21"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)77",
+              "src": "contracts\\charityDonation.sol:14"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_array(t_struct(Donation)89_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:15"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityBalances",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\charityDonation.sol:16"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "zkVerifier",
+              "type": "t_address",
+              "src": "contracts\\charityDonation.sol:19"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)77": {
+              "label": "contract IERC20"
+            },
+            "t_array(t_struct(Donation)89_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)89_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "recipient",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:6",
+        "version": {
+          "withMetadata": "9dc6326e2d3b499e8e6d405007f795e57fdffab0370d263b11c4b8371461c8bc",
+          "withoutMetadata": "9dc6326e2d3b499e8e6d405007f795e57fdffab0370d263b11c4b8371461c8bc",
+          "linkedWithoutMetadata": "9dc6326e2d3b499e8e6d405007f795e57fdffab0370d263b11c4b8371461c8bc"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "donate(address,uint256)",
+          "withdraw(uint256)",
+          "getDonationHistory()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:18"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)77",
+              "src": "contracts\\charityDonation.sol:14"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_array(t_struct(Donation)89_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:15"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityBalances",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\charityDonation.sol:16"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)77": {
+              "label": "contract IERC20"
+            },
+            "t_array(t_struct(Donation)89_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)89_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "recipient",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "93b14f0a7c14a622a3083d99304ad35a9598c3e99ddbe2024ef1841eeb274b07",
+          "withoutMetadata": "93b14f0a7c14a622a3083d99304ad35a9598c3e99ddbe2024ef1841eeb274b07",
+          "linkedWithoutMetadata": "93b14f0a7c14a622a3083d99304ad35a9598c3e99ddbe2024ef1841eeb274b07"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[3])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "contracts/verifier.sol:Groth16Verifier": {
+        "src": "contracts\\verifier.sol:23",
+        "version": {
+          "withMetadata": "57de2284caaeac34e804beddec58e3b6ca0ad67edec5fd665b97eec8257cf8ce",
+          "withoutMetadata": "57de2284caaeac34e804beddec58e3b6ca0ad67edec5fd665b97eec8257cf8ce",
+          "linkedWithoutMetadata": "57de2284caaeac34e804beddec58e3b6ca0ad67edec5fd665b97eec8257cf8ce"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "verifyProof(uint256[2],uint256[2][2],uint256[2],uint256[2])"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    },
+    {
+      "@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20": {
+        "src": "@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol:9",
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "totalSupply()",
+          "balanceOf(address)",
+          "transfer(address,uint256)",
+          "allowance(address,address)",
+          "approve(address,uint256)",
+          "transferFrom(address,address,uint256)"
+        ],
+        "linkReferences": [],
+        "errors": [],
+        "layout": {
+          "storage": [],
+          "types": {},
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      },
+      "contracts/charityDonation.sol:CharityDonation": {
+        "src": "contracts\\charityDonation.sol:6",
+        "version": {
+          "withMetadata": "caf540de9a9084264cdc86e453293b05cca77f37fbb12127334f4be9cf4d2fed",
+          "withoutMetadata": "caf540de9a9084264cdc86e453293b05cca77f37fbb12127334f4be9cf4d2fed",
+          "linkedWithoutMetadata": "caf540de9a9084264cdc86e453293b05cca77f37fbb12127334f4be9cf4d2fed"
+        },
+        "inherit": [],
+        "libraries": [],
+        "methods": [
+          "(address)",
+          "donate(address,uint256)",
+          "withdraw(uint256)",
+          "getDonationHistory()"
+        ],
+        "linkReferences": [],
+        "errors": [
+          {
+            "kind": "constructor",
+            "contract": "CharityDonation",
+            "src": "contracts\\charityDonation.sol:18"
+          }
+        ],
+        "layout": {
+          "storage": [
+            {
+              "contract": "CharityDonation",
+              "label": "stablecoin",
+              "type": "t_contract(IERC20)77",
+              "src": "contracts\\charityDonation.sol:14"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "donations",
+              "type": "t_array(t_struct(Donation)89_storage)dyn_storage",
+              "src": "contracts\\charityDonation.sol:15"
+            },
+            {
+              "contract": "CharityDonation",
+              "label": "charityBalances",
+              "type": "t_mapping(t_address,t_uint256)",
+              "src": "contracts\\charityDonation.sol:16"
+            }
+          ],
+          "types": {
+            "t_contract(IERC20)77": {
+              "label": "contract IERC20"
+            },
+            "t_array(t_struct(Donation)89_storage)dyn_storage": {
+              "label": "struct CharityDonation.Donation[]"
+            },
+            "t_struct(Donation)89_storage": {
+              "label": "struct CharityDonation.Donation",
+              "members": [
+                {
+                  "label": "donor",
+                  "type": "t_address"
+                },
+                {
+                  "label": "recipient",
+                  "type": "t_address"
+                },
+                {
+                  "label": "amount",
+                  "type": "t_uint256"
+                },
+                {
+                  "label": "timestamp",
+                  "type": "t_uint256"
+                }
+              ]
+            },
+            "t_address": {
+              "label": "address"
+            },
+            "t_uint256": {
+              "label": "uint256"
+            },
+            "t_mapping(t_address,t_uint256)": {
+              "label": "mapping(address => uint256)"
+            }
+          },
+          "layoutVersion": "1.2",
+          "flat": false,
+          "namespaces": {}
+        },
+        "solcVersion": "0.8.20"
+      }
+    }
+  ]
+}

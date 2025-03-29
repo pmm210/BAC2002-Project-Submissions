@@ -1,0 +1,6 @@
+1,4,0,main.name_hash
+2,5,0,main.email_hash
+3,6,0,main.amount
+4,1,0,main.public_name_hash
+5,2,0,main.public_email_hash
+6,3,0,main.public_amount

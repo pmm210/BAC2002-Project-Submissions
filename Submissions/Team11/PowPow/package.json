@@ -1,0 +1,26 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@matterlabs/hardhat-zksync": "^1.4.0",
+    "@matterlabs/hardhat-zksync-deploy": "^1.6.0",
+    "@matterlabs/hardhat-zksync-solc": "^1.2.6",
+    "@matterlabs/zksync-contracts": "^1.0.0-beta.4",
+    "dotenv": "^16.4.7",
+    "ethers": "^6.12.2",
+    "hardhat": "^2.22.19",
+    "zksync-web3": "^0.15.5"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.2.0",
+    "snarkjs": "^0.7.5"
+  }
+}

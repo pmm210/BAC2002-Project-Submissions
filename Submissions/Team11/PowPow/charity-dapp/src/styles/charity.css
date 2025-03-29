@@ -1,0 +1,106 @@
+@import './base.css';
+
+.charity-container {
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+.charity-card {
+max-width: 960px;
+margin: 0 auto;
+background: rgba(255, 255, 255, 0.95);
+padding: 2rem;
+border-radius: 12px;
+box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.charity-tabs {
+display: flex;
+gap: 10px;
+margin-bottom: 20px;
+}
+
+.charity-tab-button {
+padding: 10px 20px;
+border: 1px solid transparent;
+border-bottom: 2px solid #ccc;
+border-radius: 8px 8px 0 0;
+cursor: pointer;
+transition: all 0.3s;
+background: #DCEEF8;
+color: #000004;
+}
+
+.charity-tab-button.active {
+background: #05668D;
+color: #fff;
+border-bottom: none;
+}
+
+.charity-balance-box {
+padding: 15px;
+border: 1px solid #ddd;
+border-radius: 5px;
+}
+
+.charity-balance-label {
+color: #427AA1;
+font-weight: bold;
+}
+
+.charity-form-input {
+display: block;
+margin: 10px 0;
+padding: 10px;
+width: 100%;
+max-width: 400px;
+border-radius: 6px;
+border: 1px solid #ccc;
+font-size: 1rem;
+background: #fff;
+color: #000004;
+}
+
+.charity-error {
+color: #A63446;
+margin-top: -8px;
+}
+
+.charity-status {
+margin-top: 16px;
+padding: 10px 15px;
+border-radius: 6px;
+border: 1px solid;
+max-width: 500px;
+}
+
+.charity-status.success {
+background: #d4edda;
+color: #155724;
+border-color: #c3e6cb;
+}
+
+.charity-status.error {
+background: #f8d7da;
+color: #721c24;
+border-color: #f5c6cb;
+}
+
+
+.btn-buttons {
+background-color: #05668D !important;
+color: #ffffff!important;
+border: 1.5px solid #ffffff !important;
+border-radius: 1rem;
+transition: all 0.3s ease;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.btn-buttons:hover {
+background-color: rgba(234, 246, 253, 0.884);
+color: #034D6A;
+border-color: #034D6A;
+transform: translateY(-2px);
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}

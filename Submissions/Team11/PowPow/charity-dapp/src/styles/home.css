@@ -1,0 +1,68 @@
+@import './base.css';
+
+.quote-box {
+    max-width: 800px;
+    margin: 0 auto;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  
+.soft-card {
+background-color: rgb(212, 240, 255) !important;
+border: none !important;
+border-radius: 1rem !important;
+transition: all 0.3s ease;
+box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+
+.soft-card:hover {
+transform: translateY(-5px);
+background-color: rgb(255, 255, 255) !important;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.accordion-button {
+background-color: rgba(193, 226, 243, 0.664) !important;
+border-radius: 1rem !important;
+transition: all 0.3s ease;
+font-weight: 600;
+color: #000;
+box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+margin-bottom: 0.5rem;
+}
+
+.accordion-button:not(.collapsed) {
+background-color: rgba(234, 246, 253, 0.884) !important;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.accordion-item {
+border: none;
+border-radius: 1rem !important;
+overflow: hidden;
+background-color: transparent;
+}
+
+.accordion-body {
+background-color: rgba(234, 246, 253, 0.884);
+border-radius: 0 0 1rem 1rem;
+padding: 1rem 1.25rem;
+}
+
+.btn-softblue {
+background-color: rgba(255, 255, 255, 0.964)!important;
+color: #05668D;
+border: 1.5px solid #ffffff!important;
+border-radius: 1rem;
+transition: all 0.3s ease;
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.btn-softblue:hover {
+background-color: rgba(234, 246, 253, 0.884); 
+color: #034D6A;
+border-color: #034D6A;
+transform: translateY(-2px);
+box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
