@@ -1,3 +1,6 @@
 [submodule "Submissions/Team6/submission"]
 	path = Submissions/Team6/submission
 	url = https://github.com/Foxon31/BAC2002-Lending-Platform
+[submodule "Submissions/Team6/lending-platform"]
+	path = Submissions/Team6/lending-platform
+	url = https://github.com/Foxon31/BAC2002-Lending-Platform
