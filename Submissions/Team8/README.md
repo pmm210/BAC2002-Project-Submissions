@@ -304,13 +304,3 @@ private-prism/
 ## Demo Video
 
 [Click here to view our project demo](https://drive.google.com/file/d/1TQHROwl6HSpLi5sgx_UnrKbU4yx4JtDg/view)
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Hyperledger Fabric Community
-- TensorFlow Federated Team
-- Financial institutions participating in the prototype
