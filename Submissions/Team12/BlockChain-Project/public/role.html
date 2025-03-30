@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hyperledger Fabric Claims Dashboard Role</title>
+    <link rel="stylesheet" href="role.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <h1><b>Blockchain-Powered Financial Operations Auditing System</b></h1>
+    </header>
+
+  <h1>Select Your Role</h1>
+
+  <select id="userRole">
+    <option value="">-- Choose Role --</option>
+    <option value="company">Company</option>
+    <option value="auditor">Auditor</option>
+    <option value="regulator">Regulator</option>
+  </select>
+  <br>
+  <button onclick="goToDashboard()">Continue</button>
+
+  <script>
+    function goToDashboard() {
+      const role = document.getElementById('userRole').value;
+      if (!role) {
+        alert('Please select a role');
+        return;
+      }
+      sessionStorage.setItem('userRole', role);
+      window.location.href = 'dashboard.html'; // your main dashboard page
+    }
+  </script>
+
+</body>
+</html>

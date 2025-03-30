@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Hyperledger Fabric Claims Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1><b>Blockchain-Powered Financial Operations Auditing System</b></h1>
+        <button onclick="goBackToRole()" class="back-btn">Back to Role Select</button>
+    </header>
+
+    <main>
+        <h2>Claims Dashboard</h2>
+        <p id="roleStatus" style="margin-left: 10px; font-weight: bold;"></p>
+
+        <!-- Company: Submit Form -->
+        <div id="companyView" style="display: none;">
+            <h3>Submit a New Claim</h3>
+            <form id="claimForm">
+                <label for="claimId"><b>Claim ID:</b></label>
+                <input type="text" id="claimId" required placeholder="Enter claim ID" />
+
+                <label for="description"><b>Description:</b></label>
+                <input type="text" id="description" required placeholder="Enter description" />
+
+                <label for="amount"><b>Amount:</b></label>
+                <input type="number" id="amount" required placeholder="Enter amount" />
+
+                <button type="submit">Submit Claim</button>
+            </form>
+        </div>
+
+        <!-- Auditor: Summary and Edit -->
+        <div id="auditorView" style="display: none;">
+            <h3>Auditor Tools</h3>
+            <label for="summaryYear"><b>Select Year for Summary:</b></label>
+            <input type="text" id="summaryYear" placeholder="e.g., 2025" />
+            <button onclick="fetchSummary()">Get Summary</button>
+            <div id="summaryContainer" style="margin: 10px;">
+                <p><b>Total Transactions:</b> <span id="totalCount">0</span></p>
+                <p><b>Total Claimed Amount:</b> $<span id="totalAmount">0.00</span></p>
+            </div>
+
+            <div class="edit-claims-container">
+                <label for="selectClaimToEdit"><b>Select Claim to Edit:</b></label>
+                <select id="selectClaimToEdit">
+                    <option value="">-- Select a Claim ID --</option>
+                </select>
+                <button id="editClaimButton" class="edit-claim-btn">Edit Claim</button>
+            </div>
+        </div>
+
+        <!-- Regulator: View Only -->
+        <div id="regulatorView" style="display: none;">
+            <h3>Regulator View</h3>
+            <p>View all claims below (read-only).</p>
+        </div>
+
+        <!-- Claims Table -->
+        <h2>Existing Claims</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Claim ID</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Flagged</th>
+                    <th>Submitted By</th>
+                    <th>Timestamp</th>
+                    <th>Modify</th>
+                </tr>
+            </thead>
+            <tbody id="claimsTableBody"></tbody>
+        </table>
+
+        <!-- Edit Modal -->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h2>Edit Claim</h2>
+                <form id="editClaimForm">
+                    <label for="editClaimId">Claim ID:</label>
+                    <input type="text" id="editClaimId" disabled />
+
+                    <label for="editDescription">Description:</label>
+                    <input type="text" id="editDescription" disabled />
+
+                    <label for="editAmount">Amount:</label>
+                    <input type="number" id="editAmount" disabled />
+
+                    <label for="editStatus">Status:</label>
+                    <select id="editStatus">
+                        <option value="Submitted">Submitted</option>
+                        <option value="Under Review">Under Review</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+
+                    <label for="editFlagged">Flagged:</label>
+                    <input type="checkbox" id="editFlagged" />
+
+                    <button type="submit">Update Claim</button>
+                    <button type="button" id="closeModal" class="close-btn">Close</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Blockchain-Powered Financial Operations Auditing System. All rights reserved.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
