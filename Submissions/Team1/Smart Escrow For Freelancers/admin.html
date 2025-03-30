@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dispute Resolution - Admin Panel</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/bootsnav.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="session.js"></script>
+
+    <!-- Web3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.2/web3.min.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <section class="top-area">
+      <div class="header-area">
+        <nav class="navbar navbar-default bootsnav navbar-scrollspy">
+          <div class="container">
+            <div class="navbar-header">
+              <button
+                type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+                data-target="#navbar-menu"
+              >
+                <i class="fa fa-bars"></i>
+              </button>
+              <a class="navbar-brand" href="index.html"
+                >Smart<span>Escrow</span></a
+              >
+            </div>
+            <div
+              class="collapse navbar-collapse menu-ui-design"
+              id="navbar-menu"
+            >
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="index.html">Home</a></li>
+                <li id="userNav" class="dropdown">
+                  <a
+                    href="#"
+                    id="userDropdown"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                    >Login</a
+                  >
+                  <ul class="dropdown-menu" id="userDropdownMenu">
+                    <li><a href="#" id="logoutBtn">Logout</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="clearfix"></div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+      <h2 class="text-center">Admin Panel: Resolve Disputes</h2>
+      <div id="disputeTableContainer" class="table-responsive mt-4">
+        <table class="table table-bordered" id="disputeTable">
+          <thead>
+            <tr>
+              <th>Transaction ID</th>
+              <th>Client</th>
+              <th>Freelancer</th>
+              <th>Current Milestone</th>
+              <th>Total Amount (ETH)</th>
+              <th>Reason</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Dynamic content -->
+          </tbody>
+        </table>
+      </div>
+      <div
+        id="notOwnerMessage"
+        class="alert alert-danger text-center"
+        style="display: none"
+      >
+        ❌ You are not authorized to view this page.
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+    <script src="assets/js/app.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        const sessionRes = await fetch("http://localhost:5000/auth/session", {
+          credentials: "include",
+        });
+        const sessionData = await sessionRes.json();
+
+        if (!sessionData.loggedIn || sessionData.role !== "owner") {
+          document.getElementById("notOwnerMessage").style.display = "block";
+          document.getElementById("disputeTableContainer").style.display =
+            "none";
+          return;
+        }
+
+        await smartEscrowApp.init(() => {
+          loadDisputes();
+        });
+      });
+
+      async function loadDisputes() {
+        const count = await smartEscrowApp.instance.methods
+          .transactionCount()
+          .call();
+        const tbody = document.querySelector("#disputeTable tbody");
+        tbody.innerHTML = "";
+
+        // Fetch all dispute reasons from backend
+        const reasonsRes = await fetch("http://localhost:5000/disputes");
+        const reasonsData = await reasonsRes.json();
+
+        for (let i = 0; i < count; i++) {
+          const txn = await smartEscrowApp.instance.methods
+            .getTransaction(i)
+            .call();
+          if (txn.disputed && !txn.completed) {
+            const reason = reasonsData[i]?.reason || "Not available";
+
+            const row = document.createElement("tr");
+            const reasonRes = await fetch(
+              `http://localhost:5000/dispute/${i}`,
+              {
+                credentials: "include",
+              }
+            );
+
+            let reasonText = "Not provided";
+            if (reasonRes.ok) {
+              const disputeData = await reasonRes.json();
+              reasonText = disputeData.reason || "Not provided";
+            }
+
+            row.innerHTML = `
+              <td>${i}</td>
+              <td>${txn.client}</td>
+              <td>${txn.freelancer}</td>
+              <td>${txn.currentMilestone}</td>
+              <td>${Web3.utils.fromWei(txn.totalAmount, "ether")}</td>
+              <td>${reasonText}</td>
+              <td>
+                <button class="btn btn-success btn-sm" onclick="resolveDispute(${i}, true)">✅ Freelancer Wins</button>
+                <button class="btn btn-danger btn-sm" onclick="resolveDispute(${i}, false)">❌ Client Wins</button>
+              </td>
+            `;
+
+            tbody.appendChild(row);
+          }
+        }
+      }
+
+      async function resolveDispute(transactionId, freelancerWins) {
+        try {
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+
+          const receipt = await smartEscrowApp.instance.methods
+            .resolveDispute(transactionId, freelancerWins)
+            .send({
+              from: accounts[0],
+              gas: 300000,
+              gasPrice: await smartEscrowApp.web3.eth.getGasPrice(),
+            });
+
+          alert("✅ Dispute resolved!");
+
+          // 🔥 Delete dispute reason from server
+          await fetch(`http://localhost:5000/dispute/${transactionId}`, {
+            method: "DELETE",
+            credentials: "include",
+          });
+
+          loadDisputes();
+        } catch (err) {
+          console.error("❌ Error resolving dispute:", err);
+          alert("❌ Failed to resolve dispute.");
+        }
+      }
+    </script>
+  </body>
+</html>

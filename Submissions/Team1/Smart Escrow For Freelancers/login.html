@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Site Title -->
+    <title>SmartEscrow - Login</title>
+
+    <!-- Custom Theme's CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!-- If you use Bootsnav or other CSS, include them here -->
+    <link rel="stylesheet" href="assets/css/bootsnav.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+    <!-- Font Awesome (optional, for social icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+
+    <script src="session.js"></script>
+  </head>
+  <style>
+    .welcome-hero .single-how-works:hover p {
+      color: #767f86 !important;
+    }
+  </style>
+
+  <body>
+    <!-- =========================
+         TOP AREA / NAVBAR
+    ========================== -->
+    <section class="top-area">
+      <div class="header-area">
+        <nav
+          class="navbar navbar-default bootsnav navbar-scrollspy"
+          data-minus-value-desktop="70"
+          data-minus-value-mobile="55"
+          data-speed="1000"
+        >
+          <div class="container">
+            <!-- Start Header Navigation -->
+            <div class="navbar-header">
+              <button
+                type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+                data-target="#navbar-menu"
+              >
+                <i class="fa fa-bars"></i>
+              </button>
+              <a class="navbar-brand" href="index.html"
+                >Smart<span>Escrow</span></a
+              >
+            </div>
+            <!-- End Header Navigation -->
+
+            <!-- Collect the nav links -->
+            <div
+              class="collapse navbar-collapse menu-ui-design"
+              id="navbar-menu"
+            >
+              <ul
+                class="nav navbar-nav navbar-right"
+                data-in="fadeInDown"
+                data-out="fadeOutUp"
+              >
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#works">How it works</a></li>
+                <li><a href="index.html#explore">Explore</a></li>
+                <li><a href="index.html#reviews">Reviews</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <!-- Current page -->
+                <li class="active"><a href="login.html">Login</a></li>
+              </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+          </div>
+          <!--/.container-->
+        </nav>
+        <!-- End Navigation -->
+      </div>
+      <div class="clearfix"></div>
+    </section>
+    <!-- /TOP AREA -->
+
+    <!-- LOGIN SECTION -->
+    <section class="welcome-hero" style="height: auto; min-height: 100vh">
+      <div
+        class="container"
+        style="padding-top: 100px; padding-bottom: 100px; max-width: 600px"
+      >
+        <div class="row justify-content-center">
+          <div>
+            <div
+              class="single-how-works"
+              style="box-shadow: none; padding: 20px; background: #fff"
+            >
+              <h2 style="margin-bottom: 20px">Login with MetaMask</h2>
+
+              <!-- Connect Button -->
+              <button
+                id="connectWalletBtn"
+                type="button"
+                class="welcome-hero-btn how-work-btn"
+                style="
+                  background: #ff545a;
+                  color: #fff;
+                  width: 100%;
+                  margin-bottom: 10px;
+                "
+              >
+                Connect MetaMask
+              </button>
+
+              <p style="text-align: center; margin-top: 15px">
+                Don't have a MetaMask wallet?
+                <a
+                  href="https://metamask.io/download/"
+                  target="_blank"
+                  style="color: #f43032; text-decoration: none"
+                >
+                  Download it here
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JS -->
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+    <script src="assets/js/custom.js"></script>
+
+    <!-- Web3/MetaMask Script -->
+    <script>
+      async function loginWithMetaMask() {
+        if (!window.ethereum) {
+          alert("❌ MetaMask is not installed. Please install it.");
+          return;
+        }
+
+        try {
+          // ✅ Request user to connect wallet
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          if (!accounts || accounts.length === 0) {
+            alert("❌ No MetaMask account found. Please connect your wallet.");
+            return;
+          }
+
+          const userAddress = accounts[0];
+          console.log("✅ User address:", userAddress);
+
+          // ✅ Fetch nonce from backend
+          const nonceResponse = await fetch(
+            "http://localhost:5000/auth/nonce",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include", // ✅ Important for session
+              body: JSON.stringify({ address: userAddress }),
+            }
+          );
+
+          if (!nonceResponse.ok) {
+            console.error("❌ Server Error:", await nonceResponse.text());
+            alert("Server error! Please check the backend.");
+            return;
+          }
+
+          const nonceData = await nonceResponse.json();
+          const nonce = nonceData.nonce;
+
+          // ✅ Request user to sign the nonce
+          const signature = await window.ethereum.request({
+            method: "personal_sign",
+            params: [nonce, userAddress],
+          });
+
+          // ✅ Send signature to backend for verification
+          const verifyResponse = await fetch(
+            "http://localhost:5000/auth/verify",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({
+                address: userAddress,
+                signature,
+                role: "",
+              }),
+            }
+          );
+
+          if (!verifyResponse.ok) {
+            alert("❌ Signature verification failed!");
+            return;
+          }
+
+          const verifyData = await verifyResponse.json();
+          console.log("✅ User Authenticated:", verifyData);
+
+          alert("✅ Login Successful!");
+
+          if (verifyData.role === "owner") {
+            window.location.href = "admin.html";
+          } else if (verifyData.role === "freelancer") {
+            window.location.href = "milestone.html";
+          } else {
+            window.location.href = "index.html"; // Default fallback
+          }
+        } catch (err) {
+          console.error("❌ Login error:", err);
+          alert(
+            "❌ Error connecting to the backend. Make sure the server is running."
+          );
+        }
+      }
+
+      // Attach the function to Connect Wallet button
+      document
+        .getElementById("connectWalletBtn")
+        .addEventListener("click", loginWithMetaMask);
+    </script>
+
+    <!-- ✅ Load jQuery FIRST -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- ✅ Load Slick CSS -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
+    />
+
+    <!-- ✅ Load Slick JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+    <!-- ✅ Load Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- ✅ Load CounterUp & Waypoints -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+
+    <!-- ✅ Load Bootstrap & Other Dependencies -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- ✅ Load Custom Script LAST -->
+    <script src="assets/js/custom.js"></script>
+  </body>
+</html>

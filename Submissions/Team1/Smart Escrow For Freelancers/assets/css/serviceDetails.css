@@ -1,0 +1,283 @@
+/* Service Details Page - Fiverr Style */
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Service Details Container */
+.service-details {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+/* Left Side - Service Information */
+.service-content {
+    width: 58%;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.service-content:hover {
+    transform: translateY(-5px); /* Subtle hover effect */
+}
+
+/* Service Header */
+.service-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.service-header .rating {
+    font-size: 16px;
+    color: #f39c12;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.service-header .rating a {
+    text-decoration: none;
+    color: #3C6E71;
+    font-weight: 600;
+    transition: 0.3s ease-in-out;
+}
+
+.service-header .rating a:hover {
+    color: #ff545a;
+}
+
+.service-header .price {
+    font-size: 22px;
+    font-weight: bold;
+    color: #3C6E71;
+    margin-top: 10px;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+/* Service Image */
+.service-image {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.service-image img {
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease-in-out;
+}
+
+.service-image img:hover {
+    transform: scale(1.02);
+}
+
+/* Service Info */
+.service-info {
+    margin-top: 30px;
+}
+
+.service-info h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #222;
+    border-left: 4px solid #ff545a;
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+
+.service-info p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    text-align: justify;
+}
+
+.service-info h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #222;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.service-info ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.service-info ul li {
+    font-size: 16px;
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 25px;
+    list-style: none;
+}
+
+.service-info ul li::before {
+    content: "✔";
+    color: #ff545a;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+
+/* Right Side - Pricing & Order Box */
+.sidebar {
+    width: 30%;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: fit-content;
+}
+
+/* Pricing Box */
+.pricing-box h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.pricing-box .price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff545a;
+    margin-top: 10px;
+}
+
+/* Order Button */
+.hire-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background: #ff545a;
+    color: #fff;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin-top: 20px;
+}
+
+.hire-btn:hover {
+    background: #f43032;
+}
+
+/* Reviews Section */
+.reviews {
+    width: 100%;
+    max-width: 1100px; /* Set max width */
+    margin: 40px auto; /* Center reviews */
+    padding: 20px; /* Add padding */
+}
+
+/* Reviews Header */
+.reviews h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #222;
+    text-align: center; /* Center title */
+}
+
+/* Individual Review Item */
+.review-item {
+    background: #f1f1f1;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.review-item p {
+    font-size: 16px;
+}
+
+/* About this Gig Section */
+.about-gig {
+    width: 100%;
+    max-width: 1100px; /* Same width as service and reviews */
+    margin: 40px auto; /* Centering the section */
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.about-gig h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #222;
+}
+
+.about-gig p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.about-gig .highlight {
+    color: #ff545a; /* Match your brand color */
+    font-weight: 600;
+}
+
+.about-gig h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.about-gig ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.about-gig ul li {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.about-gig .cta {
+    font-size: 18px;
+    font-weight: bold;
+    color: #222;
+    margin-top: 20px;
+}
+
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .service-details {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 992px) {
+    .service-details {
+        flex-direction: column;
+    }
+
+    .service-content, .sidebar {
+        width: 100%;
+    }
+}

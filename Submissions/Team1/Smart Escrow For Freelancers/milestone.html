@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SmartEscrow Milestone Progress</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/bootsnav.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+
+    <!-- Web3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.2/web3.min.js"></script>
+    <script src="session.js"></script>
+
+    <style>
+      .input-group {
+        width: 100%;
+      }
+      .input-group .form-control {
+        flex: 1;
+      }
+      .input-group .btn {
+        flex: 0 0 auto;
+        min-width: 150px;
+      }
+      .input-container {
+        margin-bottom: 20px;
+      }
+      .progress {
+        margin-top: 20px;
+        height: 25px;
+        border-radius: 10px;
+      }
+      .progress-bar {
+        font-weight: bold;
+        font-size: 14px;
+      }
+      .btn {
+        margin-top: 20px;
+      }
+      .container.mt-5,
+      .container.mt-4 {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navbar -->
+    <section class="top-area">
+      <div class="header-area">
+        <nav class="navbar navbar-default bootsnav navbar-scrollspy">
+          <div class="container">
+            <div class="navbar-header">
+              <button
+                type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+                data-target="#navbar-menu"
+              >
+                <i class="fa fa-bars"></i>
+              </button>
+              <a class="navbar-brand" href="index.html"
+                >Smart<span>Escrow</span></a
+              >
+            </div>
+            <div
+              class="collapse navbar-collapse menu-ui-design"
+              id="navbar-menu"
+            >
+              <ul class="nav navbar-nav navbar-right">
+                <li class="scroll active"><a href="#home">home</a></li>
+                <li class="scroll"><a href="#works">how it works</a></li>
+                <li class="scroll">
+                  <a href="#explore">explore freelancers</a>
+                </li>
+                <li class="scroll"><a href="#reviews">review</a></li>
+                <li class="scroll"><a href="#contact">contact</a></li>
+								<li><a href="milestone.html" class="loggedInToggles">check project</a></li>
+                <li id="userNav" class="dropdown">
+                  <a
+                    href="#"
+                    id="userDropdown"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                    >Login</a
+                  >
+                  <ul class="dropdown-menu" id="userDropdownMenu">
+                    <li><a href="#" id="logoutBtn" class="loggedInToggles">Logout</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="clearfix"></div>
+    </section>
+
+    <!-- Progress Section -->
+    <div class="container text-center">
+      <h2>Project Milestone Progress</h2>
+      <p>Enter a transaction ID to view progress:</p>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="input-group input-container">
+            <input
+              type="number"
+              id="transactionId"
+              class="form-control"
+              placeholder="Enter Transaction ID"
+            />
+            <button
+              class="btn btn-primary w-50"
+              onclick="smartEscrowApp.fetchMilestone()"
+            >
+              Check Progress
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div
+          id="progressBar"
+          class="progress-bar bg-success"
+          role="progressbar"
+          style="width: 0%"
+        >
+          0%
+        </div>
+      </div>
+
+      <p>
+        <strong>Current Milestone:</strong> <span id="milestoneText">0</span> /
+        3
+      </p>
+    </div>
+
+    <!-- Client Form -->
+    <div class="container mt-5">
+      <h3 class="text-center">Client Milestone Progress</h3>
+      <form id="retrieveForm" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="milestoneNumber">Milestone Number:</label>
+          <input
+            type="text"
+            id="milestoneNumber"
+            name="milestoneNumber"
+            class="form-control milestoneNumber"
+            value="-"
+            readonly
+          />
+        </div>
+
+        <input
+          type="hidden"
+          id="clientAddress"
+          name="clientAddress"
+          class="clientAddress"
+          value=""
+        />
+        <div class="form-group">
+          <label for="decryptionKey">Secret Passphrase:</label>
+          <input
+            type="text"
+            id="decryptionKey"
+            name="decryptionKey"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="disputeStatus">Status of Dispute:</label>
+          <input
+            type="text"
+            id="disputeStatus"
+            name="disputeStatus"
+            class="form-control"
+            value="No Dispute"
+            readonly
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Retrieve File</button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          onclick="handleRaiseDispute()"
+        >
+          Raise Dispute
+        </button>
+      </form>
+      <div id="result"></div>
+    </div>
+
+    <!-- Freelancer Form -->
+    <div class="container mt-4">
+      <h3 class="text-center">Freelancer Work Submission</h3>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="milestoneNumber">Milestone Number:</label>
+          <input
+            type="text"
+            id="milestoneNumber"
+            name="milestoneNumber"
+            class="form-control milestoneNumber"
+            value="-"
+            readonly
+          />
+        </div>
+
+        <input
+          type="hidden"
+          id="clientAddress"
+          name="clientAddress"
+          class="clientAddress"
+          value=""
+        />
+        <div class="form-group">
+          <label for="deliverable">Select File:</label>
+          <input
+            type="file"
+            id="deliverable"
+            name="deliverable"
+            class="form-control-file"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="encryptionKey">Secret Passphrase:</label>
+          <input
+            type="text"
+            id="encryptionKey"
+            name="encryptionKey"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="disputeStatus">Status of Dispute:</label>
+          <input
+            type="text"
+            id="disputeStatus"
+            name="disputeStatus"
+            class="form-control"
+            value="No Dispute"
+            readonly
+          />
+        </div>
+
+        <button type="submit" class="btn btn-success">Upload & Encrypt</button>
+      </form>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootsnav.js"></script>
+    <script src="assets/js/custom.js"></script>
+    <script src="assets/js/app.js"></script>
+
+    <script>
+      document
+        .getElementById("retrieveForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const transactionId = document.getElementById("transactionId").value;
+
+          const formData = new FormData(this);
+
+          try {
+            const response = await fetch("retrieve.php", {
+              method: "POST",
+              body: formData,
+            });
+            const result = await response.json();
+
+            if (result.success) {
+              document.getElementById("result").innerHTML = result.html;
+
+              // ❌ Removed startGracePeriod call — clients can't trigger it
+              await smartEscrowApp.checkGracePeriodStatus(transactionId);
+            } else {
+              document.getElementById(
+                "result"
+              ).innerHTML = `<p style="color:red;">Error: ${result.message}</p>`;
+            }
+          } catch (error) {
+            console.error("Retrieval error:", error);
+            document.getElementById('result').innerHTML = "<p style='color:red;'>Retrieval failed. Possibly the wrong secret passphrase or not the intended recipient.</p>";
+          }
+        });
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        const sessionRes = await fetch("http://localhost:5000/auth/session", {
+          credentials: "include",
+        });
+        const sessionData = await sessionRes.json();
+        const loggedInToggles = document.querySelectorAll(".loggedInToggles");
+
+        if (sessionData.loggedIn && sessionData.role) {
+          loggedInToggles.forEach(el => el.style.display = "block");
+          if (sessionData.role === "freelancer") {
+            document.querySelector(".container.mt-5").style.display = "none";
+            document.querySelector(".container.mt-4").style.display = "block";
+          } else {
+            document.querySelector(".container.mt-5").style.display = "block";
+            document.querySelector(".container.mt-4").style.display = "none";
+          }
+        } else {
+          loggedInToggles.forEach(el => el.style.display = "none");
+          alert("❌ Unauthorized. Please login.");
+          window.location.href = "login.html";
+        }
+      });
+    </script>
+
+    <script>
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+          const transactionId = document.getElementById("transactionId").value;
+
+          if (!transactionId) {
+            alert("❌ Please enter the Transaction ID above first.");
+            return;
+          }
+
+          const response = await fetch("upload.php", {
+            method: "POST",
+            body: formData,
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            alert("✅ File uploaded successfully.");
+
+            // 🟢 Immediately start grace period
+            await smartEscrowApp.startGracePeriod(transactionId);
+            await smartEscrowApp.checkGracePeriodStatus(transactionId);
+
+            // 🔁 Start polling for countdown & auto-release
+            if (smartEscrowApp.autoReleaseInterval)
+              clearInterval(smartEscrowApp.autoReleaseInterval);
+            smartEscrowApp.autoReleaseInterval = setInterval(async () => {
+              await smartEscrowApp.checkGracePeriodStatus(transactionId);
+              await smartEscrowApp.tryAutoRelease(transactionId);
+            }, 10000);
+          } else {
+            alert("❌ Upload failed: " + result.message);
+          }
+        });
+    </script>
+
+    <script>
+      async function handleRaiseDispute() {
+        const transactionId = document.getElementById("transactionId").value;
+        if (!transactionId) {
+          alert("Please enter a transaction ID first.");
+          return;
+        }
+        window.location.href = `disputeForm.html?transactionId=${transactionId}`;
+      }
+    </script>
+  </body>
+</html>

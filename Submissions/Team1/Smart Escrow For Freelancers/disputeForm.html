@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartEscrow Milestone Progress</title>
+
+  <!-- Site Title -->
+  <title>SmartEscrow - Login</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/bootsnav.css" />
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+  <!-- Web3.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.2/web3.min.js"></script>
+
+  <!-- Font Awesome (optional, for social icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+  <script src="session.js"></script>
+
+  <!-- zkp -->
+  <script src="https://cdn.jsdelivr.net/npm/snarkjs@latest/build/snarkjs.min.js"></script>
+</head>
+<style>
+  body {
+    background-color: #f8f9fa;
+  }
+
+  h2 {
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .form-group label {
+    font-weight: bold;
+  }
+
+  #debugOutput {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    display: none;
+  }
+
+  .debug-toggle {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+</style>
+
+<body>
+  <!-- =========================
+         TOP AREA / NAVBAR
+    ========================== -->
+  <section class="top-area">
+    <div class="header-area">
+      <nav class="navbar navbar-default bootsnav navbar-scrollspy" data-minus-value-desktop="70"
+        data-minus-value-mobile="55" data-speed="1000">
+        <div class="container">
+          <!-- Start Header Navigation -->
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+              <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="index.html">Smart<span>Escrow</span></a>
+          </div>
+          <!-- End Header Navigation -->
+
+          <!-- Collect the nav links -->
+          <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+              <li class="scroll active"><a href="#home">home</a></li>
+              <li class="scroll"><a href="#works">how it works</a></li>
+              <li class="scroll">
+                <a href="#explore">explore freelancers</a>
+              </li>
+              <li class="scroll"><a href="#reviews">review</a></li>
+              <li class="scroll"><a href="#contact">contact</a></li>
+							<li><a href="milestone.html" class="loggedInToggles">check project</a></li>
+              <li id="userNav" class="dropdown">
+                <a href="#" id="userDropdown" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false">
+                  Login
+                </a>
+                <ul class="dropdown-menu" id="userDropdownMenu">
+                  <li><a href="#" id="logoutBtn" class="loggedInToggles">Logout</a></li>
+                </ul>
+              </li>
+            </ul>
+            <!--/.nav -->
+          </div>
+          <!-- /.navbar-collapse -->
+        </div>
+        <!--/.container-->
+      </nav>
+      <!-- End Navigation -->
+    </div>
+    <div class="clearfix"></div>
+  </section>
+  <!-- /TOP AREA -->
+
+  <div class="container">
+    <h2>Raise a Dispute</h2>
+    <form id="disputeForm">
+      <div class="form-group">
+        <label for="transactionId">Transaction ID</label>
+        <input type="number" class="form-control" id="transactionId" required />
+      </div>
+
+      <div class="form-group">
+        <label for="disputeDate">Dispute Date & Time</label>
+        <input type="datetime-local" class="form-control" id="disputeDate" readonly required />
+      </div>
+
+      <div class="form-group">
+        <label for="clientAddress">Client Wallet Address</label>
+        <input type="text" class="form-control" id="clientAddress" readonly required />
+      </div>
+
+      <div class="form-group">
+        <label for="freelancerAddress">Freelancer Wallet Address</label>
+        <input type="text" class="form-control" id="freelancerAddress" required />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Reason for Dispute</label>
+        <textarea class="form-control" id="description" rows="4" required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-danger btn-block">
+        Submit Dispute
+      </button>
+    </form>
+
+    <div class="debug-toggle">
+      <button id="toggleDebug" class="btn btn-sm btn-info">Show Debug Info</button>
+    </div>
+
+    <div id="debugOutput"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/bootsnav.js"></script>
+  <script src="assets/js/custom.js"></script>
+  <script src="assets/js/app.js"></script>
+
+  <script>
+    let Contracts;
+    let debugLog = [];
+
+    function logDebug(message, data) {
+      const timestamp = new Date().toISOString();
+      const logEntry = {
+        timestamp,
+        message,
+        data
+      };
+
+      debugLog.push(logEntry);
+      updateDebugOutput();
+      console.log(message, data);
+    }
+
+    function updateDebugOutput() {
+      const debugOutput = document.getElementById('debugOutput');
+      debugOutput.innerHTML = debugLog.map(entry =>
+        `[${entry.timestamp}] ${entry.message}\n${entry.data ? JSON.stringify(entry.data, null, 2) : ''}\n`
+      ).join('\n');
+    }
+
+    document.getElementById('toggleDebug').addEventListener('click', function () {
+      const debugOutput = document.getElementById('debugOutput');
+      if (debugOutput.style.display === 'none' || !debugOutput.style.display) {
+        debugOutput.style.display = 'block';
+        this.textContent = 'Hide Debug Info';
+      } else {
+        debugOutput.style.display = 'none';
+        this.textContent = 'Show Debug Info';
+      }
+    });
+
+    // Fetch ABI and define Contracts before using it
+    fetch("smartEscrowAbi.json")
+      .then((res) => res.json())
+      .then((abi) => {
+        Contracts = {
+          SmartEscrowContract: {
+            abi: abi,
+            address: "0x8497a70FA8542Ca13B7b4007Bd0a4C1aAbe68eeD",
+          },
+        };
+        logDebug("Contract ABI loaded", { address: Contracts.SmartEscrowContract.address });
+      })
+      .catch(err => {
+        logDebug("Error loading contract ABI", err);
+      });
+
+    // Auto-fill current date and time in Singapore Time (UTC+8)
+    function getSingaporeTime() {
+      const now = new Date();
+      const singaporeTime = new Date(
+        now.toLocaleString("en-US", { timeZone: "Asia/Singapore" })
+      );
+
+      const year = singaporeTime.getFullYear();
+      const month = String(singaporeTime.getMonth() + 1).padStart(2, "0");
+      const day = String(singaporeTime.getDate()).padStart(2, "0");
+      const hours = String(singaporeTime.getHours()).padStart(2, "0");
+      const minutes = String(singaporeTime.getMinutes()).padStart(2, "0");
+
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+
+    // Utility functions for ZKP
+    async function hashReason(reason) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(reason);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return "0x" + hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function formatProof(proof) {
+      return {
+        a: [proof.pi_a[0], proof.pi_a[1]],
+        b: [
+          [proof.pi_b[0][1], proof.pi_b[0][0]],
+          [proof.pi_b[1][1], proof.pi_b[1][0]]
+        ],
+        c: [proof.pi_c[0], proof.pi_c[1]]
+      };
+    }
+
+    // Check transaction state and requirements
+    async function checkTransactionState(transactionId) {
+      try {
+        const web3 = new Web3(window.ethereum);
+        const contract = new web3.eth.Contract(
+          Contracts.SmartEscrowContract.abi,
+          Contracts.SmartEscrowContract.address
+        );
+
+        // Get current user address
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        const currentUser = accounts[0];
+
+        // Get transaction details
+        const txn = await contract.methods.getTransaction(transactionId).call();
+
+        const txnState = {
+          transactionId,
+          currentUser,
+          client: txn.client,
+          isCurrentUserClient: currentUser.toLowerCase() === txn.client.toLowerCase(),
+          freelancer: txn.freelancer,
+          currentMilestone: txn.currentMilestone,
+          completed: txn.completed,
+          disputed: txn.disputed,
+          gracePeriodStarted: txn.gracePeriodStarted
+        };
+
+        logDebug("Transaction State Check", txnState);
+
+        // Check all requirements
+        const requirementChecks = {
+          "User is client": txnState.isCurrentUserClient,
+          "Transaction not completed": !txn.completed,
+          "Transaction not already disputed": !txn.disputed
+        };
+
+        logDebug("Requirement Checks", requirementChecks);
+
+        // Overall status
+        const allRequirementsMet = Object.values(requirementChecks).every(check => check === true);
+        logDebug("All Requirements Met", allRequirementsMet);
+
+        if (!allRequirementsMet) {
+          const failedRequirements = Object.entries(requirementChecks)
+            .filter(([_, value]) => value === false)
+            .map(([key, _]) => key);
+          logDebug("Failed requirements", failedRequirements);
+        }
+
+        return {
+          txn,
+          txnState,
+          requirementChecks,
+          allRequirementsMet
+        };
+      } catch (err) {
+        logDebug("Error checking transaction state", err);
+        return null;
+      }
+    }
+
+    window.addEventListener("load", async () => {
+      document.getElementById("disputeDate").value = getSingaporeTime();
+      logDebug("Page loaded", { time: getSingaporeTime() });
+
+      // Connect MetaMask
+      if (window.ethereum) {
+        try {
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          document.getElementById("clientAddress").value = accounts[0];
+          logDebug("MetaMask connected", { account: accounts[0] });
+        } catch (err) {
+          logDebug("MetaMask connection failed", err);
+        }
+      } else {
+        alert("Please install MetaMask to raise a dispute.");
+        logDebug("MetaMask not installed", null);
+      }
+
+      // Get transactionId from query
+      const transactionId = new URLSearchParams(window.location.search).get("transactionId");
+      if (transactionId) {
+        document.getElementById("transactionId").value = transactionId;
+        logDebug("Transaction ID from URL", { transactionId });
+
+        // Get freelancer address
+        if (Contracts?.SmartEscrowContract) {
+          const web3 = new Web3(window.ethereum);
+          const contract = new web3.eth.Contract(
+            Contracts.SmartEscrowContract.abi,
+            Contracts.SmartEscrowContract.address
+          );
+
+          try {
+            const txn = await contract.methods.getTransaction(transactionId).call();
+            document.getElementById("freelancerAddress").value = txn.freelancer;
+            logDebug("Transaction data fetched", {
+              freelancer: txn.freelancer,
+              client: txn.client,
+              milestone: txn.currentMilestone,
+              disputed: txn.disputed,
+              completed: txn.completed
+            });
+          } catch (err) {
+            logDebug("Failed to fetch transaction data", err);
+          }
+        }
+      }
+    });
+
+    document.getElementById("disputeForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Processing...';
+
+      try {
+        const transactionId = parseInt(document.getElementById("transactionId").value);
+        const reason = document.getElementById("description").value;
+        const clientAddress = document.getElementById("clientAddress").value;
+
+        if (!reason || reason.length < 20) {
+          throw new Error("Reason must be at least 20 characters");
+        }
+
+        const encoder = new TextEncoder();
+        const data = encoder.encode(reason);
+        const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const reasonHash = "0x" + hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+
+        // 1. Store full reason off-chain
+        const saveResponse = await fetch("http://localhost:5000/dispute", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            transactionId,
+            reason,
+            hash: reasonHash
+          }),
+          credentials: "include"
+        });
+
+        if (!saveResponse.ok) {
+          throw new Error("Failed to save dispute off-chain");
+        }
+
+        // 2. Call smart contract to store just the hash
+        const web3 = new Web3(window.ethereum);
+        const contract = new web3.eth.Contract(
+          Contracts.SmartEscrowContract.abi,
+          Contracts.SmartEscrowContract.address
+        );
+
+        const tx = await contract.methods.raiseDispute(transactionId, reasonHash).send({
+          from: clientAddress,
+          gas: 200000,
+          gasPrice: await web3.eth.getGasPrice()
+        });
+
+        alert("✅ Dispute submitted!");
+        window.location.href = "milestone.html";
+
+      } catch (err) {
+        console.error("❌ Dispute submission failed:", err);
+        alert("❌ " + (err.message || "Unknown error"));
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+
+  </script>
+
+  <!-- Other script includes -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+</body>
+
+</html>

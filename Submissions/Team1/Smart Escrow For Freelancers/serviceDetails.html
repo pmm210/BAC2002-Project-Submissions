@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- meta data -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!--font-family-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+
+    <!-- title of site -->
+    <title>SmartEscrow</title>
+
+    <!--font-awesome.min.css-->
+    <link rel="stylesheet" href="assets/css/font-awesome.min.css" />
+
+    <!--linear icon css-->
+    <link rel="stylesheet" href="assets/css/linearicons.css" />
+
+    <!--animate.css-->
+    <link rel="stylesheet" href="assets/css/animate.css" />
+
+    <!--slick.css-->
+    <link rel="stylesheet" href="assets/css/slick.css" />
+    <link rel="stylesheet" href="assets/css/slick-theme.css" />
+
+    <!--bootstrap.min.css-->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+
+    <!-- bootsnav -->
+    <link rel="stylesheet" href="assets/css/bootsnav.css" />
+
+    <!--style.css-->
+    <link rel="stylesheet" href="assets/css/style.css" />
+
+    <!--responsive.css-->
+    <link rel="stylesheet" href="assets/css/responsive.css" />
+
+    <link rel="stylesheet" href="assets/css/serviceDetails.css" />
+
+    <!-- Load jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="session.js"></script>
+
+
+        
+
+    <script>
+			document.addEventListener("DOMContentLoaded", async function () {
+				try {
+					const sessionResponse = await fetch("http://localhost:5000/auth/session", {
+						method: "GET",
+						credentials: "include",
+					});
+			
+					const sessionData = await sessionResponse.json();
+					const userNav = document.getElementById("userNav");
+					const userDropdown = document.getElementById("userDropdown");
+					const userDropdownMenu = document.getElementById("userDropdownMenu");
+					const logoutBtn = document.getElementById("logoutBtn");
+                    const loggedInToggles = document.querySelectorAll(".loggedInToggles");
+			
+					if (sessionData.loggedIn && sessionData.address) {
+                        loggedInToggles.forEach(el => el.style.display = "block");
+						console.log(`✅ User logged in as: ${sessionData.address}`);
+			
+						// ✅ Update the navbar with the wallet address
+						userDropdown.innerHTML = `Welcome, ${sessionData.address.substring(0, 6)}...${sessionData.address.slice(-4)}`;
+			
+						// ✅ Show the dropdown menu
+						userNav.style.display = "block";
+			
+						// ✅ Handle logout
+						logoutBtn.addEventListener("click", async function () {
+							const logoutResponse = await fetch("http://localhost:5000/auth/logout", {
+								method: "POST",
+								credentials: "include",
+							});
+			
+							const logoutData = await logoutResponse.json();
+							if (logoutData.success) {
+								alert("✅ Logged out successfully!");
+								window.location.href = "login.html"; // Redirect to login page
+							}
+						});
+			
+						// ✅ Close dropdown when clicking outside
+						document.addEventListener("click", function (event) {
+							if (!userNav.contains(event.target)) {
+								userDropdownMenu.classList.remove("show");
+							}
+						});
+			
+						// ✅ Toggle dropdown on click
+						userDropdown.addEventListener("click", function (event) {
+							event.preventDefault();
+							userDropdownMenu.classList.toggle("show");
+						});
+			
+					} else {
+                        loggedInToggles.forEach(el => el.style.display = "none");
+						console.warn("⚠️ No active session. Showing Login button...");
+						userDropdown.innerHTML = `<a href="login.html">Login / Sign Up</a>`;
+						userDropdownMenu.style.display = "none";
+					}
+				} catch (err) {
+					console.error("❌ Error checking session:", err);
+				}
+			});
+			</script>
+
+
+  </head>
+  <body>
+		<!-- top-area Start -->
+		<section class="top-area">
+			<div class="header-area">
+				<!-- Start Navigation -->
+			    <nav class="navbar navbar-default bootsnav  navbar-sticky navbar-scrollspy"  data-minus-value-desktop="70" data-minus-value-mobile="55" data-speed="1000">
+
+			        <div class="container">
+
+			            <!-- Start Header Navigation -->
+			            <div class="navbar-header">
+			                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+			                    <i class="fa fa-bars"></i>
+			                </button>
+			                <a class="navbar-brand" href="index.html">Smart<span>Escrow</span></a>
+
+			            </div><!--/.navbar-header-->
+			            <!-- End Header Navigation -->
+
+			            <!-- Collect the nav links, forms, and other content for toggling -->
+			            <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+			                <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
+			                    <li class=" scroll active"><a href="#home">home</a></li>
+			                    <li class="scroll"><a href="#works">how it works</a></li>
+			                    <li class="scroll"><a href="#explore">explore freelancers</a></li>
+			                    <li class="scroll"><a href="#reviews">review</a></li>
+			                    <li class="scroll"><a href="#contact">contact</a></li>
+								<li><a href="milestone.html" class="loggedInToggles">check project</a></li>
+			                    <li id="userNav" class="dropdown">
+									<a href="#" id="userDropdown" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Login
+									</a>
+									<ul class="dropdown-menu" id="userDropdownMenu">
+										<li><a href="#" id="logoutBtn" class="loggedInToggles">Logout</a></li>
+									</ul>
+								</li>
+								
+
+			                </ul><!--/.nav -->
+			            </div><!-- /.navbar-collapse -->
+			        </div><!--/.container-->
+			    </nav><!--/nav-->
+			    <!-- End Navigation -->
+			</div><!--/.header-area-->
+		    <div class="clearfix"></div>
+
+		</section><!-- /.top-area-->
+		<!-- top-area End -->
+
+    <section class="service-details">
+      <div class="service-content">
+          <div class="service-header">
+              <h1>Web Development by John Doe</h1>
+              <p class="rating">⭐ 5.0 | <a href="#reviews">25 ratings</a></p>
+          </div>
+          <div class="service-image">
+              <img src="assets/images/explore/e1.jpg" alt="Web Development Service">
+          </div>
+          <div class="service-info">
+              <h2>About this Service</h2>
+              <p>I specialize in creating high-quality, responsive, and SEO-optimized websites...</p>
+          </div>
+      </div>
+
+      <!-- Right Sidebar - Payment Box -->
+      <div class="sidebar">
+          <div class="pricing-box">
+              <h3>Basic Package</h3>
+              <p class="price">$50/hr</p>
+              <p><strong>Amount to be paid:</strong> 0.0001 POL</p>
+              <button class="hire-btn" id="hireJohnDoe">Hire John Doe</button>
+              <p id="transactionStatus" style="color: green; margin-top: 10px;"></p>
+          </div>
+      </div>
+  </section>
+
+    <!-- Reviews Section -->
+    <div class="reviews" id="reviews">
+        <h2>What people loved about this freelancer</h2>
+        <div class="review-item">
+            <p><strong>Alex B.</strong> ⭐⭐⭐⭐⭐</p>
+            <p>John is an amazing developer! The website was delivered on time and exceeded my expectations.</p>
+        </div>
+        <div class="review-item">
+            <p><strong>Sarah L.</strong> ⭐⭐⭐⭐⭐</p>
+            <p>Great communication and top-notch development skills. Highly recommend!</p>
+        </div>
+    </div>
+
+    <!-- About this Gig Section -->
+    <div class="about-gig">
+        <h2>About this Gig</h2>
+        <p>
+            Hello and welcome to my gig! Are you looking for a professional and
+            <span class="highlight">eye-catching website</span> for your 
+            <span class="highlight">business or personal brand</span>? 
+            Look no further, because I am here to help you with my 
+            <strong>WordPress Elementor skills</strong>!
+        </p>
+        <p>
+            With <strong>Elementor</strong>, the most popular page builder for WordPress, I can create 
+            <span class="highlight">beautiful, responsive, and easy-to-use websites</span> 
+            that will help you stand out from the competition. Whether you need a simple 
+            <span class="highlight">landing page</span>, a <span class="highlight">blog</span>, 
+            an <span class="highlight">e-commerce</span> site, or a complex 
+            <span class="highlight">business website</span>, I can make it happen.
+        </p>
+
+        <h3>Here’s what I offer in this gig:</h3>
+        <ul>
+            <li>Custom designs based on your preferences and branding</li>
+            <li>Responsive layouts that work on all devices and screen sizes</li>
+            <li>Fast loading speed and optimized performance</li>
+            <li>SEO-friendly structure and metadata</li>
+            <li>Integration with your favorite plugins and tools</li>
+            <li>Unlimited revisions until you’re 100% satisfied</li>
+        </ul>
+
+        <p>
+            To get started, all you need to do is provide me with your requirements, content, and 
+            any references you may have. I will then create a draft design for your approval, 
+            and once you're happy with it, I will proceed to build the website and deliver it 
+            to you in a timely manner.
+        </p>
+
+        <p class="cta">
+            <strong>So why wait? Order now and let's create the website of your dreams together!</strong>
+        </p>
+    </div>
+
+    <!--blog start -->
+		<section id="blog" class="blog" >
+			<div class="container">
+				<div class="section-header">
+					<h2>Freelancing Tips & Insights</h2>
+					<p>Stay updated with the latest trends, tips, and success stories in freelancing.</p>
+				</div><!--/.section-header-->
+				<div class="blog-content">
+					<div class="row">
+						<div class="col-md-4 col-sm-6">
+							<div class="single-blog-item">
+								<div class="single-blog-item-img">
+									<img src="assets/images/blog/b1.jpg" alt="blog image">
+								</div>
+								<div class="single-blog-item-txt">
+									<h2><a href="#">How to Get Your First Freelance Client</a></h2>
+									<h4>Posted <span>by</span> <a href="#">Admin</a> February 2025</h4>
+									<p>
+										Struggling to land your first gig? Learn how to create a compelling profile, set competitive rates, and attract clients.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-blog-item">
+								<div class="single-blog-item-img">
+									<img src="assets/images/blog/b2.jpg" alt="blog image">
+								</div>
+								<div class="single-blog-item-txt">
+									<h2><a href="#">Top 5 Platforms for Freelancers in 2025</a></h2>
+									<h4>Posted <span>by</span> <a href="#">Admin</a> February 2025</h4>
+									<p>
+										A breakdown of the best freelancing websites, their pros and cons, and how to maximize your earning potential.
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="single-blog-item">
+								<div class="single-blog-item-img">
+									<img src="assets/images/blog/b3.jpg" alt="blog image">
+								</div>
+								<div class="single-blog-item-txt">
+									<h2><a href="#">How to Ensure Secure Payments as a Freelancer</a></h2>
+									<h4>Posted <span>by</span> <a href="#">Admin</a> February 2025</h4>
+									<p>
+										Learn the best practices for invoicing, using escrow services, and securing payments from clients.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--/.container-->
+			
+		</section><!--/.blog-->
+		<!--blog end -->
+
+        <!--footer start-->
+        <footer id="footer"  class="footer">
+            <div class="container">
+                <div class="footer-menu">
+                    <div class="row">
+                        <div class="col-sm-3">
+                                <div class="navbar-header">
+                                <a class="navbar-brand" href="index.html">Smart<span>Escrow</span></a>
+                            </div><!--/.navbar-header-->
+                        </div>
+                        <div class="col-sm-9">
+                            <ul class="footer-menu-item">
+                                <li class="scroll"><a href="#works">how it works</a></li>
+                                <li class="scroll"><a href="#explore">explore</a></li>
+                                <li class="scroll"><a href="#reviews">review</a></li>
+                                <li class="scroll"><a href="#blog">blog</a></li>
+                                <li class="scroll"><a href="#contact">contact</a></li>
+                                <li class=" scroll"><a href="#contact">my account</a></li>
+                            </ul><!--/.nav -->
+                        </div>
+                    </div>
+                </div>
+                <div class="hm-footer-copyright">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <p>
+                                &copy;Blockchain Project</a>
+                            </p><!--/p-->
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="footer-social">
+                                <span><i class="fa fa-phone"> +65 8765 4321</i></span>
+                                <a href="#"><i class="fa fa-facebook"></i></a>	
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-google-plus"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div><!--/.hm-footer-copyright-->
+            </div><!--/.container-->
+    
+            <div id="scroll-Top">
+                <div class="return-to-top">
+                    <i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+                </div>
+                
+            </div><!--/.scroll-Top-->
+            
+        </footer><!--/.footer-->
+        <!--footer end-->
+
+        <!-- JS LIBRARIES -->
+        <script src="assets/js/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/bootsnav.js"></script>
+        <script src="assets/js/feather.min.js"></script>
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <script src="assets/js/waypoints.min.js"></script>
+        <script src="assets/js/slick.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <script src="assets/js/custom.js"></script>
+
+        <!-- ✅ Load Ethers.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+
+        <!-- ✅ Load Web3.js if you still need it -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.2/web3.min.js"></script>
+
+        <!-- ✅ Load app.js & session.js LAST -->
+        <script src="assets/js/app.js"></script>
+        <script src="session.js"></script>
+
+    </body>
+</html>
