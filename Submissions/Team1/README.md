@@ -80,12 +80,29 @@ Update the following files with your deployed contract details:
 
 - `disputeForm.html`, `server.js`, `app.js`:  
   Update with your contract address
+  ```bash
+  // In disputeForm.html and app.js
+  SmartEscrowContract: {
+    abi: abi,
+    address: "Update address here",
+  },
+
+  // In server.js
+  const CONTRACT_ADDRESS = "Update address here";
+  ```
 
 - `smartEscrowAbi.json`:  
-  Replace with your contract ABI
+  Replace the entire file with your contract ABI
 
 - `server.js`, `app.js`:  
   Update with the correct freelancer wallet address
+  ```bash
+  // In server.js
+  const FREELANCER_ADDRESS = "Update address here";
+
+  // In app.js
+  const freelancerAddress = "Update address here";
+  ```
 
 ### 6. Running the Application
 
