@@ -25,27 +25,29 @@ Everything is stored on-chain — no centralized database or backend server requ
 
 ## Setup Instructions
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/dev-token-payroll.git
-cd dev-token-payroll
-
-
-2. Install Dependencies
-
+1. Install Dependencies
+Unzip the project folder, open a terminal in the project directory, and run:
 npm install
-3. Set Up Environment
-Create a .env.local file in the root directory:
 
-NEXT_PUBLIC_CONTRACT_ADDRESS=0xYourPayrollContract
-NEXT_PUBLIC_DEV_TOKEN_ADDRESS=0xYourDEVToken
-Ensure these match your deployed contract addresses on Moonbase Alpha.
+2. Connect MetaMask to Moonbase Alpha
+Open MetaMask and click the network dropdown.
 
-4. Run the Development Server
+Select Add Network and configure with:
+
+Network Name: Moonbase Alpha
+
+RPC URL: https://rpc.api.moonbase.moonbeam.network
+
+Chain ID: 1287
+
+Currency Symbol: DEV
+
+Block Explorer: https://moonbase.moonscan.io/
+
+3. Run the Development Server
 npm run dev
 Then open http://localhost:3000 in your browser.
-
+Note: No .env setup is required. Contract addresses are already hardcoded in lib/contract.ts.
 
 ## Team Memebers
 
