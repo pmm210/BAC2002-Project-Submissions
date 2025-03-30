@@ -12,6 +12,13 @@ RemitFlow is a decentralized cross-border remittance platform that leverages blo
 
 Traditional cross-border remittances are costly (6.2% avg. fees), slow (1–5 days processing), and inefficient (40% of transfers delayed due to KYC/AML). RemitFlow solves these problems by bundling conversions and transfers into a single blockchain transaction, dramatically reducing costs and processing time.
 
+## Demo Video
+
+Watch our demonstration video to see RemitFlow in action:
+
+[Watch RemitFlow Demo](https://youtu.be/1UqQUGuxPA8)
+
+
 ## Tech Stack
 
 ### Frontend
