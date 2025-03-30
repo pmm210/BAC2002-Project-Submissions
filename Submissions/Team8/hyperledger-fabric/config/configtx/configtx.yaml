@@ -1,0 +1,246 @@
+---
+Organizations:
+  - &OrdererOrg
+    Name: OrdererOrg
+    ID: OrdererMSP
+    MSPDir: ../crypto-config/ordererOrganizations/example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+    OrdererEndpoints:
+      - orderer1.example.com:7050
+      - orderer2.example.com:7060
+      - orderer3.example.com:7070
+      - orderer4.example.com:7080
+      - orderer5.example.com:7090
+
+  - &MAS
+    Name: MASMSP
+    ID: MASMSP
+    MSPDir: ../crypto-config/peerOrganizations/mas.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('MASMSP.admin', 'MASMSP.peer', 'MASMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('MASMSP.admin', 'MASMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('MASMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('MASMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.mas.example.com
+        Port: 7051
+
+  - &ING
+    Name: INGMSP
+    ID: INGMSP
+    MSPDir: ../crypto-config/peerOrganizations/ing.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('INGMSP.admin', 'INGMSP.peer', 'INGMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('INGMSP.admin', 'INGMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('INGMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('INGMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.ing.example.com
+        Port: 8051
+
+  - &OCBC
+    Name: OCBCMSP
+    ID: OCBCMSP
+    MSPDir: ../crypto-config/peerOrganizations/ocbc.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OCBCMSP.admin', 'OCBCMSP.peer', 'OCBCMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OCBCMSP.admin', 'OCBCMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OCBCMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('OCBCMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.ocbc.example.com
+        Port: 9051
+
+  - &DBS
+    Name: DBSMSP
+    ID: DBSMSP
+    MSPDir: ../crypto-config/peerOrganizations/dbs.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('DBSMSP.admin', 'DBSMSP.peer', 'DBSMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('DBSMSP.admin', 'DBSMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('DBSMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('DBSMSP.peer')"
+    AnchorPeers:
+      - Host: peer0.dbs.example.com
+        Port: 10051
+  
+  - &AGGREGATOR
+    Name: AGGREGATORMSP
+    ID: AGGREGATORMSP
+    MSPDir: ../crypto-config/peerOrganizations/aggregator.example.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('AGGREGATORMSP.admin', 'AGGREGATORMSP.peer', 'AGGREGATORMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('AGGREGATORMSP.admin', 'AGGREGATORMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('AGGREGATORMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('AGGREGATORMSP.peer')"
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+Application: &ApplicationDefaults
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "ANY Endorsement"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+  OrdererType: etcdraft
+  Addresses:
+    - orderer1.example.com:7050
+    - orderer2.example.com:7060
+    - orderer3.example.com:7070
+    - orderer4.example.com:7080
+    - orderer5.example.com:7090
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Organizations:
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+  EtcdRaft:
+    Consenters:
+      - Host: orderer1.example.com
+        Port: 7050
+        ClientTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.crt
+        ServerTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/server.crt
+      - Host: orderer2.example.com
+        Port: 7060
+        ClientTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
+        ServerTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/server.crt
+      - Host: orderer3.example.com
+        Port: 7070
+        ClientTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
+        ServerTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/server.crt
+      - Host: orderer4.example.com
+        Port: 7080
+        ClientTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/server.crt
+        ServerTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/server.crt
+      - Host: orderer5.example.com
+        Port: 7090
+        ClientTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt
+        ServerTLSCert: ../crypto-config/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/server.crt
+  Capabilities:
+    <<: *OrdererCapabilities
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+  BankingOrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Consortiums:
+      BankingConsortium:
+        Organizations:
+          - *MAS
+          - *ING
+          - *OCBC
+          - *DBS
+          - *AGGREGATOR
+  BankingChannel:
+    Consortium: BankingConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *MAS
+        - *ING
+        - *OCBC
+        - *DBS
+        - *AGGREGATOR

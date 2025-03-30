@@ -1,0 +1,22 @@
+FROM hyperledger/fabric-tools:2.5.0
+
+# Remove old Go installation if present
+RUN apt-get update && apt-get purge -y golang-go && apt-get autoremove -y
+
+# Install dependencies
+RUN apt-get update && apt-get install -y wget tar
+
+# Install newer Go version (1.18)
+RUN wget https://golang.org/dl/go1.18.10.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.18.10.linux-amd64.tar.gz && \
+    rm go1.18.10.linux-amd64.tar.gz
+
+# Set Go environment variables
+ENV PATH=$PATH:/usr/local/go/bin
+ENV GOPATH=/opt/gopath
+ENV PATH=$PATH:$GOPATH/bin
+
+# Verify installation
+RUN go version
+
+WORKDIR $GOPATH/src/github.com/hyperledger/fabric/peer

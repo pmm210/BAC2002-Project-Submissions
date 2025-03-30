@@ -1,0 +1,143 @@
+version: '3.8'
+
+services:
+  hlf-gateway-aggregator:
+    build:
+      context: ../../gateway/aggregator-gateway/src
+    container_name: hlf-gateway-aggregator
+    environment:
+      - MSP_ID=AGGREGATORMSP
+      - PEER_ADDRESS=peer0.mas.example.com:7051
+      - GRPC_TARGET_OVERRIDE=peer0.mas.example.com
+      - CERT_PATH=/crypto-config/peerOrganizations/aggregator.example.com/users/Admin@aggregator.example.com/msp/signcerts/Admin@aggregator.example.com-cert.pem
+      - KEY_PATH=/crypto-config/peerOrganizations/aggregator.example.com/users/Admin@aggregator.example.com/msp/keystore/priv_sk
+      - CA_PATH=/crypto-config/peerOrganizations/mas.example.com/tlsca/tlsca.mas.example.com-cert.pem
+      - FABRIC_CHANNEL=hlftffv1
+      - FABRIC_CONTRACT=asset-transfer
+      # RAFT Orderer endpoints
+      - ORDERER_ENDPOINTS=orderer1.example.com:7050,orderer2.example.com:7060,orderer3.example.com:7070,orderer4.example.com:7080,orderer5.example.com:7090
+    volumes:
+      - ../../hyperledger-fabric/config/crypto-config:/crypto-config
+    networks:
+      - fabric_network
+    ports:
+      - "8890:8888"
+
+  hlf-gateway-dbs:
+    build:
+      context: ../../gateway/bank-gateway/src
+    container_name: hlf-gateway-dbs
+    environment:
+      - MSP_ID=DBSMSP
+      - PEER_ADDRESS=peer0.dbs.example.com:10051
+      - GRPC_TARGET_OVERRIDE=peer0.dbs.example.com
+      - CERT_PATH=/crypto-config/peerOrganizations/dbs.example.com/users/Admin@dbs.example.com/msp/signcerts/Admin@dbs.example.com-cert.pem
+      - KEY_PATH=/crypto-config/peerOrganizations/dbs.example.com/users/Admin@dbs.example.com/msp/keystore/priv_sk
+      - CA_PATH=/crypto-config/peerOrganizations/dbs.example.com/tlsca/tlsca.dbs.example.com-cert.pem
+      # RAFT Orderer endpoints
+      - ORDERER_ENDPOINTS=orderer1.example.com:7050,orderer2.example.com:7060,orderer3.example.com:7070,orderer4.example.com:7080,orderer5.example.com:7090
+    volumes:
+      - ../../hyperledger-fabric/config/crypto-config:/crypto-config
+    networks:
+      - fabric_network
+    ports:
+      - "8881:8888"
+
+  hlf-gateway-ing:
+    build:
+      context: ../../gateway/bank-gateway/src
+    container_name: hlf-gateway-ing
+    environment:
+      - MSP_ID=INGMSP
+      - PEER_ADDRESS=peer0.ing.example.com:8051
+      - GRPC_TARGET_OVERRIDE=peer0.ing.example.com
+      - CERT_PATH=/crypto-config/peerOrganizations/ing.example.com/users/Admin@ing.example.com/msp/signcerts/Admin@ing.example.com-cert.pem
+      - KEY_PATH=/crypto-config/peerOrganizations/ing.example.com/users/Admin@ing.example.com/msp/keystore/priv_sk
+      - CA_PATH=/crypto-config/peerOrganizations/ing.example.com/tlsca/tlsca.ing.example.com-cert.pem
+      # RAFT Orderer endpoints
+      - ORDERER_ENDPOINTS=orderer1.example.com:7050,orderer2.example.com:7060,orderer3.example.com:7070,orderer4.example.com:7080,orderer5.example.com:7090
+    volumes:
+      - ../../hyperledger-fabric/config/crypto-config:/crypto-config
+    networks:
+      - fabric_network
+    ports:
+      - "8882:8888"
+
+  hlf-gateway-mas:
+    build:
+      context: ../../gateway/bank-gateway/src
+    container_name: hlf-gateway-mas
+    environment:
+      - MSP_ID=MASMSP
+      - PEER_ADDRESS=peer0.mas.example.com:7051
+      - GRPC_TARGET_OVERRIDE=peer0.mas.example.com
+      - CERT_PATH=/crypto-config/peerOrganizations/mas.example.com/users/Admin@mas.example.com/msp/signcerts/Admin@mas.example.com-cert.pem
+      - KEY_PATH=/crypto-config/peerOrganizations/mas.example.com/users/Admin@mas.example.com/msp/keystore/priv_sk
+      - CA_PATH=/crypto-config/peerOrganizations/mas.example.com/tlsca/tlsca.mas.example.com-cert.pem
+      # RAFT Orderer endpoints
+      - ORDERER_ENDPOINTS=orderer1.example.com:7050,orderer2.example.com:7060,orderer3.example.com:7070,orderer4.example.com:7080,orderer5.example.com:7090
+    volumes:
+      - ../../hyperledger-fabric/config/crypto-config:/crypto-config
+    networks:
+      - fabric_network
+    ports:
+      - "8883:8888"
+
+  hlf-gateway-ocbc:
+    build:
+      context: ../../gateway/bank-gateway/src
+    container_name: hlf-gateway-ocbc
+    environment:
+      - MSP_ID=OCBCMSP
+      - PEER_ADDRESS=peer0.ocbc.example.com:9051
+      - GRPC_TARGET_OVERRIDE=peer0.ocbc.example.com
+      - CERT_PATH=/crypto-config/peerOrganizations/ocbc.example.com/users/Admin@ocbc.example.com/msp/signcerts/Admin@ocbc.example.com-cert.pem
+      - KEY_PATH=/crypto-config/peerOrganizations/ocbc.example.com/users/Admin@ocbc.example.com/msp/keystore/priv_sk
+      - CA_PATH=/crypto-config/peerOrganizations/ocbc.example.com/tlsca/tlsca.ocbc.example.com-cert.pem
+      # RAFT Orderer endpoints
+      - ORDERER_ENDPOINTS=orderer1.example.com:7050,orderer2.example.com:7060,orderer3.example.com:7070,orderer4.example.com:7080,orderer5.example.com:7090
+    volumes:
+      - ../../hyperledger-fabric/config/crypto-config:/crypto-config
+    networks:
+      - fabric_network
+    ports:
+      - "8884:8888"
+
+  minio-handler:
+    build:
+      context: ../../storage/minio-handler/src
+    container_name: minio-handler
+    environment:
+      - MINIO_ACCESS_KEY=fladmin
+      - MINIO_SECRET_KEY=flsecret
+    depends_on:
+      - minio
+    ports:
+      - "9002:9002"
+    networks:
+      - fabric_network
+    volumes:
+      - minio_data:/data
+    command: sh -c "sleep 15 && ./minio-handler"
+
+  minio:
+    container_name: minio
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=fladmin
+      - MINIO_ROOT_PASSWORD=flsecret
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - fabric_network
+
+volumes:
+  minio_data:
+
+networks:
+  fabric_network:
+    external: true

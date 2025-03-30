@@ -1,0 +1,52 @@
+version: '2.1'
+
+networks:
+  fabric_network:
+    external: true
+
+services:
+  explorer.mynetwork.com:
+    image: ghcr.io/hyperledger-labs/explorer:latest
+    container_name: explorer.mynetwork.com
+    environment:
+      - DATABASE_HOST=explorerdb.mynetwork.com
+      - DATABASE_PORT=5432
+      - DATABASE_DATABASE=fabricexplorer
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWD=password
+      - LOG_LEVEL_APP=debug
+      - LOG_LEVEL_DB=debug
+      - LOG_LEVEL_CONSOLE=info
+      - LOG_CONSOLE_STDOUT=true
+      - DISCOVERY_AS_LOCALHOST=false
+    volumes:
+      - ./config.json:/opt/explorer/app/platform/fabric/config.json
+      - ./connection-profile:/opt/explorer/app/platform/fabric/connection-profile
+      - ../../hyperledger-fabric/config/crypto-config:/opt/explorer/crypto-config
+    ports:
+      - 8080:8080
+    networks:
+      - fabric_network
+    depends_on:
+      explorerdb.mynetwork.com:
+        condition: service_healthy
+    restart: on-failure
+    command: >
+      sh -c "sleep 30 && ./start.sh"
+
+  explorerdb.mynetwork.com:
+    image: ghcr.io/hyperledger-labs/explorer-db:latest
+    container_name: explorerdb.mynetwork.com
+    environment:
+      - DATABASE_DATABASE=fabricexplorer
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWD=password
+    volumes:
+      - ./explorerdb:/var/lib/postgresql/data
+    networks:
+      - fabric_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hppoc -d fabricexplorer"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

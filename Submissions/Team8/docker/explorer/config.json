@@ -1,0 +1,9 @@
+{
+    "network-configs": {
+      "mynetwork": {
+        "name": "Banking Consortium Network",
+        "profile": "./connection-profile/mynetwork.json"
+      }
+    },
+    "license": "Apache-2.0"
+  }

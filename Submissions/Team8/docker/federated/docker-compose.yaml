@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+  aggregator:
+    build:
+      context: ../../federated/aggregator/src
+    volumes:
+      - ../../federated/aggregator/src:/app
+      - ../shared_models:/shared_models
+      - ../../federated/aggregator/data:/data
+    networks:
+      - fabric_network
+    restart: unless-stopped
+    container_name: fl-aggregator
+    environment:
+      - TZ=UTC
+      - PYTHONUNBUFFERED=1
+      - AGGREGATOR_WS_URL=ws://hlf-gateway-aggregator:8890/ws
+      - AGGREGATOR_GATEWAY_URL=http://hlf-gateway-aggregator:8890
+      - MINIO_HANDLER_URL=http://minio-handler:9002
+      - MODEL_DIR=/models
+  
+  dbs_client:
+    build:
+      context: ../../federated/clients/src
+    ports:
+      - "8001:8000"
+    volumes:
+      - ../../federated/clients/src:/app
+      - ../../federated/clients/data/dbs:/data
+      - ../shared_models:/shared_models
+    environment:
+      - BANK_ID=${BANK_ID_DBS:-dbs}
+      - FABRIC_API_URL=${FABRIC_API_URL_DBS:-http://hlf-gateway-dbs:8888}
+      - FABRIC_API_WS=${FABRIC_API_WS_DBS:-ws://hlf-gateway-dbs:8888/ws}
+      - MINIO_HANDLER_URL=${MINIO_HANDLER_URL:-http://minio-handler:9002}
+    networks:
+      - fabric_network
+    restart: unless-stopped
+    container_name: dbs_client
+    stdin_open: true
+    tty: true
+
+  ocbc_client:
+    build:
+      context: ../../federated/clients/src
+    ports:
+      - "8002:8000"
+    volumes:
+      - ../../federated/clients/src:/app
+      - ../../federated/clients/data/ocbc:/data
+      - ../shared_models:/shared_models
+    environment:
+      - BANK_ID=${BANK_ID_OCBC:-ocbc}
+      - FABRIC_API_URL=${FABRIC_API_URL_OCBC:-http://hlf-gateway-ocbc:8888}
+      - FABRIC_API_WS=${FABRIC_API_WS_OCBC:-ws://hlf-gateway-ocbc:8888/ws}
+      - MINIO_HANDLER_URL=${MINIO_HANDLER_URL:-http://minio-handler:9002}
+    networks:
+      - fabric_network
+    restart: unless-stopped
+    container_name: ocbc_client
+    stdin_open: true
+    tty: true
+
+  ing_client:
+    build:
+      context: ../../federated/clients/src
+    ports:
+      - "8003:8000"
+    volumes:
+      - ../../federated/clients/src:/app
+      - ../../federated/clients/data/ing:/data
+      - ../shared_models:/shared_models
+    environment:
+      - BANK_ID=${BANK_ID_ING:-ing}
+      - FABRIC_API_URL=${FABRIC_API_URL_ING:-http://hlf-gateway-ing:8888}
+      - FABRIC_API_WS=${FABRIC_API_WS_ING:-ws://hlf-gateway-ing:8888/ws}
+      - MINIO_HANDLER_URL=${MINIO_HANDLER_URL:-http://minio-handler:9002}
+    networks:
+      - fabric_network
+    restart: unless-stopped
+    container_name: ing_client
+    stdin_open: true
+    tty: true
+
+networks:
+  fabric_network:
+    external: true

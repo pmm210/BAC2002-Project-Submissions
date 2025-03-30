@@ -1,0 +1,8 @@
+PeerOrgs:
+  - Name: MAS
+    Domain: mas.example.com
+    EnableNodeOUs: true
+    Template:
+      Count: 1
+    Users:
+      Count: 1

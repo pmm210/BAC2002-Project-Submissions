@@ -1,0 +1,209 @@
+{
+    "name": "Banking-Consortium-Network",
+    "version": "1.0.0",
+    "client": {
+        "tlsEnable": true,
+        "organization": "MASMSP",
+        "channel": "hlftffv1",
+        "credentialStore": {
+            "path": "/tmp/crypto-config/credentialStore",
+            "cryptoStore": {
+                "path": "/tmp/crypto-config/cryptoStore"
+            }
+        },
+        "adminCredential": {
+            "id": "admin",
+            "password": "adminpw"
+        },
+        "enableAuthentication": false,
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                },
+                "orderer": "300"
+            }
+        }
+    },
+    "channels": {
+        "hlftffv1": {
+            "peers": {
+                "peer0.mas.example.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                },
+                "peer0.ing.example.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                },
+                "peer0.ocbc.example.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                },
+                "peer0.dbs.example.com": {
+                    "endorsingPeer": true,
+                    "chaincodeQuery": true,
+                    "ledgerQuery": true,
+                    "eventSource": true
+                }
+            },
+            "orderers": [
+                "orderer1.example.com",
+                "orderer2.example.com",
+                "orderer3.example.com",
+                "orderer4.example.com",
+                "orderer5.example.com"
+            ]
+        }
+    },
+    "organizations": {
+        "MASMSP": {
+            "mspid": "MASMSP",
+            "adminPrivateKey": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/mas.example.com/users/Admin@mas.example.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/mas.example.com/users/Admin@mas.example.com/msp/signcerts/Admin@mas.example.com-cert.pem"
+            },
+            "peers": [
+                "peer0.mas.example.com"
+            ]
+        },
+        "INGMSP": {
+            "mspid": "INGMSP",
+            "adminPrivateKey": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/ing.example.com/users/Admin@ing.example.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/ing.example.com/users/Admin@ing.example.com/msp/signcerts/Admin@ing.example.com-cert.pem"
+            },
+            "peers": [
+                "peer0.ing.example.com"
+            ]
+        },
+        "OCBCMSP": {
+            "mspid": "OCBCMSP",
+            "adminPrivateKey": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/ocbc.example.com/users/Admin@ocbc.example.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/ocbc.example.com/users/Admin@ocbc.example.com/msp/signcerts/Admin@ocbc.example.com-cert.pem"
+            },
+            "peers": [
+                "peer0.ocbc.example.com"
+            ]
+        },
+        "DBSMSP": {
+            "mspid": "DBSMSP",
+            "adminPrivateKey": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/dbs.example.com/users/Admin@dbs.example.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/dbs.example.com/users/Admin@dbs.example.com/msp/signcerts/Admin@dbs.example.com-cert.pem"
+            },
+            "peers": [
+                "peer0.dbs.example.com"
+            ]
+        },
+        "OrdererMSP": {
+            "mspid": "OrdererMSP",
+            "adminPrivateKey": {
+                "path": "/opt/explorer/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/priv_sk"
+            },
+            "signedCert": {
+                "path": "/opt/explorer/crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts/Admin@example.com-cert.pem"
+            }
+        }
+    },
+    "peers": {
+        "peer0.mas.example.com": {
+            "url": "grpcs://peer0.mas.example.com:7051",
+            "tlsCACerts": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/mas.example.com/peers/peer0.mas.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.mas.example.com"
+            }
+        },
+        "peer0.ing.example.com": {
+            "url": "grpcs://peer0.ing.example.com:8051",
+            "tlsCACerts": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/ing.example.com/peers/peer0.ing.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.ing.example.com"
+            }
+        },
+        "peer0.ocbc.example.com": {
+            "url": "grpcs://peer0.ocbc.example.com:9051",
+            "tlsCACerts": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/ocbc.example.com/peers/peer0.ocbc.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.ocbc.example.com"
+            }
+        },
+        "peer0.dbs.example.com": {
+            "url": "grpcs://peer0.dbs.example.com:10051",
+            "tlsCACerts": {
+                "path": "/opt/explorer/crypto-config/peerOrganizations/dbs.example.com/peers/peer0.dbs.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.dbs.example.com"
+            }
+        }
+    },
+    "orderers": {
+        "orderer1.example.com": {
+            "url": "grpcs://orderer1.example.com:7050",
+            "tlsCACerts": {
+                "path": "/opt/explorer/crypto-config/ordererOrganizations/example.com/orderers/orderer1.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer1.example.com"
+            }
+        },
+        "orderer2.example.com": {
+            "url": "grpcs://orderer2.example.com:7060",
+            "tlsCACerts": {
+                "path": "/opt/explorer/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer2.example.com"
+            }
+        },
+        "orderer3.example.com": {
+            "url": "grpcs://orderer3.example.com:7070",
+            "tlsCACerts": {
+                "path": "/opt/explorer/crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer3.example.com"
+            }
+        },
+        "orderer4.example.com": {
+            "url": "grpcs://orderer4.example.com:7080",
+            "tlsCACerts": {
+                "path": "/opt/explorer/crypto-config/ordererOrganizations/example.com/orderers/orderer4.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer4.example.com"
+            }
+        },
+        "orderer5.example.com": {
+            "url": "grpcs://orderer5.example.com:7090",
+            "tlsCACerts": {
+                "path": "/opt/explorer/crypto-config/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/ca.crt"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "orderer5.example.com"
+            }
+        }
+    }
+}
