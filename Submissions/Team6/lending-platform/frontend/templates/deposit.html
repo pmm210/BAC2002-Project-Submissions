@@ -1,0 +1,602 @@
+{% extends "base.html" %}
+{% block title %}Deposit Funds - Lending DApp{% endblock %}
+
+{% block extra_head %}
+<style>
+  .deposit-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: rgba(33, 37, 41, 0.8);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 193, 7, 0.1);
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .page-title {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 193, 7, 0.2);
+  }
+  
+  .page-title::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #ffc107, transparent);
+  }
+  
+  .form-control {
+    background-color: rgba(25, 25, 25, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e9ecef;
+  }
+  
+  .form-control:focus {
+    background-color: rgba(30, 30, 30, 0.9);
+    border-color: rgba(255, 193, 7, 0.5);
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+  }
+  
+  .input-group-text {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.2);
+  }
+  
+  .modal-content {
+    background-color: rgba(33, 37, 41, 0.95);
+    border: 1px solid rgba(255, 193, 7, 0.1);
+  }
+  
+  .modal-header {
+    border-bottom: 1px solid rgba(255, 193, 7, 0.2);
+  }
+  
+  .modal-footer {
+    border-top: 1px solid rgba(255, 193, 7, 0.2);
+  }
+  
+  .btn-deposit {
+    background: linear-gradient(45deg, #ffc107, #ff8f00);
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #212529;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-deposit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+  }
+  
+  .balance-wrapper {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: rgba(25, 25, 25, 0.5);
+    border-radius: 8px;
+    border-left: 3px solid #ffc107;
+  }
+  
+  .balance-title {
+    color: #adb5bd;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+  }
+  
+  .balance-amount {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #ffc107;
+  }
+  
+  .wallet-connect {
+    cursor: pointer;
+    padding: 8px 12px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 10;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    transition: all 0.2s;
+  }
+  
+  .wallet-connect:hover {
+    background-color: rgba(255, 193, 7, 0.2);
+  }
+  
+  .address-input {
+    padding-right: 125px;
+  }
+  
+  .slider-container {
+    padding: 0 10px;
+    margin-top: 10px;
+  }
+  
+  .form-range::-webkit-slider-thumb {
+    background: #ffc107;
+  }
+  
+  .form-range::-moz-range-thumb {
+    background: #ffc107;
+  }
+  
+  .form-range::-ms-thumb {
+    background: #ffc107;
+  }
+  
+  .quick-amounts {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  
+  .amount-chip {
+    padding: 5px 15px;
+    border-radius: 20px;
+    background-color: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .amount-chip:hover {
+    background-color: rgba(255, 193, 7, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .apy-container {
+    display: flex;
+    margin-top: 30px;
+    padding: 15px;
+    background: linear-gradient(to right, rgba(40, 167, 69, 0.1), transparent);
+    border-radius: 10px;
+    border-left: 4px solid #28a745;
+    align-items: center;
+  }
+  
+  .apy-info {
+    flex-grow: 1;
+  }
+  
+  .apy-badge {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #28a745;
+    margin-right: 10px;
+  }
+  
+  .earnings-calculator {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(25, 25, 25, 0.4);
+    border-radius: 8px;
+  }
+  
+  .earnings-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #e9ecef;
+  }
+  
+  .earnings-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  }
+  
+  .earnings-label {
+    color: #adb5bd;
+  }
+  
+  .earnings-value {
+    font-weight: 500;
+    color: #28a745;
+  }
+  
+  .deposit-info {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .info-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #e9ecef;
+  }
+  
+  .info-list {
+    list-style: none;
+    padding-left: 5px;
+  }
+  
+  .info-list li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 10px;
+    color: #adb5bd;
+  }
+  
+  .info-list li i {
+    position: absolute;
+    left: 0;
+    top: 3px;
+    color: #ffc107;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="deposit-container">
+        <h2 class="page-title">
+          <i class="fas fa-arrow-circle-down me-2"></i>Deposit Funds
+        </h2>
+        
+        <div class="balance-wrapper">
+          <div class="balance-title">Your Wallet Balance</div>
+          <div class="balance-amount">
+            <span id="walletBalance">--</span> BNB
+          </div>
+        </div>
+        
+        {% if error %}
+        <div class="alert alert-danger">
+          <i class="fas fa-exclamation-triangle me-2"></i> {{ error }}
+        </div>
+        {% endif %}
+        
+        {% if success %}
+        <div class="alert alert-success">
+          <i class="fas fa-check-circle me-2"></i> {{ success }}
+        </div>
+        {% endif %}
+        
+        <!-- Update the form tag to use our new route -->
+        <form method="POST" action="{{ url_for('main.deposit_funds') }}" id="depositForm">
+          <div class="form-group mb-4 position-relative">
+            <label for="user_address" class="form-label">Your Wallet Address:</label>
+            <div class="wallet-connect" id="connectWallet">
+              <i class="fas fa-plug me-1"></i> Connect Wallet
+            </div>
+            <input type="text" class="form-control address-input" id="user_address" name="user_address" 
+                   value="{{ wallet_address or '' }}" placeholder="0x..." required>
+            <div class="invalid-feedback">Please enter a valid wallet address.</div>
+          </div>
+          
+          <div class="form-group mb-3">
+            <label for="amount_bnb" class="form-label">Amount to Deposit:</label>
+            <div class="input-group">
+              <input type="number" step="0.01" class="form-control" id="amount_bnb" name="amount_bnb" min="0.01" required>
+              <span class="input-group-text">BNB</span>
+            </div>
+            
+            <div class="quick-amounts">
+              <div class="amount-chip" data-amount="0.1">0.1 BNB</div>
+              <div class="amount-chip" data-amount="0.5">0.5 BNB</div>
+              <div class="amount-chip" data-amount="1">1 BNB</div>
+              <div class="amount-chip" data-amount="5">5 BNB</div>
+              <div class="amount-chip" data-amount="max">MAX</div>
+            </div>
+            
+            <div class="slider-container">
+              <input type="range" class="form-range" min="0.01" max="10" step="0.01" id="amountSlider">
+            </div>
+          </div>
+          
+          <!-- Hidden field to send the amount in wei -->
+          <input type="hidden" id="amount_wei" name="amount_wei" value="">
+          
+          <div class="apy-container">
+            <div class="apy-badge">5.2%</div>
+            <div class="apy-info">
+              <div class="fw-bold">Current APY</div>
+              <div class="text-muted small">Annual percentage yield for liquidity providers</div>
+            </div>
+          </div>
+          
+          <div class="earnings-calculator">
+            <div class="earnings-title">
+              <i class="fas fa-calculator me-2"></i> Potential Earnings
+            </div>
+            
+            <div class="earnings-row">
+              <div class="earnings-label">Daily</div>
+              <div class="earnings-value" id="dailyEarning">0.00000 BNB</div>
+            </div>
+            
+            <div class="earnings-row">
+              <div class="earnings-label">Weekly</div>
+              <div class="earnings-value" id="weeklyEarning">0.00000 BNB</div>
+            </div>
+            
+            <div class="earnings-row">
+              <div class="earnings-label">Monthly</div>
+              <div class="earnings-value" id="monthlyEarning">0.00000 BNB</div>
+            </div>
+            
+            <div class="earnings-row">
+              <div class="earnings-label">Yearly</div>
+              <div class="earnings-value" id="yearlyEarning">0.00000 BNB</div>
+            </div>
+          </div>
+          
+          <div class="deposit-info">
+            <div class="info-title">How It Works</div>
+            <ul class="info-list">
+              <li>
+                <i class="fas fa-check-circle"></i> Your deposit will be added to the lending pool, earning 5.2% APY
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> Interest is compounded and distributed automatically to your balance
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> You can withdraw your funds at any time with no penalty
+              </li>
+              <li>
+                <i class="fas fa-check-circle"></i> All transactions are secured through smart contracts on the blockchain
+              </li>
+            </ul>
+          </div>
+          
+          <div class="d-flex justify-content-between mt-4">
+            <a href="{{ url_for('users.user_dashboard') }}" class="btn btn-outline-secondary">
+              <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+            <button type="submit" class="btn btn-deposit" id="depositButton">
+              <i class="fas fa-paper-plane me-2"></i>Deposit Funds
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmDepositModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmModalLabel">
+          <i class="fas fa-hand-holding-usd me-2"></i>Confirm Deposit
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <div class="display-6 fw-bold text-warning mb-2">
+            <span id="depositAmount">0</span> BNB
+          </div>
+          <div class="text-muted">Amount to deposit</div>
+        </div>
+        
+        <div class="deposit-details">
+          <div class="row mb-2">
+            <div class="col-5">From Wallet:</div>
+            <div class="col-7 text-truncate" id="modalWalletAddress"></div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-5">To Platform:</div>
+            <div class="col-7">Lending DApp Pool</div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-5">APY Rate:</div>
+            <div class="col-7">5.2%</div>
+          </div>
+          <div class="row">
+            <div class="col-5">Gas Fee (est.):</div>
+            <div class="col-7">0.0001 BNB</div>
+          </div>
+        </div>
+        
+        <div class="alert alert-info mt-3 mb-0">
+          <small>
+            <i class="fas fa-info-circle me-2"></i> Your transaction may take a few moments to process on the blockchain.
+          </small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-deposit" id="confirmDeposit">
+          <i class="fas fa-check me-2"></i>Confirm Deposit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const amountInput = document.getElementById('amount_bnb');
+    const amountSlider = document.getElementById('amountSlider');
+    const amountWeiInput = document.getElementById('amount_wei');
+    const depositAmountSpan = document.getElementById('depositAmount');
+    const modalWalletAddress = document.getElementById('modalWalletAddress');
+    const walletAddressInput = document.getElementById('user_address');
+    const confirmDepositBtn = document.getElementById('confirmDeposit');
+    const connectWalletBtn = document.getElementById('connectWallet');
+    const walletBalanceSpan = document.getElementById('walletBalance');
+    const amountChips = document.querySelectorAll('.amount-chip');
+    
+    // Earnings calculation elements
+    const dailyEarning = document.getElementById('dailyEarning');
+    const weeklyEarning = document.getElementById('weeklyEarning');
+    const monthlyEarning = document.getElementById('monthlyEarning');
+    const yearlyEarning = document.getElementById('yearlyEarning');
+    
+    let walletBalance = 0; // Will be updated when wallet connects
+    
+    // Function to convert BNB to wei (1 BNB = 10^18 wei)
+    function bnbToWei(bnbAmount) {
+      // Convert to float
+      const bnb = parseFloat(bnbAmount);
+      if (isNaN(bnb)) return "0";
+      
+      // Convert to wei (10^18) - Using string math to avoid floating point precision issues
+      let weiValue = Math.floor(bnb * 10**18).toString();
+      return weiValue;
+    }
+    
+    // Function to update earnings projections
+    function updateEarnings() {
+      const amount = parseFloat(amountInput.value) || 0;
+      const apy = 0.052; // 5.2% APY
+      
+      const daily = (amount * apy) / 365;
+      const weekly = daily * 7;
+      const monthly = daily * 30;
+      const yearly = amount * apy;
+      
+      dailyEarning.textContent = daily.toFixed(5) + ' BNB';
+      weeklyEarning.textContent = weekly.toFixed(5) + ' BNB';
+      monthlyEarning.textContent = monthly.toFixed(5) + ' BNB';
+      yearlyEarning.textContent = yearly.toFixed(5) + ' BNB';
+    }
+    
+    // Update wei value when amount changes
+    amountInput.addEventListener('input', function() {
+      if (amountInput.value) {
+        amountWeiInput.value = bnbToWei(amountInput.value);
+        amountSlider.value = Math.min(Math.max(amountInput.value, 0.01), 10);
+        updateEarnings();
+      }
+    });
+    
+    // Update amount input when slider changes
+    amountSlider.addEventListener('input', function() {
+      amountInput.value = parseFloat(amountSlider.value).toFixed(2);
+      amountWeiInput.value = bnbToWei(amountInput.value);
+      updateEarnings();
+    });
+    
+    // Quick amount chip functionality
+    amountChips.forEach(chip => {
+      chip.addEventListener('click', function() {
+        const amount = this.getAttribute('data-amount');
+        
+        if (amount === 'max' && walletBalance > 0) {
+          // Leave a little for gas
+          const maxAmount = Math.max(0, walletBalance - 0.01).toFixed(2);
+          amountInput.value = maxAmount;
+        } else {
+          amountInput.value = amount;
+        }
+        
+        // Update slider to match
+        amountSlider.value = Math.min(Math.max(amountInput.value, 0.01), 10);
+        amountWeiInput.value = bnbToWei(amountInput.value);
+        updateEarnings();
+      });
+    });
+    
+    // Connect wallet functionality
+    connectWalletBtn.addEventListener('click', async function() {
+      if (window.ethereum) {
+        try {
+          // Request account access
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          walletAddressInput.value = accounts[0];
+          modalWalletAddress.textContent = accounts[0];
+          
+          // Get wallet balance
+          const balance = await window.ethereum.request({
+            method: 'eth_getBalance',
+            params: [accounts[0], 'latest']
+          });
+          
+          // Convert from wei to BNB
+          walletBalance = parseInt(balance, 16) / (10**18);
+          walletBalanceSpan.textContent = walletBalance.toFixed(4);
+          
+          // Update connect wallet button
+          connectWalletBtn.innerHTML = '<i class="fas fa-check me-1"></i> Connected';
+          connectWalletBtn.style.backgroundColor = 'rgba(40, 167, 69, 0.2)';
+          connectWalletBtn.style.color = '#28a745';
+          
+        } catch (error) {
+          console.error('Error connecting to wallet:', error);
+          alert('Could not connect to wallet. Please make sure MetaMask is installed and unlocked.');
+        }
+      } else {
+        alert('MetaMask is not installed. Please install MetaMask to use this feature.');
+      }
+    });
+    
+    // Show confirmation modal before submitting
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const amount = parseFloat(amountInput.value);
+      if (isNaN(amount) || amount <= 0) {
+        alert('Please enter a valid deposit amount');
+        return;
+      }
+      
+      // Ensure wallet address is valid
+      const walletRegex = /^0x[a-fA-F0-9]{40}$/;
+      if (!walletRegex.test(walletAddressInput.value)) {
+        alert('Please enter a valid Ethereum wallet address');
+        return;
+      }
+      
+      // Check if amount is greater than wallet balance
+      if (walletBalance > 0 && amount > walletBalance) {
+        alert('The amount exceeds your wallet balance');
+        return;
+      }
+      
+      // Ensure wei value is set
+      amountWeiInput.value = bnbToWei(amountInput.value);
+      
+      // Update modal content
+      depositAmountSpan.textContent = amount.toFixed(2);
+      modalWalletAddress.textContent = walletAddressInput.value;
+      
+      // Show modal
+      const modal = new bootstrap.Modal(document.getElementById('confirmDepositModal'));
+      modal.show();
+    });
+    
+    // When confirmed, submit the form to our new route
+    confirmDepositBtn.addEventListener('click', function() {
+      // Hide the modal
+      const modal = bootstrap.Modal.getInstance(document.getElementById('confirmDepositModal'));
+      modal.hide();
+      
+      // Submit form
+      form.submit();
+    });
+    
+    // Initialize earnings calculator
+    updateEarnings();
+  });
+</script>
+{% endblock %}

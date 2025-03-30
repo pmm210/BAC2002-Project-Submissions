@@ -1,0 +1,622 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard - Lending DApp{% endblock %}
+{% block content %}
+
+<!-- Hidden container for passing template data to JavaScript -->
+<div id="userDataContainer" class="d-none"
+     data-wallet-address="{{ user.wallet_address or '' }}"
+     data-contract-balance="{{ total_balance|default(0) }}">
+</div>
+
+<!-- Dashboard Navigation Tabs -->
+<ul class="nav nav-tabs mb-0 dashboard-tabs" id="dashboardTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">
+      <i class="fas fa-home"></i> Overview
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="loans-tab" data-bs-toggle="tab" data-bs-target="#loans" type="button" role="tab" aria-controls="loans" aria-selected="false">
+      <i class="fas fa-money-bill-wave"></i> My Loans
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="market-tab" data-bs-toggle="tab" data-bs-target="#market" type="button" role="tab" aria-controls="market" aria-selected="false">
+      <i class="fas fa-chart-line"></i> Market Data
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="health-tab" data-bs-toggle="tab" data-bs-target="#health" type="button" role="tab" aria-controls="health" aria-selected="false">
+      <i class="fas fa-heartbeat"></i> Loan Health
+    </button>
+  </li>
+</ul>
+
+<!-- Tab Content -->
+<div class="tab-content dashboard-tab-content" id="dashboardTabContent">
+  <!-- Overview Tab -->
+  <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+    <div class="row fade-in-up">
+      <!-- Profile Card -->
+      <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header">Profile</div>
+          <div class="card-body">
+            {% if user %}
+            <p><strong>Name:</strong> {{ user.name }}</p>
+            {% else %}
+            <p><strong>Name:</strong> Guest User</p>
+            {% endif %}
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Wallet:</strong> <span class="wallet-address">{{ user.wallet_address or "Not set" }}</span></p>
+            <a href="{{ url_for('users.profile') }}" class="btn btn-sm btn-outline-primary">Edit Profile</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credit Score Card -->
+      <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header bg-info text-white">
+            <div class="d-flex justify-content-between align-items-center">
+              <span>Credit Score</span>
+              <button id="refreshCreditScore" class="btn btn-sm btn-light" title="Refresh credit score">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body text-center">
+            <div id="creditScoreLoading">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Calculating credit score...</p>
+            </div>
+            
+            <div id="creditScoreContent" class="d-none">
+              <div class="display-4 mb-2 gold-glow" id="scoreValue">--</div>
+              <div class="progress mb-3">
+                <div id="scoreProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" 
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+              <p id="scoreDescription" class="text-muted">Your credit score determines your borrowing capacity.</p>
+            </div>
+            
+            <div id="creditScoreError" class="d-none">
+              <div class="alert alert-danger alert-enhanced">
+                <i class="fas fa-exclamation-circle"></i> 
+                <span id="scoreErrorMessage">Could not retrieve credit score.</span>
+              </div>
+            </div>
+            
+            <div class="mt-3 text-start small">
+              <p class="mb-1"><strong>Credit Score Range:</strong></p>
+              <ul class="list-unstyled ps-2">
+                <li><span class="badge bg-danger">0-20:</span> Very Poor</li>
+                <li><span class="badge bg-warning text-dark">21-40:</span> Poor</li>
+                <li><span class="badge bg-info">41-60:</span> Fair</li>
+                <li><span class="badge bg-primary">61-80:</span> Good</li>
+                <li><span class="badge bg-success">81-100:</span> Excellent</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Platform Stats Card -->
+      <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-chart-bar me-2"></i>Platform Statistics</span>
+              <button id="refreshStats" class="btn btn-sm btn-light" title="Refresh statistics">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6 mb-3">
+                <div class="stat-item">
+                  <div class="stat-label">Total Liquidity</div>
+                  <div class="stat-value" id="totalLiquidity">--</div>
+                </div>
+              </div>
+              <div class="col-6 mb-3">
+                <div class="stat-item">
+                  <div class="stat-label">Current APY</div>
+                  <div class="stat-value">5.2%</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="stat-item">
+                  <div class="stat-label">Min Collateral Ratio</div>
+                  <div class="stat-value">150%</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="stat-item">
+                  <div class="stat-label">Your Active Loans</div>
+                  <div class="stat-value" id="totalActiveLoans">--</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+          <div class="card-header bg-success text-white">
+            <span><i class="fas fa-bolt me-2"></i>Quick Actions</span>
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-2">
+              <a href="/request-loan" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Request New Loan
+              </a>
+              <a href="/repay-loan" class="btn btn-info">
+                <i class="fas fa-hand-holding-usd me-2"></i>Repay Existing Loan
+              </a>
+              <a href="/deposit" class="btn btn-secondary">
+                <i class="fas fa-wallet me-2"></i>Deposit Funds
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loans Tab -->
+  <div class="tab-pane fade" id="loans" role="tabpanel" aria-labelledby="loans-tab">
+    <div class="fade-in-up">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0"><i class="fas fa-money-bill-wave me-2"></i>Your Loans</h4>
+        <!-- Button Group for Loan Actions -->
+        <div>
+          <a href="/request-loan" class="btn btn-primary btn-sm me-2">
+            <i class="fas fa-plus"></i> Request Loan
+          </a>
+          <a href="/repay-loan" class="btn btn-secondary btn-sm me-2">
+            <i class="fas fa-hand-holding-usd"></i> Manual Repay
+          </a>
+          <button class="btn btn-warning btn-sm" onclick="window.location.reload()">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+      </div>
+      
+      {% if loans and loans|length > 0 %}
+        <div class="table-responsive">
+          <table class="table table-striped table-dark loans-table">
+            <thead>
+              <tr>
+                <th>Loan ID</th>
+                <th>Principal</th>
+                <th>Collateral</th>
+                <th>Interest Rate</th>
+                <th>Due Date</th>
+                <th>Health</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for loan in loans %}
+              <tr>
+                <td>{{ loan.loan_id }}</td>
+                <td>${{ loan.principal | from_wei }}</td>
+                <td>${{ loan.collateral | from_wei }}</td>
+                <td>{{ loan.interest_rate }}%</td>
+                <td>{{ loan.due_date | datetimeformat }}</td>
+                <td class="loan-health-cell" data-loan-id="{{ loan.loan_id }}">
+                  <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </td>
+                <td>
+                  {% if loan.is_repaid %}
+                    <span class="loan-status repaid">Repaid</span>
+                  {% else %}
+                    <span class="loan-status active">Active</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if not loan.is_repaid %}
+                    <a href="{{ url_for('main.repay_loan_page') }}?loan_id={{ loan.loan_id }}"
+                      class="btn btn-sm btn-info">
+                      Repay
+                    </a>
+                    <button type="button" class="btn btn-sm btn-outline-light ms-1" onclick="viewLoanDetails({{ loan.loan_id }})">
+                      Details
+                    </button>
+                  {% else %}
+                    <button type="button" class="btn btn-sm btn-outline-light" onclick="viewLoanDetails({{ loan.loan_id }})">
+                      Details
+                    </button>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <div class="text-center py-4 box-gold-glow" style="background-color: rgba(35, 35, 35, 0.7); border-radius: 8px; padding: 2rem;">
+          <i class="fas fa-info-circle fa-3x mb-3" style="color: #ffc107;"></i>
+          <p class="mb-3">You have no active loans.</p>
+          <a href="/request-loan" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Request a Loan
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  
+  <!-- Market Data Tab -->
+  <div class="tab-pane fade" id="market" role="tabpanel" aria-labelledby="market-tab">
+    <div class="row fade-in-up">
+      <!-- Chainlink Price Feed Card -->
+      <div class="col-md-6">
+        <div class="market-card">
+          <div class="market-card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5><i class="fas fa-link me-2"></i>Chainlink Price Feed</h5>
+              <button id="refreshPriceFeed" class="btn btn-sm btn-light" title="Refresh price data">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div class="market-card-body">
+            <div id="priceFeedLoading">
+              <div class="spinner-border text-warning" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Fetching price data...</p>
+            </div>
+            
+            <div id="priceFeedContent" class="d-none">
+              <div class="row align-items-center">
+                <div class="col-md-6 text-center mb-3 mb-md-0">
+                  <h5 class="text-muted">BNB/USD Price</h5>
+                  <div class="price-value gold-glow" id="bnbPrice">--</div>
+                  <p class="text-muted small">Updated <span id="priceUpdateTime">--</span></p>
+                </div>
+                <div class="col-md-6">
+                  <div class="price-info mb-2">
+                    <span class="info-label">Round ID:</span>
+                    <span class="info-value" id="roundId">--</span>
+                  </div>
+                  <div class="price-info mb-2">
+                    <span class="info-label">Started At:</span>
+                    <span class="info-value" id="startedAt">--</span>
+                  </div>
+                  <div class="price-info">
+                    <span class="info-label">Answered In Round:</span>
+                    <span class="info-value" id="answeredInRound">--</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="priceFeedError" class="d-none">
+              <div class="alert alert-danger alert-enhanced">
+                <i class="fas fa-exclamation-circle"></i> 
+                <span id="priceFeedErrorMessage">Could not retrieve price feed data.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Price Trend Card -->
+      <div class="col-md-6">
+        <div class="market-card">
+          <div class="market-card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5><i class="fas fa-chart-line me-2"></i>BNB Price Trend (24h)</h5>
+              <button id="refreshPriceTrend" class="btn btn-sm btn-light" title="Refresh price trend">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div class="market-card-body">
+            <div id="priceTrendLoading">
+              <div class="spinner-border text-warning" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Fetching price trend data...</p>
+            </div>
+            
+            <div id="priceTrendContent" class="d-none">
+              <div class="row align-items-center">
+                <div class="col-md-5 text-center mb-3 mb-md-0">
+                  <h5 class="text-muted mb-3">24h Change</h5>
+                  <div class="display-6 gold-glow" id="priceChange">--</div>
+                  <p id="changePercentage" class="fs-5 mt-2">--</p>
+                </div>
+                <div class="col-md-7">
+                  <div class="price-chart-container">
+                    <canvas id="priceChart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="priceTrendError" class="d-none">
+              <div class="alert alert-danger alert-enhanced">
+                <i class="fas fa-exclamation-circle"></i> 
+                <span id="priceTrendErrorMessage">Could not retrieve price trend data.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Extended Market Analysis Card (Full Width) -->
+      <div class="col-12 mt-4">
+        <div class="market-card">
+          <div class="market-card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5><i class="fas fa-chart-bar me-2"></i>Extended Market Analysis</h5>
+              <button id="refreshMarketAnalysis" class="btn btn-sm btn-light" title="Refresh analysis">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div class="market-card-body">
+            <div id="marketAnalysisLoading">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Loading market analysis...</p>
+            </div>
+            
+            <div id="marketAnalysisContent" class="d-none">
+              <div class="row">
+                <div class="col-md-8">
+                  <h5 class="mb-3">24-Hour Price Chart</h5>
+                  <div style="background-color: rgba(30, 30, 30, 0.7); padding: 1rem; border-radius: 8px;">
+                    <canvas id="fullPriceChart" height="250"></canvas>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <h5 class="mb-3">Market Statistics</h5>
+                  <div class="price-impact-card">
+                    <div class="mb-3">
+                      <div class="price-impact-label">24h High</div>
+                      <div class="price-impact-value" id="market24hHigh">--</div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="price-impact-label">24h Low</div>
+                      <div class="price-impact-value" id="market24hLow">--</div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="price-impact-label">24h Volume</div>
+                      <div class="price-impact-value">$23,456,789</div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="price-impact-label">Market Cap</div>
+                      <div class="price-impact-value">$4,567,890,123</div>
+                    </div>
+                    <div>
+                      <div class="price-impact-label">Volatility (24h)</div>
+                      <div class="price-impact-value" id="marketVolatility">--</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="marketAnalysisError" class="d-none">
+              <div class="alert alert-danger alert-enhanced">
+                <i class="fas fa-exclamation-circle"></i> 
+                <span id="marketAnalysisErrorMessage">Could not retrieve market analysis.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loan Health Tab -->
+  <div class="tab-pane fade" id="health" role="tabpanel" aria-labelledby="health-tab">
+    <div class="fade-in-up">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0"><i class="fas fa-heartbeat me-2"></i>Loan Health Monitor</h4>
+        <button id="refreshLoanHealth" class="btn btn-sm btn-danger" title="Refresh loan health data">
+          <i class="fas fa-sync-alt"></i> Refresh Data
+        </button>
+      </div>
+      
+      <div id="loanHealthLoading">
+        <div class="text-center py-4">
+          <div class="spinner-border text-danger" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Analyzing loan health status using Chainlink price feeds...</p>
+        </div>
+      </div>
+      
+      <div id="loanHealthContent" class="d-none">
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <div class="price-impact-card text-center">
+              <h5 class="mb-3">Collateral Health</h5>
+              <div class="health-gauge">
+                <canvas id="collateralHealthChart" width="180" height="180"></canvas>
+                <div class="health-gauge-label">
+                  <span id="avgHealthPercentage">--</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 mb-4">
+            <div class="price-impact-card">
+              <h5 class="mb-3">Price Impact on Your Loans</h5>
+              <div class="alert alert-info alert-enhanced">
+                <i class="fas fa-info-circle me-2"></i>
+                <span id="priceImpactMessage">Loading price impact analysis...</span>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="price-impact-card mb-3" style="background-color: rgba(30, 30, 30, 0.7);">
+                    <div class="price-impact-label">Current BNB/USD Price</div>
+                    <div class="price-impact-value" id="currentPriceImpact">$--</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="price-impact-card mb-3" style="background-color: rgba(30, 30, 30, 0.7);">
+                    <div class="price-impact-label">Liquidation Threshold</div>
+                    <div class="price-impact-value" id="liquidationThreshold">$--</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-3">
+                <label class="mb-2">Safe Margin:</label>
+                <div class="progress" style="height: 25px; background-color: rgba(30, 30, 30, 0.7);">
+                  <div id="priceMarginBar" class="progress-bar" role="progressbar" style="width: 0%">
+                    <span id="priceMarginLabel">Safe margin: --</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-12">
+            <div class="price-impact-card">
+              <h5 class="mb-3">Chainlink Price Impact Scenarios</h5>
+              <div class="table-responsive">
+                <table class="table table-dark table-striped loans-table">
+                  <thead>
+                    <tr>
+                      <th>Scenario</th>
+                      <th>Price Change</th>
+                      <th>BNB/USD</th>
+                      <th>Collateral Ratio</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Current</td>
+                      <td>--</td>
+                      <td id="scenario-current-price">$--</td>
+                      <td id="scenario-current-ratio">--</td>
+                      <td><span class="badge bg-success">Safe</span></td>
+                    </tr>
+                    <tr>
+                      <td>Slight Drop</td>
+                      <td>-5%</td>
+                      <td id="scenario-small-price">$--</td>
+                      <td id="scenario-small-ratio">--</td>
+                      <td id="scenario-small-status"><span class="badge bg-success">Safe</span></td>
+                    </tr>
+                    <tr>
+                      <td>Medium Drop</td>
+                      <td>-10%</td>
+                      <td id="scenario-medium-price">$--</td>
+                      <td id="scenario-medium-ratio">--</td>
+                      <td id="scenario-medium-status"><span class="badge bg-warning text-dark">Caution</span></td>
+                    </tr>
+                    <tr>
+                      <td>Major Drop</td>
+                      <td>-20%</td>
+                      <td id="scenario-large-price">$--</td>
+                      <td id="scenario-large-ratio">--</td>
+                      <td id="scenario-large-status"><span class="badge bg-danger">At Risk</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="loanHealthError" class="d-none">
+        <div class="alert alert-danger alert-enhanced">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="loanHealthErrorMessage">Could not analyze loan health.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loan Details Modal -->
+<div class="modal fade" id="loanDetailsModal" tabindex="-1" aria-labelledby="loanDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title gold-glow" id="loanDetailsModalLabel">Loan Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="loanDetailsLoading">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Loading loan details...</p>
+        </div>
+        
+        <div id="loanDetailsContent" class="d-none">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="border-bottom border-gold pb-2 mb-3">Loan Information</h6>
+              <p><strong>Loan ID:</strong> <span id="modal-loan-id"></span></p>
+              <p><strong>Borrower:</strong> <span id="modal-borrower"></span></p>
+              <p><strong>Principal:</strong> <span id="modal-principal"></span> BNB</p>
+              <p><strong>Collateral:</strong> <span id="modal-collateral"></span> BNB</p>
+              <p><strong>Interest Rate:</strong> <span id="modal-interest-rate"></span>%</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="border-bottom border-gold pb-2 mb-3">Timeline & Status</h6>
+              <p><strong>Start Date:</strong> <span id="modal-start-time"></span></p>
+              <p><strong>Due Date:</strong> <span id="modal-due-date"></span></p>
+              <p><strong>Repayment Status:</strong> <span id="modal-repaid"></span></p>
+              <p><strong>Health Status:</strong> <span id="modal-health-status"></span></p>
+              <p><strong>Collateral Ratio:</strong> <span id="modal-collateral-ratio"></span>%</p>
+            </div>
+          </div>
+          
+          <h6 class="border-bottom border-gold pb-2 my-3">Market Data</h6>
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Current BNB/USD Price:</strong> $<span id="modal-bnb-price"></span></p>
+              <p><strong>Required Repayment:</strong> <span id="modal-repayment"></span> BNB</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Minimum Collateral Ratio:</strong> 150%</p>
+              <p><strong>Price Last Updated:</strong> <span id="modal-price-updated"></span></p>
+            </div>
+          </div>
+        </div>
+        
+        <div id="loanDetailsError" class="d-none">
+          <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> 
+            <span id="loanDetailsErrorMessage">Could not retrieve loan details.</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="#" id="repayLoanButton" class="btn btn-primary d-none">Repay This Loan</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Include Chart.js first (if not already in base template) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Include your dashboard JS file -->
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

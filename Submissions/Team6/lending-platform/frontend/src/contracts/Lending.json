@@ -1,0 +1,731 @@
+{
+  "address": "0x5E05EF506Df458ea89b84C3f449dD1730a1E7D99",
+  "abi": [
+    {
+      "type": "constructor",
+      "stateMutability": "undefined",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_trustedForwarder"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "ReentrancyGuardReentrantCall",
+      "inputs": []
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "CreditScoreUpdated",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "borrower",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "newCreditScore",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "DebugDeposit",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "sender",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "amount",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "DebugEffectiveSender",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "effectiveSender",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "DebugRepayLoan",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "sender",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "loanId",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "totalRepayment",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "DebugRequestLoan",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "sender",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "principal",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "collateral",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "finalRate",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "FundsDeposited",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "from",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "amount",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "FundsWithdrawn",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "to",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "amount",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "LoanAutoRepaid",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "loanId",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "borrower",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "totalRepayment",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "LoanLiquidated",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "loanId",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "borrower",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "collateral",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "LoanRepaid",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "loanId",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "borrower",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "totalRepayment",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "LoanRequested",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "loanId",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "borrower",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "principal",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "collateral",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "interestRate",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "dueDate",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "RelayerPaid",
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "amount",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "CREDIT_SCORE_INCREMENT",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "CREDIT_SCORE_PENALTY",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "GAS_FEE",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "MAX_CREDIT_SCORE",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "MINIMUM_COLLATERAL_RATIO",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "admin",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "address",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "autoRepayLoan",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_loanId"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "batchAutoRepayLoans",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256[]",
+          "name": "_loanIds"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "batchLiquidateLoans",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256[]",
+          "name": "_loanIds"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "borrowerLoans",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": ""
+        },
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "creditScores",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": ""
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "depositFunds",
+      "constant": false,
+      "stateMutability": "payable",
+      "payable": true,
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "getBorrowerLoans",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_borrower"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256[]",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "getCreditScore",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_borrower"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "getEffectiveSender",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "address",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "isAutoRepaymentEligible",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_loanId"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "isLoanActive",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_loanId"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "isTrustedForwarder",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "forwarder"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "liquidateLoan",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_loanId"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "loans",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ],
+      "outputs": [
+        {
+          "type": "address",
+          "name": "borrower"
+        },
+        {
+          "type": "uint256",
+          "name": "principal"
+        },
+        {
+          "type": "uint256",
+          "name": "collateral"
+        },
+        {
+          "type": "uint256",
+          "name": "interestRate"
+        },
+        {
+          "type": "uint256",
+          "name": "dueDate"
+        },
+        {
+          "type": "bool",
+          "name": "isRepaid"
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "metaRequestLoan",
+      "constant": false,
+      "stateMutability": "payable",
+      "payable": true,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_interestRate"
+        },
+        {
+          "type": "uint256",
+          "name": "_duration"
+        },
+        {
+          "type": "address",
+          "name": "originalSender"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "relayerEarnings",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "repayLoan",
+      "constant": false,
+      "stateMutability": "payable",
+      "payable": true,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_loanId"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "requestLoan",
+      "constant": false,
+      "stateMutability": "payable",
+      "payable": true,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_interestRate"
+        },
+        {
+          "type": "uint256",
+          "name": "_duration"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "totalContractBalance",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "trustedForwarder",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "address",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "withdrawFunds",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_amount"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "withdrawRelayerEarnings",
+      "constant": false,
+      "payable": false,
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "type": "receive",
+      "stateMutability": "payable"
+    }
+  ]
+}

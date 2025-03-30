@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Lending DApp{% endblock %}</title>
+  <!-- Bootstrap 5 CSS from CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="d-flex flex-column h-100">
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Lending DApp Logo" height="40" class="me-2">
+        <span>Lending DApp</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          {% if session.user_id %}
+            <li class="nav-item"><a class="nav-link" href="/user/dashboard">Dashboard</a></li>
+            
+            <!-- Transaction menu for all users -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="transactionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-exchange-alt me-1"></i>Transactions
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="transactionDropdown">
+                <li><a class="dropdown-item" href="/deposit"><i class="fas fa-arrow-circle-down me-2"></i>Deposit Funds</a></li>
+                <li><a class="dropdown-item" href="/request-loan"><i class="fas fa-hand-holding-usd me-2"></i>Request Loan</a></li>
+                <li><a class="dropdown-item" href="/repay-loan"><i class="fas fa-money-bill-wave me-2"></i>Repay Loan</a></li>
+              </ul>
+            </li>
+            
+            <li class="nav-item"><a class="nav-link" href="/user/profile">Profile</a></li>
+            
+            {% if session.role == "admin" %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="fas fa-lock-open me-1"></i>Admin
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="adminDropdown">
+                  <li><a class="dropdown-item" href="/admin/dashboard"><i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="/withdraw"><i class="fas fa-arrow-circle-up me-2"></i>Withdraw Funds</a></li>
+                  <li><a class="dropdown-item" href="/liquidate-loan"><i class="fas fa-gavel me-2"></i>Liquidate Loan</a></li>
+                  <li><a class="dropdown-item" href="/admin/manage-users"><i class="fas fa-users-cog me-2"></i>Manage Users</a></li>
+                </ul>
+              </li>
+            {% endif %}
+            
+            <li class="nav-item"><a class="nav-link" href="/user/logout">Logout</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="/user/register">Register</a></li>
+            <li class="nav-item"><a class="nav-link" href="/user/login">Login</a></li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.learn') }}">Learn</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content with flex-grow-1 to push footer down -->
+  <main class="container my-4 flex-shrink-0" style="padding-top: 70px;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Main Footer - stays at bottom of page -->
+  <footer class="footer py-3 bg-dark text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3 mb-md-0">
+          <div class="d-flex align-items-center">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Lending DApp Logo" height="30" class="me-2">
+            <span>© 2025 Lending DApp</span>
+          </div>
+          <p class="small mt-2 mb-0">All rights reserved</p>
+        </div>
+        <div class="col-md-4 mb-3 mb-md-0">
+          <h6 class="mb-2">Quick Links</h6>
+          <ul class="list-unstyled mb-0 small">
+            <li><a href="{{ url_for('main.learn') }}" class="text-decoration-none text-white-50">Learn</a></li>
+            <li><a href="#" class="text-decoration-none text-white-50">Terms of Service</a></li>
+            <li><a href="#" class="text-decoration-none text-white-50">Privacy Policy</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6 class="mb-2">Connect with us</h6>
+          <div class="social-links">
+            <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white me-2"><i class="fab fa-github"></i></a>
+            <a href="#" class="text-white me-2"><i class="fab fa-discord"></i></a>
+            <a href="#" class="text-white"><i class="fab fa-telegram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Show floating footer by default, hide when near the bottom of the page
+    function updateFloatingFooter() {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const footerHeight = document.querySelector('footer.footer').offsetHeight;
+      const floatingFooter = document.querySelector('.floating-footer');
+      
+      // Distance from bottom of page (in pixels)
+      const distanceFromBottom = documentHeight - (scrollPosition + windowHeight);
+      
+      // Hide floating footer when we're close to the main footer
+      // (within footer height + 20px buffer)
+      if (distanceFromBottom <= (footerHeight + 20)) {
+        floatingFooter.classList.add('hidden');
+      } else {
+        floatingFooter.classList.remove('hidden');
+      }
+    }
+    // Run on scroll and on page load
+    window.addEventListener('scroll', updateFloatingFooter);
+    window.addEventListener('resize', updateFloatingFooter);
+    document.addEventListener('DOMContentLoaded', updateFloatingFooter);
+  </script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

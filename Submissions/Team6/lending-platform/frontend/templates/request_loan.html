@@ -1,0 +1,710 @@
+{% extends "base.html" %}
+{% block title %}Request Loan - Lending DApp{% endblock %}
+{% block content %}
+<div class="container my-4">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="container-box">
+        <div class="card-header-custom mb-4">
+          <h2><i class="fas fa-hand-holding-usd me-2"></i>Request a Loan</h2>
+          <p class="text-light mb-0">Submit your loan request using a secure meta-transaction via our Forwarder contract.</p>
+        </div>
+        
+        <!-- Wallet Connect Status -->
+        <div id="status" class="mb-4">
+          {% if not wallet_address %}
+          <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle me-2"></i> <strong>Wallet not connected!</strong> Please connect your wallet to continue.
+          </div>
+          {% else %}
+          <div class="alert alert-success">
+            <i class="fas fa-check-circle me-2"></i> <strong>Wallet connected!</strong> <span class="wallet-address">{{ wallet_address }}</span>
+          </div>
+          {% endif %}
+        </div>
+        
+        <!-- Credit Profile Card -->
+        <div class="loan-section credit-profile mb-4">
+          <div class="section-header">
+            <i class="fas fa-chart-bar me-2"></i>Your Credit Profile
+          </div>
+          <div class="section-content">
+            <div class="row align-items-center">
+              <div class="col-md-4 text-center">
+                <h5 class="text-gold">Credit Score</h5>
+                <div class="credit-score-display" id="loanCreditScore">--</div>
+                <div class="progress mb-3">
+                  <div id="loanScoreProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" 
+                      aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <h5 class="text-gold">Loan Terms Impact</h5>
+                <div id="creditImpactDetails" class="credit-impact-details">
+                  <div class="d-flex justify-content-between mb-3">
+                    <span class="text-light">Maximum Principal:</span>
+                    <span id="maxPrincipal" class="text-gold">--</span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-3">
+                    <span class="text-light">Interest Rate Adjustment:</span>
+                    <span id="interestAdjustment" class="text-gold">--</span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-3">
+                    <span class="text-light">Collateral Requirement:</span>
+                    <span id="collateralRequirement" class="text-gold">--</span>
+                  </div>
+                  <div class="credit-advice" id="creditAdvice">
+                    <strong>Credit Analysis:</strong> <span class="text-white">Loading credit assessment...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Loan Request Form -->
+        <div class="loan-section loan-form">
+          <div class="section-header">
+            <i class="fas fa-file-invoice-dollar me-2"></i>Loan Details
+          </div>
+          <div class="section-content">
+            <form id="loanForm">
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="principal" class="form-label">Desired Principal (BNB)</label>
+                    <div class="input-group">
+                      <input type="number" step="any" class="form-control" id="principal" name="principal" placeholder="Amount to borrow" required>
+                      <span class="input-group-text gold-bg">BNB</span>
+                    </div>
+                    <div class="form-text">Enter the amount you wish to borrow</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="collateral" class="form-label">Required Collateral (BNB)</label>
+                    <div class="input-group">
+                      <input type="number" step="any" class="form-control" id="collateral" name="collateral" placeholder="Calculated collateral" readonly>
+                      <span class="input-group-text gold-bg">BNB</span>
+                    </div>
+                    <div class="form-text">Auto-calculated based on principal amount</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="interest_rate" class="form-label">Interest Rate (%)</label>
+                    <div class="input-group">
+                      <input type="number" step="any" class="form-control" id="interest_rate" name="interest_rate" placeholder="Interest rate" required>
+                      <span class="input-group-text gold-bg">%</span>
+                    </div>
+                    <div class="form-text">Annual interest rate for this loan</div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="duration" class="form-label">Duration (days)</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="duration" name="duration" placeholder="Loan duration" required>
+                      <span class="input-group-text gold-bg">Days</span>
+                    </div>
+                    <div class="form-text">How long until loan repayment is due</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="summary-box mb-4">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="summary-item">
+                      <span class="summary-label">Total Repayment:</span>
+                      <span class="summary-value" id="total-repayment">--</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="summary-item">
+                      <span class="summary-label">Repayment Date:</span>
+                      <span class="summary-value" id="repayment-date">--</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="alert alert-info-dark mb-4">
+                <i class="fas fa-info-circle me-2"></i> Your signature will be requested when you submit this form. This signature allows us to process your loan request as a meta-transaction, with no gas fees.
+              </div>
+              
+              <div class="text-end">
+                <a href="/user/dashboard" class="btn btn-outline-gold me-2">
+                  <i class="fas fa-times me-2"></i>Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-paper-plane me-2"></i>Submit Loan Request
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Transaction Status Display -->
+        <div id="transaction-status" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Processing Modal -->
+<div class="modal fade" id="processingModal" tabindex="-1" aria-labelledby="processingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="processingModalLabel">Processing Your Loan Request</h5>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <div class="spinner-border text-gold mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p id="processing-status" class="text-light">Preparing transaction...</p>
+          <div class="progress mb-3">
+            <div id="processingProgressBar" class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Include your existing scripts -->
+<script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+<script>
+  // Add this at the beginning of the script
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check if wallet address is available
+    const walletAddress = "{{ wallet_address or '' }}";
+    if (!walletAddress) {
+        // Show wallet connection prompt with styled button
+        document.getElementById("status").innerHTML = `
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i> <strong>Wallet not connected!</strong> Please connect your wallet to continue.
+            </div>
+        `;
+        
+        // Add connect wallet button
+        const connectButton = document.createElement('button');
+        connectButton.className = 'btn btn-gold mb-3';
+        connectButton.innerHTML = '<i class="fas fa-wallet me-2"></i>Connect Wallet';
+        connectButton.onclick = connectWallet;
+        document.getElementById("status").appendChild(connectButton);
+        
+        // Disable form submission
+        document.getElementById("loanForm").querySelector('button[type="submit"]').disabled = true;
+    }
+
+    // Run everything after the DOM is fully loaded
+    fetchLoanCreditScore();
+    
+    // Add event listeners
+    document.getElementById("principal").addEventListener("input", updateLoanCalculations);
+    document.getElementById("interest_rate").addEventListener("input", updateLoanCalculations);
+    document.getElementById("duration").addEventListener("input", updateLoanCalculations);
+  });
+
+  // Function to update all calculations when inputs change
+  function updateLoanCalculations() {
+    updateCollateral();
+    updateRepaymentInfo();
+  }
+  
+  // Function to calculate repayment info
+  function updateRepaymentInfo() {
+    const principal = parseFloat(document.getElementById("principal").value) || 0;
+    const interestRate = parseFloat(document.getElementById("interest_rate").value) || 0;
+    const duration = parseInt(document.getElementById("duration").value) || 0;
+    
+    // Calculate total repayment (principal + interest)
+    const interest = principal * (interestRate / 100);
+    const totalRepayment = principal + interest;
+    
+    // Calculate repayment date
+    const today = new Date();
+    const repaymentDate = new Date(today.setDate(today.getDate() + duration));
+    
+    // Update the UI
+    document.getElementById("total-repayment").textContent = totalRepayment.toFixed(4) + " BNB";
+    document.getElementById("repayment-date").textContent = repaymentDate.toLocaleDateString();
+  }
+
+  // Function to connect wallet
+  async function connectWallet() {
+    try {
+        const statusDiv = document.getElementById("status");
+        statusDiv.innerHTML = '<div class="alert alert-info"><i class="fas fa-spinner fa-spin me-2"></i> Connecting to wallet...</div>';
+        
+        // Request account access
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+        const accounts = await web3.eth.getAccounts();
+        const userAddress = accounts[0];
+        
+        // Store the wallet address in session and reload the page
+        const response = await fetch('/update-wallet', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ wallet_address: userAddress })
+        });
+        
+        if (response.ok) {
+            statusDiv.innerHTML = '<div class="alert alert-success"><i class="fas fa-check-circle me-2"></i> Wallet connected! Refreshing page...</div>';
+            setTimeout(() => location.reload(), 1000);
+        } else {
+            const data = await response.json();
+            statusDiv.innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i> Error: ${data.error}</div>`;
+        }
+    } catch (error) {
+        document.getElementById("status").innerHTML = `<div class="alert alert-danger"><i class="fas fa-exclamation-circle me-2"></i> Error connecting wallet: ${error.message}</div>`;
+    }
+  }
+
+  // Initialize web3 with MetaMask's provider
+  if (window.ethereum) {
+    window.web3 = new Web3(window.ethereum);
+  } else {
+    alert("MetaMask is not installed. Please install MetaMask and try again.");
+  }
+
+  // Get contract details passed from Flask
+  const lendingAddress = "{{ CONTRACT_ADDRESS }}";
+  const lendingABI = {{ lending_abi|tojson }};
+  const forwarderAddress = "{{ FORWARDER_ADDRESS }}";
+  // Use the pre-serialized ABI for forwarder from backend
+  const forwarderABI = {{ forwarder_abi_json | safe }};
+
+  // Create contract instances for LendingPlatform and Forwarder
+  const lendingContract = new web3.eth.Contract(lendingABI, lendingAddress);
+  const forwarderContract = new web3.eth.Contract(forwarderABI, forwarderAddress);
+
+  // Minimum collateral ratio (150%)
+  const MIN_COLLATERAL_RATIO = 150;
+  
+  // Helper: Convert amount to wei (assumes 18 decimals)
+  function toWei(amount) {
+    return web3.utils.toWei(amount, "ether");
+  }
+
+  // When the user enters the desired principal, automatically calculate collateral.
+  function updateCollateral() {
+    const principal = document.getElementById("principal").value;
+    const collateralField = document.getElementById("collateral");
+    if (principal && parseFloat(principal) > 0) {
+      const collateral = parseFloat(principal) * (MIN_COLLATERAL_RATIO / 100);
+      collateralField.value = collateral.toFixed(6);
+    } else {
+      collateralField.value = "";
+    }
+  }
+
+  // Function to show modal with processing status
+  function showProcessingModal(initialMessage = "Preparing transaction...") {
+    document.getElementById("processing-status").textContent = initialMessage;
+    document.getElementById("processingProgressBar").style.width = "10%";
+    document.getElementById("processingProgressBar").setAttribute("aria-valuenow", "10");
+    
+    const modal = new bootstrap.Modal(document.getElementById('processingModal'));
+    modal.show();
+    return modal;
+  }
+  
+  // Function to update processing status in modal
+  function updateProcessingStatus(message, progressPercent) {
+    document.getElementById("processing-status").textContent = message;
+    document.getElementById("processingProgressBar").style.width = `${progressPercent}%`;
+    document.getElementById("processingProgressBar").setAttribute("aria-valuenow", progressPercent);
+  }
+
+  async function sendMetaTransaction() {
+    try {
+      // Show processing modal
+      const modal = showProcessingModal("Connecting to wallet...");
+      
+      // Clear previous status
+      const statusDiv = document.getElementById("transaction-status");
+      statusDiv.innerHTML = "";
+      
+      // Request account access and get user's address
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      const accounts = await web3.eth.getAccounts();
+      const userAddress = accounts[0];
+      
+      updateProcessingStatus("Preparing transaction data...", 20);
+  
+      // Get form values
+      const principal = document.getElementById("principal").value;
+      const collateral = document.getElementById("collateral").value;
+      const interestRate = document.getElementById("interest_rate").value;
+      const durationDays = document.getElementById("duration").value;
+      const durationSeconds = durationDays * 24 * 60 * 60;
+  
+      // Encode the call for requestLoan(interestRate, duration)
+      const encodedData = lendingContract.methods.requestLoan(interestRate, durationSeconds).encodeABI();
+      
+      updateProcessingStatus("Retrieving nonce...", 30);
+      
+      // Get the current nonce for this user
+      let nonce;
+      try {
+        // First, try fetching nonce from backend endpoint
+        const nonceResponse = await fetch(`/meta/get-nonce?address=${userAddress}`);
+        const nonceData = await nonceResponse.json();
+        
+        if (nonceData.error) {
+          console.error("Backend nonce error:", nonceData.error);
+          updateProcessingStatus("Trying alternative nonce retrieval...", 35);
+          
+          // If backend fails, try client-side fallbacks
+          try {
+            // Try nonces mapping (most common)
+            nonce = Number(await forwarderContract.methods.nonces(userAddress).call());
+            console.log("Nonce retrieved from nonces mapping:", nonce);
+            updateProcessingStatus("Nonce retrieved from contract", 40);
+          } catch (nonceErr1) {
+            console.error("Error using nonces mapping:", nonceErr1);
+            
+            try {
+              // Try getNonce function
+              nonce = Number(await forwarderContract.methods.getNonce(userAddress).call());
+              console.log("Nonce retrieved from getNonce function:", nonce);
+              updateProcessingStatus("Nonce retrieved from getNonce", 40);
+            } catch (nonceErr2) {
+              console.error("Error using getNonce function:", nonceErr2);
+              throw new Error("All nonce retrieval methods failed");
+            }
+          }
+        } else {
+          nonce = nonceData.nonce;
+          console.log("Nonce retrieved from backend endpoint:", nonce);
+          updateProcessingStatus("Nonce retrieved successfully", 40);
+        }
+      } catch (error) {
+        console.error("Error getting nonce:", error);
+        throw new Error(`Error retrieving nonce: ${error.message}`);
+      }
+      
+      const deadline = Math.floor(Date.now() / 1000) + 3600;
+      updateProcessingStatus("Preparing signature request...", 50);
+  
+      // Build the meta-transaction request object with checksummed addresses
+      const forwardRequest = {
+        from: web3.utils.toChecksumAddress(userAddress),
+        to: web3.utils.toChecksumAddress(lendingAddress),
+        value: toWei(collateral),
+        gas: 2000000,
+        nonce: nonce,
+        deadline: deadline,
+        data: encodedData
+      };
+  
+      // Build the EIP-712 domain object
+      const chainId = Number(await web3.eth.getChainId());
+      const domain = {
+        name: "LendingForwarder",
+        version: "1",
+        chainId: chainId,
+        verifyingContract: web3.utils.toChecksumAddress(forwarderAddress)
+      };
+      
+      // Keep the types as is to avoid BigInt problems
+      const types = {
+        EIP712Domain: [
+          { name: "name", type: "string" },
+          { name: "version", type: "string" },
+          { name: "chainId", type: "uint256" },
+          { name: "verifyingContract", type: "address" }
+        ],
+        ForwardRequest: [
+          { name: "from", type: "address" },
+          { name: "to", type: "address" },
+          { name: "value", type: "uint256" },
+          { name: "gas", type: "uint256" },
+          { name: "nonce", type: "uint256" },
+          { name: "deadline", type: "uint48" },
+          { name: "data", type: "bytes" }
+        ]
+      };
+  
+      const typedData = { 
+        domain: domain,
+        primaryType: "ForwardRequest",
+        types: types,
+        message: forwardRequest
+      };
+      
+      const typedDataString = JSON.stringify(typedData);
+      console.log("Typed data string:", typedDataString);
+      
+      // Sign the typed data with MetaMask using eth_signTypedData_v4
+      updateProcessingStatus("Requesting your signature through wallet...", 60);
+      const signature = await window.ethereum.request({
+        method: "eth_signTypedData_v4",
+        params: [userAddress, typedDataString],
+      });
+  
+      // Add debug info for the backend
+      console.log("Signature:", signature);
+      updateProcessingStatus("Signature obtained!", 70);
+      
+      // Verify signature on-chain if possible
+      try {
+        updateProcessingStatus("Verifying signature...", 75);
+        const isValid = await forwarderContract.methods.verify(forwardRequest, signature).call();
+        if (isValid) {
+          console.log("On-chain signature verification successful");
+          updateProcessingStatus("Signature verified on-chain!", 80);
+        } else {
+          console.warn("On-chain signature verification FAILED");
+          updateProcessingStatus("Signature validation failed on-chain! Transaction will likely revert.", 80);
+          // Ask for confirmation before proceeding
+          if (!confirm("Signature verification failed. Do you still want to proceed? (Transaction may fail)")) {
+            updateProcessingStatus("Transaction cancelled by user.", 100);
+            return;
+          }
+        }
+      } catch (verifyError) {
+        console.error("Error verifying signature:", verifyError);
+        updateProcessingStatus(`Could not verify signature on-chain: ${verifyError.message}`, 80);
+      }
+  
+      // Build payload for the backend meta-transaction endpoint
+      const payload = {
+        interestRate: interestRate,
+        duration: durationSeconds,
+        collateral: collateral,
+        message: forwardRequest,
+        signature: signature
+      };
+  
+      // Send payload to backend meta-transaction endpoint
+      updateProcessingStatus("Sending meta-transaction...", 85);
+      const response = await fetch("/meta/request-loan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      if (response.ok) {
+        updateProcessingStatus("Meta-transaction sent!", 90);
+        
+        // Store transaction data in session storage for the success page
+        const successData = {
+          txHash: result.txHash,
+          principal: document.getElementById("principal").value,
+          collateral: document.getElementById("collateral").value,
+          interestRate: document.getElementById("interest_rate").value,
+          duration: document.getElementById("duration").value,
+          timestamp: new Date().toISOString()
+        };
+        
+        sessionStorage.setItem('loanRequestData', JSON.stringify(successData));
+        
+        // Show final success message
+        updateProcessingStatus("Transaction complete! Redirecting to success page...", 100);
+        
+        // Redirect to success page after a short delay
+        setTimeout(() => {
+          window.location.href = '/loan-success';
+        }, 1500);
+      } else {
+        updateProcessingStatus(`Error: ${result.error}`, 100);
+        statusDiv.innerHTML += `<div class="alert alert-danger">Error: ${result.error}</div>`;
+      }
+    } catch (error) {
+      console.error("Meta-transaction error:", error);
+      document.getElementById("transaction-status").innerHTML += `<div class="alert alert-danger">Error: ${error.message || JSON.stringify(error)}</div>`;
+      updateProcessingStatus(`Error: ${error.message || JSON.stringify(error)}`, 100);
+    }
+  }
+  
+  document.getElementById("loanForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    sendMetaTransaction();
+  });
+
+
+// Modified fetchLoanCreditScore function with improved error handling
+async function fetchLoanCreditScore() {
+  let walletAddress = "{{ wallet_address or '' }}";
+  
+  // If no wallet address from session, try getting it from MetaMask
+  if (!walletAddress) {
+    try {
+      // Try to get address from MetaMask if connected
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        if (accounts && accounts.length > 0) {
+          walletAddress = accounts[0];
+          console.log("Using wallet address from MetaMask:", walletAddress);
+        }
+      }
+    } catch (error) {
+      console.error("Error accessing MetaMask:", error);
+    }
+  }
+  
+  if (!walletAddress) {
+    document.getElementById('creditImpactDetails').innerHTML = 
+      '<div class="alert alert-warning">Please connect your wallet to view your credit score.</div>';
+    return;
+  }
+  
+  try {
+    console.log("Fetching credit score for:", walletAddress);
+    
+    // Show loading state in the credit impact section
+    document.getElementById('creditImpactDetails').innerHTML = `
+      <div class="d-flex justify-content-between small mb-2">
+        <span>Maximum Principal:</span>
+        <span id="maxPrincipal">--</span>
+      </div>
+      <div class="d-flex justify-content-between small mb-2">
+        <span>Interest Rate Adjustment:</span>
+        <span id="interestAdjustment">--</span>
+      </div>
+      <div class="d-flex justify-content-between small mb-2">
+        <span>Collateral Requirement:</span>
+        <span id="collateralRequirement">--</span>
+      </div>
+      <div class="alert alert-info small mt-2" id="creditAdvice">
+        <div class="text-center">
+          <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span class="ms-2">Loading your credit data...</span>
+        </div>
+      </div>
+    `;
+    
+    const response = await fetch(`/meta/get-credit-score?borrower=${walletAddress}`);
+    
+    if (!response.ok) {
+      throw new Error(`API returned ${response.status}: ${response.statusText}`);
+    }
+    
+    const responseText = await response.text();
+    console.log("Raw API response:", responseText);
+    
+    // Parse the JSON response
+    const data = JSON.parse(responseText);
+    console.log("Parsed response:", data);
+    
+    // Handle case where creditScore might be 0 (valid value)
+    if (!('creditScore' in data)) {
+      throw new Error("No credit score found in response");
+    }
+    
+    // Convert credit score to a number
+    const score = parseInt(data.creditScore);
+    console.log("Credit score:", score);
+    
+    // Update UI with credit score
+    document.getElementById('loanCreditScore').textContent = score;
+    
+    // Update progress bar
+    const progressBar = document.getElementById('loanScoreProgressBar');
+    progressBar.style.width = `${score}%`;
+    progressBar.setAttribute('aria-valuenow', score);
+    
+    // Update the class based on score
+    updateProgressBarClass(progressBar, score);
+    
+    // Important: Give the DOM time to render the elements before trying to update them
+    setTimeout(() => {
+      updateCreditImpact(score);
+    }, 100);
+    
+  } catch (error) {
+    console.error("Error fetching loan credit score:", error);
+    document.getElementById('creditImpactDetails').innerHTML = `
+      <div class="alert alert-danger">Error: ${error.message}</div>
+    `;
+  }
+}
+
+// Helper function to update credit impact details based on score
+function updateCreditImpact(score) {
+  // Check if all elements exist before attempting to update them
+  const maxPrincipalElem = document.getElementById('maxPrincipal');
+  const interestAdjustmentElem = document.getElementById('interestAdjustment');
+  const collateralRequirementElem = document.getElementById('collateralRequirement');
+  const creditAdviceElem = document.getElementById('creditAdvice');
+  
+  // If any of these elements don't exist, don't proceed
+  if (!maxPrincipalElem || !interestAdjustmentElem || !collateralRequirementElem || !creditAdviceElem) {
+    console.error("Credit impact elements not found in DOM:", {
+      maxPrincipal: !!maxPrincipalElem,
+      interestAdjustment: !!interestAdjustmentElem,
+      collateralRequirement: !!collateralRequirementElem,
+      creditAdvice: !!creditAdviceElem
+    });
+    return;
+  }
+  
+  // Calculate loan terms based on credit score
+  let maxPrincipal, interestAdjustment, collateralRatio, advice;
+  
+  if (score >= 81) {
+    maxPrincipal = "10 BNB";
+    interestAdjustment = "-2%";
+    collateralRatio = "120%";
+    advice = "Your excellent credit score qualifies you for our best loan terms!";
+  } else if (score >= 61) {
+    maxPrincipal = "5 BNB";
+    interestAdjustment = "-1%";
+    collateralRatio = "130%";
+    advice = "Good credit! You qualify for favorable loan terms.";
+  } else if (score >= 41) {
+    maxPrincipal = "3 BNB";
+    interestAdjustment = "0%";
+    collateralRatio = "150%";
+    advice = "Standard loan terms apply with your current credit score.";
+  } else if (score >= 21) {
+    maxPrincipal = "1 BNB";
+    interestAdjustment = "+2%";
+    collateralRatio = "180%";
+    advice = "Consider improving your credit score for better loan terms.";
+  } else {
+    maxPrincipal = "0.5 BNB";
+    interestAdjustment = "+4%";
+    collateralRatio = "200%";
+    advice = "Your credit score is low. Consider building credit history first.";
+  }
+  
+  // Update the UI
+  maxPrincipalElem.textContent = maxPrincipal;
+  interestAdjustmentElem.textContent = interestAdjustment;
+  collateralRequirementElem.textContent = collateralRatio;
+  creditAdviceElem.textContent = advice;
+}
+
+// Helper function to update progress bar class based on score
+function updateProgressBarClass(progressBar, score) {
+  // Remove existing color classes
+  progressBar.classList.remove('bg-success', 'bg-primary', 'bg-info', 'bg-warning', 'bg-danger', 'bg-gold');
+  
+  // Add appropriate color class based on score
+  if (score >= 81) {
+    progressBar.classList.add('bg-gold');
+  } else if (score >= 61) {
+    progressBar.classList.add('bg-success');
+  } else if (score >= 41) {
+    progressBar.classList.add('bg-info-custom');
+  } else if (score >= 21) {
+    progressBar.classList.add('bg-warning');
+  } else {
+    progressBar.classList.add('bg-danger');
+  }
+}
+</script>
+{% endblock %}

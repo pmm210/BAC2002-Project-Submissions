@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+{% block title %}Login - Lending DApp{% endblock %}
+
+{% block extra_head %}
+<style>
+  .login-container {
+    max-width: 450px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: rgba(33, 37, 41, 0.8);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 193, 7, 0.1);
+    margin-top: 40px;
+  }
+  
+  .form-floating {
+    margin-bottom: 20px;
+  }
+  
+  .form-floating > label {
+    color: #adb5bd;
+  }
+  
+  .form-control {
+    background-color: rgba(25, 25, 25, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e9ecef;
+  }
+  
+  .form-control:focus {
+    background-color: rgba(30, 30, 30, 0.9);
+    border-color: rgba(255, 193, 7, 0.5);
+    box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+  }
+  
+  .password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 13px;
+    cursor: pointer;
+    color: #adb5bd;
+  }
+  
+  .form-header {
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+    padding-bottom: 15px;
+  }
+  
+  .form-header h2 {
+    color: #ffc107;
+    font-weight: 600;
+  }
+  
+  .btn-login {
+    background: linear-gradient(45deg, #ffc107, #ff8f00);
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #212529;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+  }
+  
+  .register-link {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .register-link a {
+    color: #ffc107;
+    text-decoration: none;
+  }
+  
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+  
+  .social-login {
+    margin: 20px 0;
+    position: relative;
+    text-align: center;
+  }
+  
+  .social-login::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    top: 50%;
+    left: 0;
+  }
+  
+  .social-login span {
+    display: inline-block;
+    padding: 0 15px;
+    background: rgba(33, 37, 41, 0.8);
+    position: relative;
+    color: #adb5bd;
+  }
+  
+  .social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+  }
+  
+  .btn-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(25, 25, 25, 0.7);
+    color: #e9ecef;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-social:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+  }
+  
+  .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="login-container animate__animated animate__fadeIn">
+        <div class="form-header">
+          <h2>Welcome Back</h2>
+          <p class="text-muted">Sign in to continue to the platform</p>
+        </div>
+        
+        <form action="{{ url_for('users.login') }}" method="POST" id="loginForm">
+          <div class="form-floating">
+            <input type="email" class="form-control" id="email" name="email" placeholder=" " required>
+            <label for="email"><i class="fas fa-envelope me-2"></i>Email Address</label>
+          </div>
+          
+          <div class="form-floating position-relative">
+            <input type="password" class="form-control" id="password" name="password" placeholder=" " required>
+            <label for="password"><i class="fas fa-lock me-2"></i>Password</label>
+            <span class="password-toggle" id="passwordToggle">
+              <i class="far fa-eye"></i>
+            </span>
+          </div>
+          
+          <div class="remember-forgot">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="remember" name="remember">
+              <label class="form-check-label" for="remember">
+                Remember me
+              </label>
+            </div>
+            <div>
+              <a href="#" class="text-muted small">Forgot password?</a>
+            </div>
+          </div>
+          
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-login">
+              <i class="fas fa-sign-in-alt me-2"></i>Sign In
+            </button>
+          </div>
+        </form>
+        
+        <div class="social-login">
+          <span>Or sign in with</span>
+        </div>
+        
+        <div class="social-buttons">
+          <a href="#" class="btn btn-social">
+            <i class="fab fa-ethereum"></i>
+          </a>
+          <a href="#" class="btn btn-social">
+            <i class="fab fa-google"></i>
+          </a>
+          <a href="#" class="btn btn-social">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        
+        <div class="register-link">
+          <p>Don't have an account? <a href="{{ url_for('users.show_register') }}">Register now</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Password visibility toggle
+    const passwordToggle = document.getElementById('passwordToggle');
+    const passwordField = document.getElementById('password');
+    
+    if (passwordToggle && passwordField) {
+      passwordToggle.addEventListener('click', function() {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        
+        // Toggle icon
+        const icon = this.querySelector('i');
+        if (type === 'text') {
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      });
+    }
+    
+    // Form validation
+    const form = document.getElementById('loginForm');
+    
+    if (form) {
+      form.addEventListener('submit', function(event) {
+        if (!form.checkValidity()) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        
+        form.classList.add('was-validated');
+      });
+    }
+  });
+</script>
+{% endblock %}

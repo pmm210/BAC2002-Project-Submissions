@@ -1,0 +1,1710 @@
+/* Body and General Styles */
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: rgba(44, 44, 44, 0.9);
+  color: #ffc107;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding-top: 70px; /* adjust if navbar height changes */
+  padding-bottom: 80px; /* footer height */
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+  padding-top: 70px; /* Space for fixed navbar */
+  padding-bottom: 30px; /* Space for footer */
+}
+
+/* Links */
+a {
+  color: #ffc107;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ffd54f;
+  text-decoration: underline;
+}
+
+/* Navbar */
+.navbar {
+  background-color: rgba(44, 44, 44, 0.9);
+  border-bottom: 2px solid #ffc107;
+}
+
+.navbar-brand,
+.nav-link {
+  color: #ffc107 !important;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: #ffd54f !important;
+}
+
+/* Logo styling */
+.navbar-brand img {
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+}
+
+/* Video Background */
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  opacity: 0.6;
+  transition: opacity 1s ease-in-out;
+}
+
+/* Dark Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+/* Hero Content Box */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  padding: 2rem 2.5rem;
+  text-align: center;
+  background-color: rgba(43, 43, 43, 0.8); /* semi-transparent background */
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  margin: 2rem auto;
+  max-width: 800px;
+  color: #ffc107;
+}
+
+/* Optional subtle border */
+.hero-content {
+  border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+/* Cards and Containers */
+.card {
+  background-color: rgba(43, 43, 43, 0.9);
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  color: #ffc107;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.2);
+}
+
+.card-header {
+  background-color: #333;
+  color: #ffc107;
+  font-size: 1.25rem;
+  border-bottom: 2px solid #ffc107;
+}
+
+.card-body {
+  color: #ffc107;
+}
+
+.container-box {
+  background-color: rgba(43, 43, 43, 0.9);
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.15);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-gold {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #000;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #ffd54f;
+  border-color: #ffd54f;
+  color: #000;
+}
+
+/* Footer fixed at bottom */
+footer {
+  background-color: rgba(44, 44, 44, 0.9);
+  color: #ffc107;
+  padding: 15px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+}
+
+
+.footer .social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.footer .social-links a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Metric Cards */
+.metrics-box {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.metric-card {
+  padding: 1.5rem;
+  background-color: rgba(50, 50, 50, 0.7);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 193, 7, 0.2);
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffc107;
+  margin-bottom: 0.5rem;
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  color: #ddd;
+}
+
+/* Stat boxes in hero section */
+.stat-box {
+  background-color: rgba(50, 50, 50, 0.7);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  padding: 0.5rem 1.5rem;
+  margin: 0.5rem;
+}
+
+/* Testimonials styling */
+.testimonial-card {
+  background-color: rgba(50, 50, 50, 0.7);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  padding: 2rem;
+  height: 100%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 193, 7, 0.2);
+}
+
+.quote-icon {
+  color: rgba(255, 193, 7, 0.3);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.testimonial-text {
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+}
+
+.testimonial-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-right: 1rem;
+  border: 2px solid #ffc107;
+}
+
+.author-name {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.author-title {
+  font-size: 0.8rem;
+  color: #bbb;
+  margin-bottom: 0;
+}
+
+/* Button outline style */
+.btn-outline-light {
+  color: #ffc107;
+  border-color: #ffc107;
+}
+
+.btn-outline-light:hover {
+  background-color: #ffc107;
+  color: #000;
+}
+
+/* Add these updated styles at the end of your file */
+
+/* Improved text contrast for alerts and badges on dark backgrounds */
+.bg-warning.text-dark {
+  color: #000000 !important; /* Darker black for better contrast on warning yellow */
+  font-weight: 500;
+}
+
+/* Make text more visible in credit score descriptions */
+#scoreDescription {
+  color: #e0e0e0 !important; /* Light gray instead of muted text */
+  font-weight: 400;
+}
+
+/* Enhanced styling for the credit score card */
+.card .text-muted {
+  color: #e0e0e0 !important; /* Override Bootstrap's text-muted to be more visible */
+}
+
+.text-muted {
+  color: #e0e0e0 !important; /* Light gray for better visibility */
+}
+
+/* For badge text that needs to be dark on light backgrounds */
+.badge.bg-warning.text-dark {
+  color: #000 !important;
+  font-weight: 600;
+}
+
+/* Enhance all text in tables for better visibility */
+.table {
+  color: #e0e0e0;
+}
+
+/* Make small text more readable */
+.small {
+  color: #d0d0d0;
+}
+
+/* Better contrast for list items in credit score range */
+.list-unstyled li {
+  margin-bottom: 0.5rem;
+  color: #e0e0e0;
+}
+
+/* Improve alert styling on dark background */
+.alert-danger {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #ff6b6b;
+  border-color: rgba(220, 53, 69, 0.3);
+}
+
+/* Style for progress bars to ensure good contrast */
+.progress {
+  background-color: #333;
+}
+
+/* Credit score color classes with improved visibility */
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.bg-warning {
+  background-color: #ffc107 !important;
+}
+
+.bg-info {
+  background-color: #0dcaf0 !important;
+}
+
+.bg-primary {
+  background-color: #0d6efd !important;
+}
+
+.bg-success {
+  background-color: #198754 !important;
+}
+
+/* Add these styles at the end of your styles.css file */
+
+/* Modal styling to match dark theme */
+.modal-content {
+  background-color: rgba(43, 43, 43, 0.95);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.modal-title {
+  color: #ffc107;
+}
+
+/* Make sure dark-themed alerts in modals have proper styling */
+.modal .alert {
+  background-color: rgba(50, 50, 50, 0.7);
+}
+
+.modal .alert-info {
+  background-color: rgba(23, 162, 184, 0.2);
+  border-color: rgba(23, 162, 184, 0.4);
+  color: #17a2b8;
+}
+
+/* Style close button */
+.modal .btn-close {
+  filter: invert(1) brightness(1.5);
+}
+
+/* New styles for the Profile page - add at the end of your CSS file */
+
+/* Profile Header */
+.profile-header {
+  background-color: rgba(43, 43, 43, 0.9);
+  border: 1px solid rgba(255, 193, 7, 0.4);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.15);
+}
+
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 0 auto;
+  background-color: rgba(50, 50, 50, 0.7);
+  border: 3px solid #ffc107;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+}
+
+.avatar-placeholder {
+  font-size: 4rem;
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.gold-icon {
+  color: #ffc107;
+}
+
+.wallet-address {
+  font-family: monospace;
+  font-size: 1.1rem;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: #ffc107;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+.btn-icon:hover {
+  color: #ffd54f;
+}
+
+/* Profile Cards */
+.profile-card {
+  margin-bottom: 2rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.2);
+}
+
+.card-header-custom {
+  border-bottom: 1px solid rgba(255, 193, 7, 0.4);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-header-custom h3 {
+  font-size: 1.5rem;
+  color: #ffc107;
+  margin-bottom: 0;
+}
+
+.card-content {
+  padding: 0.5rem 0.25rem;
+}
+
+/* Form Styling */
+.form-label {
+  color: #ffc107;
+  font-weight: 500;
+}
+
+.form-control {
+  background-color: rgba(50, 50, 50, 0.7);
+  border: 1px solid rgba(255, 193, 7, 0.4);
+  color: #fff;
+}
+
+.form-control:focus {
+  background-color: rgba(60, 60, 60, 0.7);
+  border-color: #ffc107;
+  color: #fff;
+  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+}
+
+.form-text {
+  color: #ffffff !important;
+}
+
+/* Account Info Section */
+.account-info {
+  padding: 1rem 0;
+}
+
+.info-label {
+  color: #bbb;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.info-value {
+  color: #ffc107;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* Activity Section */
+.activity-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: rgba(50, 50, 50, 0.7);
+  border: 2px solid #ffc107;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  color: #ffc107;
+  font-size: 1.2rem;
+}
+
+.activity-details {
+  flex-grow: 1;
+}
+
+.activity-title {
+  color: #bbb;
+  font-size: 0.9rem;
+}
+
+.activity-value {
+  color: #ffc107;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Balance Section */
+.balance-display {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.balance-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffc107;
+  margin-bottom: 0.25rem;
+}
+
+.balance-currency {
+  color: #bbb;
+  font-size: 1.1rem;
+}
+
+/* Custom Outline Button */
+.btn-outline-gold {
+  color: #ffc107;
+  border-color: #ffc107;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+  color: #000;
+  background-color: #ffc107;
+  border-color: #ffc107;
+}
+
+/* Badge Styling */
+.badge.bg-warning {
+  color: #000;
+  font-weight: 600;
+}
+
+.badge.bg-info {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Add these dashboard-specific styles at the end of your styles.css file */
+
+/* Price feed & stats styling */
+.price-info {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.price-info:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.info-value {
+  font-weight: 500;
+  color: #ffc107;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: rgba(43, 43, 43, 0.6);
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 5px;
+}
+
+.stat-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #ffc107;
+}
+
+/* Modal styling for dark theme */
+.modal-content.bg-dark {
+  background-color: rgba(43, 43, 43, 0.95) !important;
+  border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.modal-header, .modal-footer {
+  border-color: rgba(255, 193, 7, 0.4);
+}
+
+.border-gold {
+  border-color: rgba(255, 193, 7, 0.4) !important;
+}
+
+.btn-close-white {
+  filter: invert(1) brightness(1.5);
+}
+
+/* Loan health badges */
+.badge.bg-success {
+  color: #fff;
+}
+
+/* Enhance table styling */
+.table-dark {
+  background-color: rgba(33, 33, 33, 0.8);
+}
+
+.table-dark th {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-top: 2px solid rgba(255, 193, 7, 0.4);
+  color: #ffc107;
+}
+
+/* Add these styles at the end of your styles.css file */
+
+/* Improved contrast and readability for loan request page */
+
+/* Gold background for input group appendix */
+.gold-bg {
+  background-color: #ffc107;
+  color: #000;
+  font-weight: 500;
+  border-color: #ffc107;
+}
+
+
+/* Loan section styling */
+.loan-section {
+  background-color: rgba(50, 50, 50, 0.7);
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.section-header {
+  background-color: rgba(40, 40, 40, 0.8);
+  color: #ffc107;
+  padding: 1rem 1.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.section-content {
+  padding: 1.5rem;
+}
+
+/* Credit profile styling */
+.credit-score-display {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffc107;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.credit-impact-details {
+  background-color: rgba(43, 43, 43, 0.7);
+  border-radius: 8px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 193, 7, 0.2);
+}
+
+/* Credit advice box - much better contrast */
+.credit-advice {
+  background-color: rgba(25, 25, 25, 0.95);  /* Much darker background */
+  border-left: 3px solid #ffc107;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: 0 8px 8px 0;
+  color: #ffffff;  /* Pure white text */
+  font-weight: 500;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.2px;  /* Slightly wider letter spacing for readability */
+}
+
+/* Add specific styling for alert within credit advice */
+.alert.alert-info.small {
+  background-color: rgba(23, 162, 184, 0.15);
+  border-color: rgba(23, 162, 184, 0.4);
+  color: #ffffff !important;  /* Force white text */
+  font-weight: 500;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+  padding: 0.75rem 1rem;
+}
+
+/* For more emphasis on important credit advice */
+#creditAdvice {
+  font-size: 1rem !important;
+}
+
+/* Fix all small text in alerts to be more visible */
+.alert.small {
+  color: #ffffff !important;
+}
+
+/* Add a gold highlight to make important advice stand out */
+.credit-advice strong {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+/* Summary box styling */
+.summary-box {
+  background-color: rgba(60, 60, 60, 0.7);
+  border-radius: 8px;
+  padding: 1.2rem;
+  border: 1px dashed rgba(255, 193, 7, 0.4);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.summary-label {
+  color: #d0d0d0;
+  font-weight: 500;
+}
+
+.summary-value {
+  color: #ffc107;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Improved text visibility for all text in forms */
+.form-label, .text-gold {
+  color: #ffc107 !important;
+}
+
+/* Fixed text colors that were hard to read */
+.text-light {
+  color: #e0e0e0 !important;
+}
+
+/* Progress bar custom colors */
+.bg-gold {
+  background-color: #ffc107 !important;
+  color: #000 !important;
+}
+
+.bg-info-custom {
+  background-color: #5bc0de !important;
+  color: #000 !important;
+}
+
+/* Fix for badge text in dark backgrounds */
+.badge.bg-info {
+  color: #000 !important; /* Black text on light blue background */
+  background-color: #5bc0de !important;
+}
+
+/* Custom dark info alert */
+.alert-info-dark {
+  background-color: rgba(23, 162, 184, 0.2);
+  border-color: rgba(23, 162, 184, 0.4);
+  color: #e0e0e0;
+}
+
+/* Fix modal dialog text colors */
+.modal-dialog .text-light {
+  color: #e0e0e0 !important;
+}
+
+.modal-body p {
+  color: #e0e0e0 !important;
+}
+
+/* Improved credit score progress colors */
+.progress {
+  height: 0.8rem;
+  background-color: #333;
+  border-radius: 1rem;
+}
+
+/* Fix hover states for input fields */
+.form-control:hover {
+  border-color: #ffc107;
+}
+
+/* Wallet address readability */
+.wallet-address {
+  color: #ffc107;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+/* Add these styles for the repay loan page */
+
+/* Wallet address pill style */
+.wallet-address-pill {
+  background-color: rgba(30, 30, 30, 0.7);
+  color: #ffc107;
+  font-family: monospace;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: inline-block;
+}
+
+/* Info group styling */
+.info-group {
+  padding: 0.75rem;
+  background-color: rgba(50, 50, 50, 0.5);
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.info-group:hover {
+  background-color: rgba(60, 60, 60, 0.7);
+}
+
+.info-label {
+  color: #bbb;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.info-value {
+  color: #ffc107;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.info-value-lg {
+  color: #ffc107;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.info-value-lg small {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Button glow effect */
+.btn-glow {
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Wallet status section */
+.wallet-status .section-content {
+  padding: 1rem 1.5rem;
+}
+
+/* Form input styling - ensure text is white */
+.form-control {
+  color: #ffffff !important;
+  background-color: rgba(50, 50, 50, 0.7) !important;
+  border: 1px solid rgba(255, 193, 7, 0.4);
+  transition: all 0.3s ease;
+}
+
+.form-control::placeholder {
+  color: rgba(200, 200, 200, 0.5) !important;
+}
+
+.form-control:focus {
+  background-color: rgba(60, 60, 60, 0.8) !important;
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+}
+
+/* Alert styling improvements */
+.alert {
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0.5rem;
+  border-left: 4px solid;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.alert-info {
+  background-color: rgba(23, 162, 184, 0.15);
+  border-color: #17a2b8;
+  color: #cae6ff;
+}
+
+.alert-success {
+  background-color: rgba(40, 167, 69, 0.15);
+  border-color: #28a745;
+  color: #c3e6cb;
+}
+
+.alert-warning {
+  background-color: rgba(255, 193, 7, 0.15);
+  border-color: #ffc107;
+  color: #ffeeba;
+}
+
+.alert-danger {
+  background-color: rgba(220, 53, 69, 0.15);
+  border-color: #dc3545;
+  color: #f8d7da;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fix form-text color issue */
+.repayment-details .form-text {
+  color: #ffffff !important;
+}
+
+/* Add these styles for the loan success page */
+
+/* Success icon styling */
+.success-header {
+  padding: 1.5rem 0;
+}
+
+.success-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  background-color: rgba(40, 167, 69, 0.15);
+  border-radius: 50%;
+  border: 2px solid #28a745;
+  color: #28a745;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(40, 167, 69, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+/* Transaction hash styling */
+.tx-hash-container {
+  display: flex;
+  align-items: center;
+  background-color: rgba(30, 30, 30, 0.7);
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  margin-top: 0.5rem;
+}
+
+.tx-hash {
+  font-family: monospace;
+  color: #ffc107;
+  word-break: break-all;
+  flex-grow: 1;
+}
+
+/* Next steps list */
+.next-steps-list {
+  list-style: none;
+  counter-reset: step-counter;
+  padding-left: 1rem;
+}
+
+.next-steps-list li {
+  counter-increment: step-counter;
+  position: relative;
+  padding: 0 0 1.5rem 2.5rem;
+  border-left: 2px solid rgba(255, 193, 7, 0.3);
+}
+
+.next-steps-list li:last-child {
+  padding-bottom: 0.5rem;
+}
+
+.next-steps-list li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: -1rem;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  background-color: #ffc107;
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.step-header {
+  color: #ffc107;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.step-desc {
+  color: #d0d0d0;
+}
+
+/* Dashboard-specific styles */
+.dashboard-tabs .nav-link {
+  color: #bbb;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.dashboard-tabs .nav-link.active {
+  color: #ffc107;
+  background-color: rgba(43, 43, 43, 0.9);
+  border-bottom: 3px solid #ffc107;
+}
+
+.dashboard-tabs .nav-link:hover:not(.active) {
+  color: #ffc107;
+  background-color: rgba(50, 50, 50, 0.5);
+  border-bottom: 3px solid rgba(255, 193, 7, 0.3);
+}
+
+.dashboard-tabs .nav-link i {
+  font-size: 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.dashboard-tab-content {
+  background-color: rgba(43, 43, 43, 0.9);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  border-top: none;
+}
+
+/* Loan Cards */
+.loan-card {
+  background-color: rgba(35, 35, 35, 0.7);
+  border-left: 4px solid #ffc107;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.loan-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 193, 7, 0.2);
+}
+
+.loan-card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loan-id {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffc107;
+}
+
+.loan-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.loan-status.active {
+  background-color: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.4);
+}
+
+.loan-status.repaid {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.4);
+}
+
+/* Loan Table */
+.loans-table {
+  margin-top: 1rem;
+}
+
+.loans-table th {
+  background-color: rgba(30, 30, 30, 0.8);
+  color: #ffc107;
+  font-weight: 500;
+  border-top: none;
+  border-bottom: 2px solid rgba(255, 193, 7, 0.3);
+}
+
+.loans-table td {
+  border-color: rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+/* Health charts and gauges */
+.health-gauge {
+  position: relative;
+  display: inline-block;
+  background-color: rgba(30, 30, 30, 0.7);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.health-gauge-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffc107;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Price impact card */
+.price-impact-card {
+  background-color: rgba(35, 35, 35, 0.7);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 193, 7, 0.2);
+  position: relative;
+}
+
+.price-impact-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255, 193, 7, 0.05) 0%, transparent 70%);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.price-impact-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: #ffc107;
+  text-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+}
+
+.price-impact-label {
+  color: #bbb;
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+/* Market data cards */
+.market-card {
+  background-color: rgba(35, 35, 35, 0.8);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.market-card-header {
+  background-color: rgba(255, 193, 7, 0.15);
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.market-card-header h5 {
+  margin-bottom: 0;
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.market-card-body {
+  padding: 1.5rem;
+}
+
+.price-display {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.price-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffc107;
+  line-height: 1.2;
+}
+
+.price-change {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.price-change.positive {
+  background-color: rgba(40, 167, 69, 0.2);
+  color: #28a745;
+}
+
+.price-change.negative {
+  background-color: rgba(220, 53, 69, 0.2);
+  color: #dc3545;
+}
+
+.price-chart-container {
+  margin-top: 1rem;
+  height: 200px;
+}
+
+/* Alert enhancer */
+.alert-enhanced {
+  border-left-width: 5px;
+  background-color: rgba(30, 30, 30, 0.7);
+}
+
+.alert-info.alert-enhanced {
+  border-left-color: #17a2b8;
+  color: #9ee1ee;
+}
+
+.alert-warning.alert-enhanced {
+  border-left-color: #ffc107;
+  color: #ffecb3;
+}
+
+.alert-danger.alert-enhanced {
+  border-left-color: #dc3545;
+  color: #f5c6cb;
+}
+
+/* Custom dashboard animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Tab transition effects */
+.tab-pane.fade {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.tab-pane.show {
+  opacity: 1;
+}
+
+/* Responsive improvements */
+@media (max-width: 767px) {
+  .dashboard-tabs .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  .dashboard-tabs .nav-link i {
+    margin-right: 0.25rem;
+    font-size: 1rem;
+  }
+  
+  .dashboard-tab-content {
+    padding: 1rem;
+  }
+  
+  .price-impact-value {
+    font-size: 1.4rem;
+  }
+}
+
+/* Gold glowing elements for important info */
+.gold-glow {
+  text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+}
+
+.box-gold-glow {
+  box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+}
+
+/* Learn More Page Styles */
+
+.learn-hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('../images/learn-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 6rem 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border-radius: 0.25rem;
+}
+
+.learn-hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.learn-hero h1 {
+  color: #ffc107;
+  margin-bottom: 1rem;
+}
+
+.learn-sidebar {
+  position: sticky;
+  top: 2rem;
+}
+
+.learn-sidebar .nav-link {
+  color: #adb5bd;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.learn-sidebar .nav-link:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.learn-sidebar .nav-link.active {
+  color: #ffc107;
+  border-left-color: #ffc107;
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.content-section {
+  padding: 1rem 0 3rem;
+  scroll-margin-top: 2rem;
+}
+
+.section-title {
+  color: #ffc107;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.info-card {
+  display: flex;
+  background-color: rgba(30, 30, 30, 0.7);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.info-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(13, 110, 253, 0.15);
+  border-radius: 50%;
+  color: #0d6efd;
+  margin-right: 1rem;
+}
+
+.stat-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(30, 30, 30, 0.7);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1rem;
+  padding: 1rem;
+  border: 2px solid rgba(255, 193, 7, 0.3);
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffc107;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #adb5bd;
+  text-align: center;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+}
+
+.feature-list li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.feature-list li:last-child {
+  border-bottom: none;
+}
+
+.feature-list li i {
+  margin-right: 1rem;
+}
+
+.process-flow {
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.process-flow:before {
+  content: '';
+  position: absolute;
+  left: 1.25rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: rgba(255, 193, 7, 0.3);
+}
+
+.process-step {
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+.process-step:last-child {
+  padding-bottom: 0;
+}
+
+.process-number {
+  position: absolute;
+  left: -2.5rem;
+  width: 40px;
+  height: 40px;
+  background-color: #ffc107;
+  color: #212529;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.blockchain-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.blockchain-node {
+  background-color: rgba(13, 110, 253, 0.15);
+  border: 1px solid #0d6efd;
+  color: #0d6efd;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.blockchain-connector {
+  height: 30px;
+  width: 2px;
+  background-color: #0d6efd;
+}
+
+.code-sample {
+  background-color: #1a1a1a;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.code-sample pre {
+  padding: 1rem;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.code-sample code {
+  color: #f8f9fa;
+}
+
+/* Footer positioning */
+html {
+  height: 100%;
+}
+
+/* Optional: Small floating footer styles */
+.floating-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background-color: rgba(25, 25, 25, 0.85);
+  backdrop-filter: blur(5px);
+  color: white;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  border-top: 1px solid rgba(255, 193, 7, 0.3);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+/* Show floating footer after scrolling */
+body.scrolled .floating-footer {
+  transform: translateY(0);
+}
+
+.small-social-links a {
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.small-social-links a:hover {
+  opacity: 1;
+}
+
+/* Fixed footer positioning */
+.footer {
+  flex-shrink: 0;
+  position: relative; /* Not fixed or sticky */
+  background-color: #191919;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Remove any fixed positioning that might be affecting the footer */
+.footer.fixed-bottom,
+.footer.sticky-bottom {
+  position: relative !important;
+}
+
+/* Floating mini-footer styles */
+.floating-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background-color: rgba(25, 25, 25, 0.85);
+  backdrop-filter: blur(5px);
+  color: white;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  border-top: 1px solid rgba(255, 193, 7, 0.3);
+  transform: translateY(100%); /* Start hidden */
+  transition: transform 0.3s ease;
+}
+
+/* Show floating footer when visible class is added */
+.floating-footer.visible {
+  transform: translateY(0);
+}
+
+/* Add these styles to your learn.html file's extra_head block */
+  
+/* Fix for oversized logos */
+.wallet-logo {
+  max-height: 40px;
+  width: auto;
+  margin: 0 10px;
+}
+
+.chainlink-logo {
+  max-width: 100px;
+  height: auto;
+}
+
+/* Uniform sizing for all logos */
+.brand-logo {
+  max-height: 40px;
+  width: auto;
+  margin: 8px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.brand-logo:hover {
+  opacity: 1;
+}
+
+/* Better alignment for the logos container */
+.wallet-logos, .partner-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 15px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .wallet-logo, .chainlink-logo, .brand-logo {
+    max-height: 30px;
+    max-width: 80px;
+    margin: 5px;
+  }
+}

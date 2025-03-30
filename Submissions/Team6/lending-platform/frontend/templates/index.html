@@ -1,0 +1,280 @@
+{% extends "base.html" %}
+{% block title %}Home - Lending DApp{% endblock %}
+{% block content %}
+
+<!-- Background Video -->
+<video autoplay muted id="bg-video">
+  <source src="{{ url_for('static', filename='videos/video1.mp4') }}" type="video/mp4">
+  Your browser doesn't support video playback.
+</video>
+
+<!-- Replace the existing Hero Section with this improved version -->
+<div class="hero-content animate__animated animate__fadeIn">
+  <h1 class="display-4 fw-bold animate__animated animate__slideInDown">Welcome to Lending DApp!</h1>
+  <p class="lead animate__animated animate__slideInUp animate__delay-1s">Empowering decentralized lending through smart contracts.</p>
+  <div class="d-flex justify-content-center gap-2 flex-wrap">
+    <div class="stat-box animate__animated animate__fadeIn animate__delay-2s">
+      <p class="fs-5 mb-0">Total Contract Balance: <strong>{{ total_balance }}</strong></p>
+    </div>
+  </div>
+  <div class="mt-4">
+    <a href="/user/dashboard" class="btn btn-primary btn-lg mx-2 animate__animated animate__bounceIn animate__delay-3s">Go to Dashboard</a>
+    <a href="/learn" class="btn btn-outline-light btn-lg mx-2 animate__animated animate__bounceIn animate__delay-3s">Learn More</a>
+  </div>
+</div>
+
+<!-- Features Section in Cards -->
+<div id="featuresCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <div class="card text-center mx-auto" style="max-width: 600px;">
+        <div class="card-header"><i class="fas fa-shield-alt"></i> Smart Contracts</div>
+        <div class="card-body">
+          <p class="card-text">Our platform utilizes robust Solidity smart contracts for secure and automated loan processing.</p>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="card text-center mx-auto" style="max-width: 600px;">
+        <div class="card-header"><i class="fas fa-globe"></i> Decentralized & Transparent</div>
+        <div class="card-body">
+          <p class="card-text">View all on-chain transactions and manage loans directly via our public blockchain.</p>
+        </div>
+      </div>
+    </div>
+    <div class="carousel-item">
+      <div class="card text-center mx-auto" style="max-width: 600px;">
+        <div class="card-header"><i class="fas fa-users"></i> User-Friendly Interface</div>
+        <div class="card-body">
+          <p class="card-text">Easily request loans, repay them, and check your account – all from a clean, responsive UI.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#featuresCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#featuresCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<!-- Add this before the "How It Works" section -->
+<div class="container-box metrics-box">
+  <h2 class="mb-4 text-center">Platform Metrics</h2>
+  <div class="row gx-4">
+    <div class="col-md-3 text-center">
+      <div class="metric-card">
+        <div class="metric-value">$10.2M</div>
+        <div class="metric-label">Total Value Locked</div>
+      </div>
+    </div>
+    <div class="col-md-3 text-center">
+      <div class="metric-card">
+        <div class="metric-value">1,450+</div>
+        <div class="metric-label">Active Users</div>
+      </div>
+    </div>
+    <div class="col-md-3 text-center">
+      <div class="metric-card">
+        <div class="metric-value">5.2%</div>
+        <div class="metric-label">Average APY</div>
+      </div>
+    </div>
+    <div class="col-md-3 text-center">
+      <div class="metric-card">
+        <div class="metric-value">42,000+</div>
+        <div class="metric-label">Transactions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-box">
+  <h2 class="mb-4 text-center">How It Works</h2>
+  <div class="row">
+    <div class="col-md-3 text-center">
+      <i class="fas fa-user-plus fa-3x mb-3"></i>
+      <h5>Register</h5>
+      <p>Create an account and link your wallet address.</p>
+    </div>
+    <div class="col-md-3 text-center">
+      <i class="fas fa-hand-holding-usd fa-3x mb-3"></i>
+      <h5>Deposit Funds</h5>
+      <p>Deposit stablecoins into the contract to fund loans.</p>
+    </div>
+    <div class="col-md-3 text-center">
+      <i class="fas fa-file-contract fa-3x mb-3"></i>
+      <h5>Request a Loan</h5>
+      <p>Provide collateral and borrow funds instantly via our smart contract.</p>
+    </div>
+    <div class="col-md-3 text-center">
+      <i class="fas fa-undo-alt fa-3x mb-3"></i>
+      <h5>Repay</h5>
+      <p>Repay your loan and retrieve your collateral, all on-chain.</p>
+    </div>
+  </div>
+</div>
+
+<div class="container-box">
+  <h2>FAQ</h2>
+  <div class="accordion" id="faqAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+          What is Lending DApp?
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Lending DApp is a decentralized lending platform where users can borrow and lend using smart contracts.
+        </div>
+      </div>
+    </div>
+    <!-- Add more items similarly -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+          How secure are the smart contracts?
+        </button>
+      </h2>
+      <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Our smart contracts undergo rigorous auditing by third-party security firms. All contract code is open-source and verified on the blockchain explorer.
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+          What interest rates can I expect?
+        </button>
+      </h2>
+      <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          Interest rates are dynamically calculated based on market conditions, collateral ratio, and loan duration. Current APY ranges from 3% to 8% for lenders.
+        </div>
+      </div>
+    </div>
+
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingFour">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+          What happens if I can't repay my loan?
+        </button>
+      </h2>
+      <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+          If a loan isn't repaid by the due date, a portion of the collateral will be liquidated to cover the outstanding amount plus fees. The remaining collateral will be returned to your wallet.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Array of video URLs - check that these files actually exist in your static folder
+    const videos = [
+      "{{ url_for('static', filename='videos/video1.mp4') }}",
+      "{{ url_for('static', filename='videos/video2.mp4') }}",
+      "{{ url_for('static', filename='videos/video3.mp4') }}",
+      "{{ url_for('static', filename='videos/video4.mp4') }}",
+      "{{ url_for('static', filename='videos/video5.mp4') }}",
+      "{{ url_for('static', filename='videos/video6.mp4') }}",
+      "{{ url_for('static', filename='videos/video7.mp4') }}",
+      "{{ url_for('static', filename='videos/video8.mp4') }}",
+      "{{ url_for('static', filename='videos/video9.mp4') }}",
+      "{{ url_for('static', filename='videos/video10.mp4') }}",
+    ];
+  
+    // If you have more videos, add them above after confirming they exist
+    
+    let currentIndex = 0;
+    const videoElement = document.getElementById('bg-video');
+    
+    // Function to manually switch to the next video 
+    function switchToNextVideo() {
+      console.log('Switching to next video');
+      videoElement.style.opacity = 0;
+      
+      setTimeout(function() {
+        currentIndex = (currentIndex + 1) % videos.length;
+        console.log('Loading video index:', currentIndex);
+        videoElement.src = videos[currentIndex];
+        videoElement.load();
+        
+        // Add event listener for when video is loaded and ready to play
+        videoElement.oncanplay = function() {
+          videoElement.play()
+            .then(() => {
+              console.log('Video started playing');
+              videoElement.style.opacity = 0.6;
+            })
+            .catch(error => {
+              console.error('Error playing video:', error);
+            });
+        };
+        
+        // Also preload the next video
+        preloadNextVideo();
+      }, 500); // Wait for fade-out transition
+    }
+    
+    // Preload the next video
+    function preloadNextVideo() {
+      const nextIndex = (currentIndex + 1) % videos.length;
+      console.log('Preloading video index:', nextIndex);
+      const preloadLink = document.createElement('link');
+      preloadLink.href = videos[nextIndex];
+      preloadLink.rel = 'preload';
+      preloadLink.as = 'video';
+      document.head.appendChild(preloadLink);
+    }
+    
+    // When the current video ends, switch to the next one
+    videoElement.addEventListener('ended', switchToNextVideo);
+    
+    // In case the 'ended' event doesn't fire, set a backup timer
+    // (some browsers have issues with looped videos and the 'ended' event)
+    const videoDuration = 30000; // Set this to your typical video length in ms (e.g., 30 seconds)
+    setInterval(function() {
+      // Only force switch if the video appears to be stuck
+      if (videoElement.currentTime < videoElement.duration - 1) {
+        return; // Video is still playing normally
+      }
+      console.log('Backup timer triggered video switch');
+      switchToNextVideo();
+    }, videoDuration);
+    
+    // Start preloading the next video right away
+    preloadNextVideo();
+    
+    // Also handle the case of the first video not playing automatically
+    videoElement.oncanplay = function() {
+      videoElement.play()
+        .then(() => {
+          console.log('Initial video started playing');
+        })
+        .catch(error => {
+          console.error('Error playing initial video:', error);
+        });
+    };
+    
+    // Initialize AOS for scroll animations if it's available
+    if (typeof AOS !== 'undefined') {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+      });
+    }
+  });
+</script>
+{% endblock %}

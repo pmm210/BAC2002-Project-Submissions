@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Home - Lending DApp{% endblock %}
+{% block content %}
+  <div class="jumbotron">
+    <h1 class="display-4">Welcome to the Lending DApp!</h1>
+    <p class="lead">{{ onchain_message }}</p>
+    <hr class="my-4">
+    <p>Total Contract Balance: {{ total_balance }}</p>
+    <a class="btn btn-primary btn-lg" href="/dashboard" role="button">View Dashboard</a>
+  </div>
+{% endblock %}

@@ -1,0 +1,708 @@
+{% extends "base.html" %}
+{% block title %}Learn More - Lending DApp{% endblock %}
+{% block meta %}
+<meta name="description" content="Learn about decentralized finance, blockchain technology, and how our lending platform works.">
+<meta name="keywords" content="DeFi, blockchain, smart contracts, lending, borrowing, Chainlink, education">
+{% endblock %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="learn-hero">
+  <div class="learn-hero-content animate__animated animate__fadeIn">
+    <h1 class="display-4 fw-bold">Learn About Our Platform</h1>
+    <p class="lead">Understanding decentralized lending and blockchain technology</p>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container-fluid">
+  <div class="row">
+    <!-- Navigation Sidebar -->
+    <div class="col-lg-3 col-md-4">
+      <div class="learn-sidebar sticky-top">
+        <div class="card bg-dark shadow-sm">
+          <div class="card-header">
+            <h5 class="mb-0">Quick Navigation</h5>
+          </div>
+          <div class="card-body p-0">
+            <nav id="learnNav" class="nav flex-column">
+              <a class="nav-link active" href="#introduction">Introduction to DeFi</a>
+              <a class="nav-link" href="#platform-overview">Platform Overview</a>
+              <a class="nav-link" href="#how-it-works">How It Works</a>
+              <a class="nav-link" href="#blockchain">Blockchain Technology</a>
+              <a class="nav-link" href="#smart-contracts">Smart Contracts</a>
+              <a class="nav-link" href="#chainlink">Chainlink Integration</a>
+              <a class="nav-link" href="#security">Security Measures</a>
+              <a class="nav-link" href="#benefits">Benefits for Users</a>
+              <a class="nav-link" href="#get-started">How to Get Started</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="col-lg-9 col-md-8">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ url_for('main.home') }}">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Learn</li>
+        </ol>
+      </nav>
+      <div class="learn-content">
+        <!-- Introduction Section -->
+        <section id="introduction" class="content-section">
+          <h2 class="section-title">Introduction to DeFi</h2>
+          <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <p>Decentralized Finance (DeFi) represents a paradigm shift in how financial services are delivered. Unlike traditional financial systems that rely on central authorities like banks, DeFi leverages blockchain technology to create open, permissionless, and transparent financial services.</p>
+                  <p>DeFi applications aim to recreate and improve upon existing financial systems with greater accessibility, efficiency, and security. By eliminating intermediaries, DeFi reduces costs and creates new opportunities for financial inclusion.</p>
+                </div>
+                <div class="col-md-4">
+                  <img src="{{ url_for('static', filename='img/defi-diagram.jpeg') }}" alt="DeFi Diagram" class="img-fluid rounded">
+                </div>
+              </div>
+              
+              <h5 class="mt-4">Key Principles of DeFi:</h5>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="info-card">
+                    <div class="info-card-icon">
+                      <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="info-card-content">
+                      <h6>Permissionless</h6>
+                      <p>Anyone can access DeFi services without needing approval from a third party.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-card">
+                    <div class="info-card-icon">
+                      <i class="fas fa-search"></i>
+                    </div>
+                    <div class="info-card-content">
+                      <h6>Transparent</h6>
+                      <p>All transactions are publicly verifiable on the blockchain.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-card">
+                    <div class="info-card-icon">
+                      <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="info-card-content">
+                      <h6>Automated</h6>
+                      <p>Smart contracts autonomously execute financial agreements.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="info-card">
+                    <div class="info-card-icon">
+                      <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="info-card-content">
+                      <h6>Non-Custodial</h6>
+                      <p>Users maintain control of their funds at all times.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Platform Overview Section -->
+        <section id="platform-overview" class="content-section">
+          <h2 class="section-title">Platform Overview</h2>
+          <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-body">
+              <p>Our lending platform is designed to provide a secure, efficient, and user-friendly way to access decentralized loans and lending opportunities. By leveraging blockchain technology and smart contracts, we eliminate the need for traditional financial intermediaries.</p>
+              
+              <div class="platform-stats mt-4">
+                <div class="row text-center">
+                  <div class="col-md-3 col-6">
+                    <div class="stat-circle">
+                      <span class="stat-value">150+</span>
+                      <span class="stat-label">Daily Transactions</span>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-6">
+                    <div class="stat-circle">
+                      <span class="stat-value">$500K</span>
+                      <span class="stat-label">Monthly Volume</span>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-6">
+                    <div class="stat-circle">
+                      <span class="stat-value">5.2%</span>
+                      <span class="stat-label">Average APY</span>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-6">
+                    <div class="stat-circle">
+                      <span class="stat-value">99.9%</span>
+                      <span class="stat-label">Uptime</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <h5 class="mt-4">Core Features:</h5>
+              <ul class="feature-list">
+                <li>
+                  <i class="fas fa-check-circle text-success"></i>
+                  <span>Collateralized loans with flexible terms</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle text-success"></i>
+                  <span>Real-time price feeds via Chainlink oracles</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle text-success"></i>
+                  <span>Transparent loan health monitoring</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle text-success"></i>
+                  <span>Gasless transactions through meta-transactions</span>
+                </li>
+                <li>
+                  <i class="fas fa-check-circle text-success"></i>
+                  <span>Automated collateral liquidation process</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+        
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="content-section">
+          <h2 class="section-title">How It Works</h2>
+          <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-body">
+              <div class="process-flow">
+                <div class="process-step">
+                  <div class="process-number">1</div>
+                  <div class="process-content">
+                    <h5>Connect Your Wallet</h5>
+                    <p>Link your Web3 wallet (MetaMask, Trust Wallet, etc.) to our platform. This allows you to interact with our smart contracts directly.</p>
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="process-number">2</div>
+                  <div class="process-content">
+                    <h5>Deposit Collateral</h5>
+                    <p>Deposit your cryptocurrency assets as collateral. The platform supports various tokens including BNB, ETH, and major stablecoins.</p>
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="process-number">3</div>
+                  <div class="process-content">
+                    <h5>Request a Loan</h5>
+                    <p>Specify the loan amount, duration, and accept the terms. Our smart contracts will automatically calculate the interest rate based on your collateral ratio.</p>
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="process-number">4</div>
+                  <div class="process-content">
+                    <h5>Receive Funds</h5>
+                    <p>Once approved, the loan amount is immediately transferred to your wallet. No waiting periods or approval processes.</p>
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="process-number">5</div>
+                  <div class="process-content">
+                    <h5>Monitor Loan Health</h5>
+                    <p>Keep track of your loan health through our dashboard. Chainlink oracles provide real-time price feeds to ensure accurate collateral valuation.</p>
+                  </div>
+                </div>
+                <div class="process-step">
+                  <div class="process-number">6</div>
+                  <div class="process-content">
+                    <h5>Repay Your Loan</h5>
+                    <p>Repay the principal plus interest before the due date to retrieve your full collateral. Partial repayments are also supported.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Blockchain Section -->
+        <section id="blockchain" class="content-section">
+          <h2 class="section-title">Blockchain Technology</h2>
+          <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <p>Our platform is built on the Binance Smart Chain (BSC), a blockchain network optimized for fast, low-cost transactions. BSC offers several advantages for DeFi applications, including:</p>
+                  <ul>
+                    <li>3-second block times for near-instant transactions</li>
+                    <li>Low gas fees compared to Ethereum</li>
+                    <li>EVM compatibility for seamless integration with existing tools</li>
+                    <li>High transaction throughput to handle peak demand</li>
+                  </ul>
+                  <p>By leveraging blockchain technology, every transaction on our platform is immutable, transparent, and verifiable. This creates an unprecedented level of trust and security in financial operations.</p>
+                </div>
+                <div class="col-md-4">
+                  <div class="blockchain-visual">
+                    <div class="blockchain-node">Block 1</div>
+                    <div class="blockchain-connector"></div>
+                    <div class="blockchain-node">Block 2</div>
+                    <div class="blockchain-connector"></div>
+                    <div class="blockchain-node">Block 3</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Smart Contracts Section -->
+        <section id="smart-contracts" class="content-section">
+          <h2 class="section-title">Smart Contracts</h2>
+          <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-body">
+              <p>Smart contracts are self-executing programs that run on the blockchain. They automatically enforce the terms of an agreement when predetermined conditions are met, eliminating the need for intermediaries.</p>
+              
+              <div class="code-sample">
+                <pre><code class="language-solidity">// Sample Solidity code from our lending platform
+pragma solidity ^0.8.0;
+
+contract LendingPlatform {
+    // Contract variables
+    mapping(address => uint256) public collateralBalances;
+    mapping(uint256 => Loan) public loans;
+    uint256 public nextLoanId;
+    
+    // Loan struct
+    struct Loan {
+        address borrower;
+        uint256 principal;
+        uint256 collateral;
+        uint256 interestRate;
+        uint256 startTime;
+        uint256 dueDate;
+        bool repaid;
+    }
+    
+    // Request loan function
+    function requestLoan(
+        uint256 _principal,
+        uint256 _dueDate
+    ) external payable returns (uint256) {
+        // Implement loan creation logic
+    }
+    
+    // Repay loan function
+    function repayLoan(uint256 _loanId) external payable {
+        // Implement repayment logic
+    }
+}</code></pre>
+              </div>
+              
+              <h5 class="mt-4">Our Smart Contract Architecture:</h5>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="contract-card">
+                    <div class="contract-icon">
+                      <i class="fas fa-file-contract"></i>
+                    </div>
+                    <h6>LendingPlatform</h6>
+                    <p>Main contract handling loans, repayments, and collateral management</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="contract-card">
+                    <div class="contract-icon">
+                      <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h6>LendingForwarder</h6>
+                    <p>Handles meta-transactions for gasless operations</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="contract-card">
+                    <div class="contract-icon">
+                      <i class="fas fa-link"></i>
+                    </div>
+                    <h6>PriceFeed</h6>
+                    <p>Connects to Chainlink oracles for reliable price data</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Chainlink Integration Section -->
+        <section id="chainlink" class="content-section">
+          <h2 class="section-title">Chainlink Integration</h2>
+          <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-body">
+              <div class="row align-items-center mb-4">
+                <div class="col-md-3 text-center">
+                  <img src="{{ url_for('static', filename='img/chainlink-logo.svg') }}" alt="Chainlink Logo" class="img-fluid chainlink-logo mb-3">
+                </div>
+                <div class="col-md-9">
+                  <p>Our platform leverages Chainlink's decentralized oracle network to obtain reliable, tamper-proof data for critical operations. This integration ensures that all loans are based on accurate market prices, protecting both borrowers and the platform from price manipulation.</p>
+                </div>
+              </div>
+              
+              <h5>Chainlink Features We Use:</h5>
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <div class="feature-card">
+                    <div class="feature-title">
+                      <i class="fas fa-chart-line me-2"></i>
+                      Price Feeds
+                    </div>
+                    <p>Real-time asset prices from decentralized sources to accurately value collateral</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="feature-card">
+                    <div class="feature-title">
+                      <i class="fas fa-random me-2"></i>
+                      VRF (Verifiable Random Function)
+                    </div>
+                    <p>Cryptographically secure randomness for fair liquidation processes</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="feature-card">
+                    <div class="feature-title">
+                      <i class="fas fa-shield-alt me-2"></i>
+                      Proof of Reserve
+                    </div>
+                    <p>Verification that our reserves are backed by real assets</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="feature-card">
+                    <div class="feature-title">
+                      <i class="fas fa-clock me-2"></i>
+                      Keeper Network
+                    </div>
+                    <p>Automated loan health checks and liquidation triggers</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="alert alert-info mt-4">
+                <i class="fas fa-info-circle me-2"></i>
+                Our Chainlink integration enables real-time loan health monitoring, giving borrowers advance warning if their collateral ratio approaches unsafe levels.
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Security Measures Section -->
+        <section id="security" class="content-section">
+          <h2 class="section-title">Security Measures</h2>
+          <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-body">
+              <p>Security is paramount in DeFi. Our platform implements multiple layers of protection to safeguard user funds and prevent attacks.</p>
+              
+              <div class="security-measures">
+                <div class="security-item">
+                  <div class="security-icon">
+                    <i class="fas fa-shield-alt"></i>
+                  </div>
+                  <div class="security-content">
+                    <h5>Smart Contract Audits</h5>
+                    <p>All our smart contracts undergo rigorous third-party audits by leading security firms in the blockchain space.</p>
+                  </div>
+                </div>
+                <div class="security-item">
+                  <div class="security-icon">
+                    <i class="fas fa-bug"></i>
+                  </div>
+                  <div class="security-content">
+                    <h5>Bug Bounty Program</h5>
+                    <p>We maintain an active bug bounty program that rewards security researchers for identifying vulnerabilities.</p>
+                  </div>
+                </div>
+                <div class="security-item">
+                  <div class="security-icon">
+                    <i class="fas fa-clock"></i>
+                  </div>
+                  <div class="security-content">
+                    <h5>Timelock Mechanisms</h5>
+                    <p>Critical contract updates are subject to a timelock delay, giving users time to review changes.</p>
+                  </div>
+                </div>
+                <div class="security-item">
+                  <div class="security-icon">
+                    <i class="fas fa-door-closed"></i>
+                  </div>
+                  <div class="security-content">
+                    <h5>Emergency Pause</h5>
+                    <p>The ability to pause contract functionality in case of detected anomalies or attacks.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card bg-dark border border-warning mt-4">
+                <div class="card-body">
+                  <h5 class="text-warning"><i class="fas fa-exclamation-triangle me-2"></i>Security Best Practices</h5>
+                  <ul class="mb-0">
+                    <li>Never share your private keys or seed phrases with anyone</li>
+                    <li>Always verify contract addresses before approving transactions</li>
+                    <li>Keep your wallet software and browser extensions up to date</li>
+                    <li>Consider using a hardware wallet for large transactions</li>
+                    <li>Monitor your loan health regularly to avoid liquidation risks</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Benefits Section -->
+        <section id="benefits" class="content-section">
+          <h2 class="section-title">Benefits for Users</h2>
+          <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="benefit-card">
+                    <div class="benefit-icon">
+                      <i class="fas fa-bolt"></i>
+                    </div>
+                    <h5>Fast & Efficient</h5>
+                    <p>Get loan approval and funding in minutes, not days. No paperwork, credit checks, or waiting periods.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="benefit-card">
+                    <div class="benefit-icon">
+                      <i class="fas fa-lock-open"></i>
+                    </div>
+                    <h5>Accessible to Everyone</h5>
+                    <p>No discrimination or exclusion based on credit history, location, or banking status.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="benefit-card">
+                    <div class="benefit-icon">
+                      <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h5>Competitive Rates</h5>
+                    <p>By eliminating intermediaries, we offer more favorable terms for both borrowers and lenders.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="benefit-card">
+                    <div class="benefit-icon">
+                      <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h5>Full Ownership</h5>
+                    <p>Maintain control of your assets at all times with non-custodial smart contracts.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="comparison-table mt-4">
+                <h5 class="text-center mb-3">DeFi vs Traditional Banking</h5>
+                <div class="table-responsive">
+                  <table class="table table-dark table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Feature</th>
+                        <th>Traditional Banking</th>
+                        <th>Our DeFi Platform</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Loan Approval Time</td>
+                        <td>Days to weeks</td>
+                        <td><span class="text-success">Minutes</span></td>
+                      </tr>
+                      <tr>
+                        <td>Required Documentation</td>
+                        <td>Extensive paperwork</td>
+                        <td><span class="text-success">None</span></td>
+                      </tr>
+                      <tr>
+                        <td>Operating Hours</td>
+                        <td>Business hours only</td>
+                        <td><span class="text-success">24/7/365</span></td>
+                      </tr>
+                      <tr>
+                        <td>Access Requirements</td>
+                        <td>Good credit, banking history</td>
+                        <td><span class="text-success">Just a crypto wallet</span></td>
+                      </tr>
+                      <tr>
+                        <td>Transaction Transparency</td>
+                        <td>Limited visibility</td>
+                        <td><span class="text-success">Fully transparent</span></td>
+                      </tr>
+                      <tr>
+                        <td>Asset Control</td>
+                        <td>Bank has custody</td>
+                        <td><span class="text-success">User maintains control</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Get Started Section -->
+        <section id="get-started" class="content-section">
+          <h2 class="section-title">How to Get Started</h2>
+          <div class="card bg-dark shadow-sm mb-4">
+            <div class="card-body">
+              <div class="get-started-grid">
+                <div class="step-card">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <h5>Create an Account</h5>
+                    <p>Sign up with just your email address and create a secure password.</p>
+                    <a href="/user/register" class="btn btn-sm btn-outline-primary">Register Now</a>
+                  </div>
+                </div>
+                <div class="step-card">
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <h5>Connect Your Wallet</h5>
+                    <p>Link your MetaMask wallet to interact with our smart contracts.</p>
+                    <div class="wallet-logos">
+                      <img src="{{ url_for('static', filename='img/metamask-logo.png') }}" alt="MetaMask" class="wallet-logo">
+                    </div>
+                  </div>
+                </div>
+                <div class="step-card">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <h5>Fund Your Wallet</h5>
+                    <p>Ensure your wallet has BNB for collateral and gas fees.</p>
+                    <a href="https://www.binance.com" target="_blank" class="btn btn-sm btn-outline-warning">Buy BNB</a>
+                  </div>
+                </div>
+                <div class="step-card">
+                  <div class="step-number">4</div>
+                  <div class="step-content">
+                    <h5>Start Using the Platform</h5>
+                    <p>Request loans, provide liquidity, or explore the dashboard.</p>
+                    <a href="/user/dashboard" class="btn btn-sm btn-primary">Go to Dashboard</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="resources-section mt-4">
+                <h5 class="text-center mb-3">Additional Resources</h5>
+                <div class="row">
+                  <div class="col-md-4">
+                    <a href="#" class="resource-link">
+                      <div class="resource-card">
+                        <i class="fas fa-book"></i>
+                        <span>Documentation</span>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-md-4">
+                    <a href="#" class="resource-link">
+                      <div class="resource-card">
+                        <i class="fas fa-video"></i>
+                        <span>Tutorial Videos</span>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="col-md-4">
+                    <a href="#" class="resource-link">
+                      <div class="resource-card">
+                        <i class="fas fa-question-circle"></i>
+                        <span>FAQ & Support</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Call to Action -->
+        <div class="cta-container">
+          <div class="card bg-primary text-white">
+            <div class="card-body text-center py-4">
+              <h3>Ready to get started?</h3>
+              <p class="lead">Join thousands of users already benefiting from our decentralized lending platform.</p>
+              <div class="cta-buttons">
+                <a href="/user/register" class="btn btn-light btn-lg me-3">Sign Up</a>
+                <a href="/user/dashboard" class="btn btn-outline-light btn-lg">Go to Dashboard</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scrolling for navigation links
+    const navLinks = document.querySelectorAll('#learnNav a');
+    
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 20,
+            behavior: 'smooth'
+          });
+          
+          // Update active link
+          navLinks.forEach(navLink => navLink.classList.remove('active'));
+          this.classList.add('active');
+        }
+      });
+    });
+    
+    // Update active link on scroll
+    window.addEventListener('scroll', function() {
+      let current = '';
+      const sections = document.querySelectorAll('.content-section');
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        
+        if (pageYOffset >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+    
+    // Initialize syntax highlighting if Prism.js is available
+    if (typeof Prism !== 'undefined') {
+      Prism.highlightAll();
+    }
+  });
+</script>
+{% endblock %}

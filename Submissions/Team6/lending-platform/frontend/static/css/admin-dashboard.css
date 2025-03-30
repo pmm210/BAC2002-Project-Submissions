@@ -1,0 +1,438 @@
+/* Admin Dashboard Styles - Modern Dark Theme with Gold Accents */
+
+/* Dashboard Container */
+.admin-dashboard {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Section Headers */
+.admin-dashboard .card {
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(25, 25, 30, 0.7);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.75rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.admin-dashboard .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.admin-dashboard .card-header {
+  background: linear-gradient(90deg, rgba(35, 35, 40, 0.95) 0%, rgba(45, 45, 55, 0.9) 100%);
+  border-bottom: 2px solid rgba(255, 193, 7, 0.3);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-dashboard .card-header h4 {
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin-bottom: 0;
+  color: #ffc107;
+  display: flex;
+  align-items: center;
+}
+
+.admin-dashboard .card-header h4::before {
+  content: '';
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 193, 7, 0.7);
+  border-radius: 50%;
+  margin-right: 12px;
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.7);
+}
+
+.admin-dashboard .card-body {
+  padding: 1.25rem;
+  background-color: rgba(30, 30, 35, 0.7);
+}
+
+/* Info items styling */
+.admin-dashboard .info-item {
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+
+.admin-dashboard .info-label {
+  font-weight: 500;
+  color: #a0a0a0;
+  width: 140px;
+  flex-shrink: 0;
+}
+
+.admin-dashboard .info-value {
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+/* Table Styling */
+.admin-dashboard .table-responsive {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 1rem;
+  border: 1px solid rgba(70, 70, 80, 0.3);
+}
+
+.admin-dashboard .table {
+  margin-bottom: 0;
+  color: #d0d0d0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.admin-dashboard .table thead th {
+  background-color: rgba(35, 35, 40, 0.95);
+  color: #ffc107;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  padding: 0.85rem 1rem;
+  border-bottom: 2px solid rgba(255, 193, 7, 0.3);
+  vertical-align: middle;
+}
+
+.admin-dashboard .table tbody tr {
+  transition: background-color 0.15s;
+}
+
+.admin-dashboard .table tbody tr:nth-child(odd) td {
+  background-color: rgba(40, 40, 45, 0.7);
+}
+
+.admin-dashboard .table tbody tr:nth-child(even) td {
+  background-color: rgba(45, 45, 50, 0.7);
+}
+
+.admin-dashboard .table tbody tr:hover td {
+  background-color: rgba(60, 60, 70, 0.8);
+}
+
+.admin-dashboard .table td {
+  padding: 0.75rem 1rem;
+  border-top: none;
+  border-bottom: 1px solid rgba(70, 70, 80, 0.3);
+  vertical-align: middle;
+}
+
+/* Badge styling */
+.admin-dashboard .badge {
+  padding: 0.4em 0.65em;
+  font-weight: 500;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+
+/* Stats Cards */
+.admin-dashboard .stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5rem;
+}
+
+.admin-dashboard .stat-card {
+  flex: 1;
+  min-width: calc(33.333% - 1.5rem);
+  margin: 0.75rem;
+  background: linear-gradient(135deg, rgba(40, 40, 45, 0.8) 0%, rgba(35, 35, 40, 0.9) 100%);
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 193, 7, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.admin-dashboard .stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 193, 7, 0.3);
+}
+
+.admin-dashboard .stat-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background-color: rgba(255, 193, 7, 0.08);
+  border-radius: 0 0 0 100%;
+}
+
+.admin-dashboard .stat-title {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-dashboard .stat-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffc107;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
+}
+
+.admin-dashboard .stat-change {
+  font-size: 0.85rem;
+  color: #d0d0d0;
+  display: flex;
+  align-items: center;
+}
+
+.admin-dashboard .stat-change i {
+  margin-right: 4px;
+}
+
+.admin-dashboard .stat-change.positive {
+  color: #28a745;
+}
+
+.admin-dashboard .stat-change.negative {
+  color: #dc3545;
+}
+
+/* Button Styles */
+.admin-dashboard .btn {
+  border-radius: 5px;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  transition: all 0.2s;
+}
+
+.admin-dashboard .btn-sm {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+}
+
+.admin-dashboard .btn-warning {
+  background-color: rgba(255, 193, 7, 0.9);
+  border-color: rgba(255, 193, 7, 0.9);
+  color: #000;
+}
+
+.admin-dashboard .btn-warning:hover {
+  background-color: rgba(255, 193, 7, 1);
+  border-color: rgba(255, 193, 7, 1);
+  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.3);
+}
+
+.admin-dashboard .btn-primary {
+  background-color: rgba(13, 110, 253, 0.9);
+  border-color: rgba(13, 110, 253, 0.9);
+}
+
+.admin-dashboard .btn-primary:hover {
+  background-color: rgba(13, 110, 253, 1);
+  border-color: rgba(13, 110, 253, 1);
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.3);
+}
+
+.admin-dashboard .btn-success {
+  background-color: rgba(40, 167, 69, 0.9);
+  border-color: rgba(40, 167, 69, 0.9);
+}
+
+.admin-dashboard .btn-success:hover {
+  background-color: rgba(40, 167, 69, 1);
+  border-color: rgba(40, 167, 69, 1);
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.3);
+}
+
+.admin-dashboard .btn-outline-primary {
+  color: #0d6efd;
+  border-color: rgba(13, 110, 253, 0.5);
+}
+
+.admin-dashboard .btn-outline-primary:hover {
+  background-color: rgba(13, 110, 253, 0.1);
+  border-color: rgba(13, 110, 253, 0.8);
+  color: #0d6efd;
+}
+
+.admin-dashboard .btn-outline-primary.active {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+/* Button group styling */
+.admin-dashboard .btn-group .btn {
+  border-color: rgba(70, 70, 80, 0.5);
+  background-color: transparent;
+  color: #a0a0a0;
+}
+
+.admin-dashboard .btn-group .btn.active {
+  background-color: rgba(255, 193, 7, 0.9);
+  color: #000;
+  border-color: rgba(255, 193, 7, 0.9);
+  font-weight: 600;
+}
+
+/* Console/Code Areas */
+.admin-dashboard .code-area {
+  background-color: rgba(20, 20, 25, 0.9);
+  border-radius: 6px;
+  padding: 1rem;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9rem;
+  color: #d0d0d0;
+  line-height: 1.6;
+  border: 1px solid rgba(70, 70, 80, 0.5);
+  overflow: auto;
+  max-height: 400px;
+}
+
+.admin-dashboard pre {
+  margin-bottom: 0;
+  color: #d0d0d0;
+}
+
+.admin-dashboard pre code {
+  color: #e0e0e0;
+}
+
+.admin-dashboard .code-area .keyword {
+  color: #ff79c6;
+}
+
+.admin-dashboard .code-area .string {
+  color: #f1fa8c;
+}
+
+.admin-dashboard .code-area .number {
+  color: #bd93f9;
+}
+
+.admin-dashboard .code-area .function {
+  color: #50fa7b;
+}
+
+/* Address display */
+.admin-dashboard .address-display {
+  font-family: 'Consolas', monospace;
+  background-color: rgba(20, 20, 25, 0.8);
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+  display: inline-block;
+}
+
+/* API Logs section */
+.admin-dashboard #apiLogs {
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: rgba(20, 20, 25, 0.9) !important;
+  border: 1px solid rgba(70, 70, 80, 0.5) !important;
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.admin-dashboard #apiLogs .text-success {
+  color: #50fa7b !important;
+}
+
+.admin-dashboard #apiLogs .text-danger {
+  color: #ff5555 !important;
+}
+
+.admin-dashboard #apiLogs .text-info {
+  color: #8be9fd !important;
+}
+
+.admin-dashboard #apiLogs .text-warning {
+  color: #ffb86c !important;
+}
+
+/* Dashboard header */
+.admin-dashboard .dashboard-header {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-dashboard .dashboard-header h2 {
+  color: #ffc107;
+  font-weight: 700;
+  margin: 0;
+  font-size: 1.8rem;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.admin-dashboard .dashboard-header h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 30px;
+  background-color: #ffc107;
+  border-radius: 4px;
+}
+
+/* Custom scrollbar */
+.admin-dashboard ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.admin-dashboard ::-webkit-scrollbar-track {
+  background: rgba(20, 20, 25, 0.7);
+  border-radius: 4px;
+}
+
+.admin-dashboard ::-webkit-scrollbar-thumb {
+  background: rgba(255, 193, 7, 0.5);
+  border-radius: 4px;
+}
+
+.admin-dashboard ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 193, 7, 0.7);
+}
+
+/* Loading states */
+.admin-dashboard .loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 193, 7, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffc107;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+}
+
+/* Refreshing effect for data */
+.admin-dashboard .refreshing {
+  animation: pulse 1.5s;
+}

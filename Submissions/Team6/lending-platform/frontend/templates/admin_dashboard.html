@@ -1,0 +1,999 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - Lending DApp{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin-dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container admin-dashboard">
+  <!-- Dashboard Header with Title and Actions -->
+  <div class="dashboard-header">
+    <h2>Admin Dashboard</h2>
+    <div>
+      <button id="refreshBtn" class="btn btn-primary me-2">
+        <i class="fas fa-sync-alt me-2"></i>Refresh Data
+      </button>
+    </div>
+  </div>
+  
+  <!-- Admin Info Card -->
+  <div class="card">
+    <div class="card-header">
+      <h4><i class="fas fa-user-shield me-2"></i>Admin Information</h4>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="info-item">
+            <span class="info-label">Admin Address:</span>
+            <span class="info-value address-display">{{ admin_address }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Contract Address:</span>
+            <span class="info-value address-display">{{ contract_address }}</span>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="info-item">
+            <span class="info-label">Network:</span>
+            <span class="info-value">{{ network|default("BSC Testnet") }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">API Key Status:</span>
+            <span class="info-value" id="apiKeyStatus">Checking...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Platform Stats Cards -->
+  <div class="card">
+    <div class="card-header">
+      <h4><i class="fas fa-chart-line me-2"></i>Platform Statistics</h4>
+    </div>
+    <div class="card-body">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-title">Total Loans</div>
+          <div class="stat-value" id="totalLoans">-</div>
+          <div class="stat-change positive">
+            <i class="fas fa-arrow-up"></i> Updated in real-time
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Active Loans</div>
+          <div class="stat-value" id="activeLoans">-</div>
+          <div class="stat-change">
+            <i class="fas fa-circle"></i> From blockchain data
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Platform Balance</div>
+          <div class="stat-value" id="platformBalance">-</div>
+          <div class="stat-change">
+            <i class="fas fa-sync-alt"></i> Auto-refreshes
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- API Diagnostics Card -->
+  <div class="card">
+    <div class="card-header">
+      <h4><i class="fas fa-heartbeat me-2"></i>API Diagnostics</h4>
+      <button id="runDiagnosticsBtn" class="btn btn-warning">
+        <i class="fas fa-stethoscope me-2"></i>Run Diagnostics
+      </button>
+    </div>
+    <div class="card-body">
+      <div id="apiDiagnostics" class="code-area">
+        <div class="alert alert-info">Click "Run Diagnostics" to check API connectivity</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Recent Transactions Card -->
+  <div class="card">
+    <div class="card-header">
+      <h4><i class="fas fa-exchange-alt me-2"></i>Recent Transactions</h4>
+      <div>
+        <button id="fetchInternalBtn" class="btn btn-success me-2">
+          <i class="fas fa-download me-2"></i>Fetch Internal Txns
+        </button>
+        <button id="refreshTxnsBtn" class="btn btn-primary">
+          <i class="fas fa-sync-alt me-2"></i>Refresh
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div id="txnOptions" class="mb-3">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-outline-primary active" id="btnEvents">
+            <i class="fas fa-bell me-1"></i>Events
+          </button>
+          <button type="button" class="btn btn-outline-primary" id="btnInternal">
+            <i class="fas fa-random me-1"></i>Internal Transactions
+          </button>
+          <button type="button" class="btn btn-outline-primary" id="btnNormal">
+            <i class="fas fa-exchange-alt me-1"></i>Normal Transactions
+          </button>
+        </div>
+      </div>
+      
+      <!-- Internal Transactions Table -->
+      <div class="table-responsive d-none" id="internalTxnsTable">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>From</th>
+              <th>To</th>
+              <th>Value</th>
+              <th>Block</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="internalTxnsBody">
+            <!-- Internal transactions will be loaded here -->
+          </tbody>
+        </table>
+      </div>
+      
+      {% if api_error %}
+      <div class="alert alert-warning">
+        <h5><i class="fas fa-exclamation-triangle me-2"></i>BscScan API Error</h5>
+        <p>{{ api_error }}</p>
+        <p>This could be due to:</p>
+        <ul>
+          <li>No transactions have occurred on the contract yet</li>
+          <li>The BscScan API key is invalid or has hit rate limits</li>
+          <li>The contract is deployed on a different network</li>
+        </ul>
+        <p>Try using one of the options below:</p>
+      </div>
+      <div class="mt-3">
+        <div class="row">
+          <div class="col-md-6">
+            <h5><i class="fas fa-search me-2"></i>Manual Transaction Lookup</h5>
+            <div class="input-group mb-3">
+              <input type="text" id="txHash" class="form-control" placeholder="Enter transaction hash">
+              <button class="btn btn-warning" type="button" id="lookupBtn">Lookup</button>
+            </div>
+            <div id="txLookupResult"></div>
+          </div>
+          <div class="col-md-6">
+            <h5><i class="fas fa-database me-2"></i>Direct Contract Query</h5>
+            <button id="directFetchBtn" class="btn btn-primary mb-3">
+              <i class="fas fa-cloud-download-alt me-2"></i>Fetch Contract Events
+            </button>
+            <div id="directFetchResult"></div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  
+  <!-- Contract Debug Card -->
+  <div class="card">
+    <div class="card-header">
+      <h4><i class="fas fa-code me-2"></i>Contract Debug</h4>
+      <div>
+        <button id="analyzeTxnsBtn" class="btn btn-primary me-2">
+          <i class="fas fa-chart-bar me-2"></i>Analyze Loans
+        </button>
+        <button id="inspectContractBtn" class="btn btn-warning">
+          <i class="fas fa-microscope me-2"></i>Inspect Contract
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div id="contractDebug" class="code-area">
+        <p class="text-muted">Click "Inspect Contract" to analyze the contract structure</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- API Request Logs -->
+  <div class="card">
+    <div class="card-header">
+      <h4><i class="fas fa-terminal me-2"></i>API Request Logs</h4>
+      <div>
+        <button id="testApiBtn" class="btn btn-primary me-2">
+          <i class="fas fa-vial me-2"></i>Test BSC API
+        </button>
+        <button id="clearLogsBtn" class="btn btn-secondary">
+          <i class="fas fa-trash-alt me-2"></i>Clear Logs
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div id="apiLogs" class="code-area">
+        <p class="text-muted">API logs will appear here...</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async function() {
+    // Initialize Web3
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      try {
+        // Request account access
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+      } catch (error) {
+        console.error("User denied account access");
+      }
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      console.log('Non-Ethereum browser detected. Consider installing MetaMask.');
+    }
+    
+    // Load contract data
+    const contractABI = {{ lending_abi|tojson }};
+    const contractAddress = "{{ contract_address }}";
+    const bscscanApiKey = "{{ bscscan_api_key }}";
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
+    
+    // Log helpers
+    function addApiLog(message, type = 'info') {
+      const logsDiv = document.getElementById('apiLogs');
+      const timestamp = new Date().toLocaleTimeString();
+      const colorClass = type === 'error' ? 'text-danger' : 
+                         type === 'success' ? 'text-success' : 'text-info';
+                         
+      logsDiv.innerHTML = `<div class="mb-1 ${colorClass}">
+        <small>${timestamp}</small> - ${message}
+      </div>` + logsDiv.innerHTML;
+    }
+    
+    // Check API key status
+    async function checkApiKeyStatus() {
+      const statusEl = document.getElementById('apiKeyStatus');
+      try {
+        addApiLog("Testing BSC API key...");
+        
+        // Make a simple API call to test the key
+        const url = `https://api-testnet.bscscan.com/api?module=stats&action=tokensupply&contractaddress=${contractAddress}&apikey=${bscscanApiKey}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        addApiLog(`API response: ${JSON.stringify(data)}`);
+        
+        if (data.status === '1') {
+          statusEl.innerHTML = '<span class="badge bg-success">Valid</span>';
+          addApiLog("API key is valid and working", "success");
+        } else if (data.result === 'Invalid API Key') {
+          statusEl.innerHTML = '<span class="badge bg-danger">Invalid</span>';
+          addApiLog("API key is invalid - please check your .env file", "error");
+        } else if (data.result === 'Max rate limit reached') {
+          statusEl.innerHTML = '<span class="badge bg-warning">Rate Limited</span>';
+          addApiLog("API key is rate limited - wait or upgrade plan", "error");
+        } else {
+          statusEl.innerHTML = '<span class="badge bg-secondary">Unknown</span>';
+          addApiLog(`Unexpected API response: ${data.message}`, "error");
+        }
+      } catch (error) {
+        statusEl.innerHTML = '<span class="badge bg-danger">Error</span>';
+        addApiLog(`Error checking API key: ${error.message}`, "error");
+      }
+    }
+    
+    // Run comprehensive API diagnostics
+    async function runApiDiagnostics() {
+      const diagDiv = document.getElementById('apiDiagnostics');
+      diagDiv.innerHTML = '<div class="alert alert-info">Running diagnostics...</div>';
+      
+      let output = '<div class="card">';
+      output += '<div class="card-header"><strong>BSC Testnet API Diagnostics</strong></div>';
+      output += '<div class="card-body">';
+      
+      try {
+        // Test 1: Contract Existence
+        output += '<h5>Contract Existence</h5>';
+        const code = await web3.eth.getCode(contractAddress);
+        const isContract = code !== '0x' && code !== '0x0';
+        
+        if (isContract) {
+          output += '<p class="text-success">✓ Contract exists and has bytecode</p>';
+        } else {
+          output += '<p class="text-danger">✗ No contract found at specified address</p>';
+        }
+        
+        // Test 2: Contract Balance
+        output += '<h5>Contract Balance</h5>';
+        const balance = await web3.eth.getBalance(contractAddress);
+        const balanceInETH = web3.utils.fromWei(balance, 'ether');
+        
+        output += `<p>Balance: ${parseFloat(balanceInETH).toFixed(4)} BNB</p>`;
+        
+        // Test 3: API Key
+        output += '<h5>BscScan API Key</h5>';
+        try {
+          const url = `https://api-testnet.bscscan.com/api?module=block&action=getblockreward&blockno=10000000&apikey=${bscscanApiKey}`;
+          const response = await fetch(url);
+          const data = await response.json();
+          
+          if (data.status === '1') {
+            output += '<p class="text-success">✓ API key is valid and working</p>';
+          } else if (data.result === 'Invalid API Key') {
+            output += '<p class="text-danger">✗ Invalid API key</p>';
+            output += '<p>Ensure your BSCSCAN_API_KEY in .env is correct</p>';
+          } else if (data.result === 'Max rate limit reached') {
+            output += '<p class="text-warning">⚠ API key is rate limited</p>';
+          } else {
+            output += `<p class="text-warning">⚠ Unknown API response: ${data.message}</p>`;
+          }
+          
+          output += `<pre class="bg-light p-2"><code>${JSON.stringify(data, null, 2)}</code></pre>`;
+          
+        } catch (apiError) {
+          output += `<p class="text-danger">✗ Error testing API: ${apiError.message}</p>`;
+        }
+        
+        // Test 4: Try internal transactions API directly
+        output += '<h5>Internal Transactions API</h5>';
+        try {
+          const url = `https://api-testnet.bscscan.com/api?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&sort=desc&apikey=${bscscanApiKey}`;
+          const response = await fetch(url);
+          const data = await response.json();
+          
+          output += `<p>Status: ${data.status}, Message: ${data.message}</p>`;
+          if (data.result && data.result.length > 0) {
+            output += `<p class="text-success">✓ Found ${data.result.length} internal transactions</p>`;
+          } else {
+            output += '<p>No internal transactions found. This could be normal for a new contract.</p>';
+          }
+          
+          output += `<pre class="bg-light p-2"><code>${JSON.stringify(data.result ? (data.result.slice(0, 2) || []) : [], null, 2)}</code></pre>`;
+          
+        } catch (internalError) {
+          output += `<p class="text-danger">✗ Error fetching internal transactions: ${internalError.message}</p>`;
+        }
+        
+        // Test 5: Check logs/events directly
+        output += '<h5>Contract Events</h5>';
+        try {
+          const currentBlock = await web3.eth.getBlockNumber();
+          let fromBlock = Math.max(0, currentBlock - 5000);
+          
+          // Convert to string format to avoid BigInt conversion issues
+          fromBlock = String(fromBlock);
+          
+          const pastEvents = await contract.getPastEvents('allEvents', {
+            fromBlock: fromBlock,
+            toBlock: 'latest'
+          });
+          
+          if (pastEvents && pastEvents.length > 0) {
+            output += `<p class="text-success">✓ Found ${pastEvents.length} events in the last ~5000 blocks</p>`;
+            
+            // Display a few sample events
+            output += '<div class="mt-2 mb-2">';
+            const sampleEvents = pastEvents.slice(0, 3);
+            sampleEvents.forEach(event => {
+              output += `<div class="mb-1 small">• Event: ${event.event || 'Unnamed'}, Block: ${event.blockNumber}</div>`;
+            });
+            if (pastEvents.length > 3) {
+              output += `<div class="small text-muted">...and ${pastEvents.length - 3} more</div>`;
+            }
+            output += '</div>';
+          } else {
+            output += '<p>No events found. This could be normal for a new contract.</p>';
+          }
+        } catch (eventsError) {
+          output += `<p class="text-danger">✗ Error fetching events: ${eventsError.message}</p>`;
+          
+          // Try alternative approach with manual block ranges
+          try {
+            output += '<p>Trying alternative approach...</p>';
+            const blockRange = 1000; // Try smaller range
+            const currentBlock = await web3.eth.getBlockNumber();
+            const startBlock = String(currentBlock - blockRange);
+            
+            const events = await contract.getPastEvents('allEvents', {
+              fromBlock: startBlock,
+              toBlock: String(currentBlock)
+            });
+            
+            output += events.length > 0 
+              ? `<p class="text-success">✓ Found ${events.length} events in the last ${blockRange} blocks</p>`
+              : '<p>Still no events found with the alternative approach.</p>';
+          } catch (altError) {
+            output += `<p>Alternative approach also failed: ${altError.message}</p>`;
+          }
+        }
+        
+        // Test 6: Network connection
+        output += '<h5>Network Connection</h5>';
+        try {
+          const networkId = await web3.eth.net.getId();
+          output += `<p>Connected to network ID: ${networkId}</p>`;
+          
+          // Is it the right network?
+          if (networkId === 97) { 
+            output += '<p class="text-success">✓ Connected to BSC Testnet (Network ID 97)</p>';
+          } else if (networkId === 56) {
+            output += '<p class="text-warning">⚠ Connected to BSC Mainnet - but contract is expected on testnet!</p>';
+          } else {
+            output += `<p class="text-warning">⚠ Connected to network ID ${networkId} - BSC Testnet is 97</p>`;
+          }
+        } catch (netError) {
+          output += `<p class="text-danger">✗ Error getting network info: ${netError.message}</p>`;
+        }
+        
+        output += '</div></div>';
+        diagDiv.innerHTML = output;
+        
+      } catch (error) {
+        diagDiv.innerHTML = `<div class="alert alert-danger">Error running diagnostics: ${error.message}</div>`;
+      }
+    }
+    
+    // Function to update statistics with direct loan counting
+    async function updateStats() {
+      try {
+        console.log("Updating stats...");
+        
+        // Get platform balance
+        try {
+          const balance = await web3.eth.getBalance(contractAddress);
+          const balanceInETH = web3.utils.fromWei(balance, 'ether');
+          document.getElementById('platformBalance').textContent = parseFloat(balanceInETH).toFixed(4) + ' BNB';
+          refreshEffect('platformBalance');
+        } catch (e) {
+          console.error("Error fetching platform balance:", e);
+          document.getElementById('platformBalance').textContent = 'Error';
+        }
+        
+        // Use our transaction analysis to count loans
+        await countLoansFromInternalTxs();
+        refreshEffect('totalLoans');
+        refreshEffect('activeLoans');
+        
+      } catch (err) {
+        console.error("Error updating stats:", err);
+      }
+    }
+    
+    // Function to fetch INTERNAL transactions using BscScan API
+    async function fetchInternalTransactions() {
+      const tableBody = document.getElementById('internalTxnsBody');
+      if (!tableBody) return;
+      
+      addApiLog("Fetching internal transactions...");
+      tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Loading internal transactions...</td></tr>';
+      
+      try {
+        // Use BscScan API to get internal transactions
+        const apiUrl = `https://api-testnet.bscscan.com/api?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&sort=desc&apikey=${bscscanApiKey}`;
+        addApiLog(`Requesting internal transactions: ${apiUrl.replace(bscscanApiKey, 'API_KEY')}`);
+        
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        
+        // Log the raw API response for debugging
+        addApiLog(`Internal Txns Response: ${JSON.stringify(data).substring(0, 200)}...`);
+        
+        if (data.status === '1' && data.result && data.result.length > 0) {
+          addApiLog(`Found ${data.result.length} internal transactions`, "success");
+          
+          // Clear existing content
+          tableBody.innerHTML = '';
+          
+          // Add each transaction to the table
+          data.result.forEach(tx => {
+            const row = document.createElement('tr');
+            
+            // Format the value
+            const valueInETH = web3.utils.fromWei(tx.value, 'ether');
+            
+            // Determine transaction status
+            const statusClass = tx.isError === '0' ? 'bg-success' : 'bg-danger';
+            const statusText = tx.isError === '0' ? 'Success' : 'Failed';
+            
+            row.innerHTML = `
+              <td>${shortenAddress(tx.from)}</td>
+              <td>${shortenAddress(tx.to)}</td>
+              <td>${parseFloat(valueInETH).toFixed(6)} BNB</td>
+              <td>${tx.blockNumber}</td>
+              <td><span class="badge ${statusClass}">${statusText}</span></td>
+              <td>
+                <a href="https://testnet.bscscan.com/tx/${tx.hash}" target="_blank" class="btn btn-sm btn-info">View</a>
+              </td>
+            `;
+            
+            tableBody.appendChild(row);
+          });
+          
+          // Show the table
+          document.getElementById('internalTxnsTable').classList.remove('d-none');
+          document.getElementById('eventsTable')?.classList.add('d-none');
+          document.getElementById('normalTxnsTable')?.classList.add('d-none');
+          
+          // Update button states
+          document.getElementById('btnInternal').classList.add('active');
+          document.getElementById('btnEvents')?.classList.remove('active');
+          document.getElementById('btnNormal')?.classList.remove('active');
+        } else {
+          addApiLog(`No internal transactions found. Status: ${data.status}, Message: ${data.message}`, "error");
+          tableBody.innerHTML = `<tr><td colspan="6" class="text-center">No internal transactions found</td></tr>`;
+        }
+      } catch (error) {
+        addApiLog(`Error: ${error.message}`, "error");
+        console.error("Error fetching internal transactions:", error);
+        tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Error: ${error.message}</td></tr>`;
+      }
+    }
+    
+    // Helper function to shorten addresses
+    function shortenAddress(address) {
+      if (!address) return '';
+      return address.substring(0, 6) + '...' + address.substring(address.length - 4);
+    }
+    
+    // Test API button
+    document.getElementById('testApiBtn')?.addEventListener('click', async function() {
+      addApiLog("Testing BSC API connection...");
+      
+      try {
+        // Make a simple API call to test connectivity
+        const url = `https://api-testnet.bscscan.com/api?module=stats&action=tokensupply&contractaddress=${contractAddress}&apikey=${bscscanApiKey}`;
+        addApiLog(`Request URL: ${url.replace(bscscanApiKey, 'API_KEY')}`);
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        addApiLog(`Response received: ${JSON.stringify(data)}`);
+        
+        // Now try the internal transactions call specifically
+        const internalUrl = `https://api-testnet.bscscan.com/api?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&sort=desc&apikey=${bscscanApiKey}`;
+        addApiLog(`Request URL (Internal Txns): ${internalUrl.replace(bscscanApiKey, 'API_KEY')}`);
+        
+        const internalResponse = await fetch(internalUrl);
+        const internalData = await internalResponse.json();
+        
+        addApiLog(`Internal Txns Response: ${JSON.stringify(internalData)}`);
+        
+        // Show the raw API response data for both calls
+        const resultDiv = document.createElement('div');
+        resultDiv.innerHTML = `
+          <div class="mt-3 p-3 border bg-light">
+            <h6>BSC API Response:</h6>
+            <pre><code>${JSON.stringify(data, null, 2)}</code></pre>
+            <h6>Internal Transactions Response:</h6>
+            <pre><code>${JSON.stringify(internalData, null, 2)}</code></pre>
+          </div>
+        `;
+        document.getElementById('apiLogs').appendChild(resultDiv);
+        
+      } catch (error) {
+        addApiLog(`Error: ${error.message}`, "error");
+      }
+    });
+    
+    // Clear logs button
+    document.getElementById('clearLogsBtn')?.addEventListener('click', function() {
+      document.getElementById('apiLogs').innerHTML = '<p class="text-muted">API logs cleared.</p>';
+    });
+    
+    // Update stats on load
+    updateStats();
+    
+    // Check API key on load
+    checkApiKeyStatus();
+    
+    // Other event listeners 
+    document.getElementById('fetchInternalBtn')?.addEventListener('click', fetchInternalTransactions);
+    document.getElementById('runDiagnosticsBtn')?.addEventListener('click', runApiDiagnostics);
+    document.getElementById('refreshBtn')?.addEventListener('click', function() {
+      location.reload();
+    });
+    
+    // Rest of your existing code...
+    /* ... */
+    
+    // Add this to your script
+    document.getElementById('inspectContractBtn')?.addEventListener('click', async function() {
+      const debugDiv = document.getElementById('contractDebug');
+      debugDiv.innerHTML = '<p>Analyzing contract structure...</p>';
+      
+      try {
+        const methods = Object.keys(contract.methods);
+        
+        let output = '<h5>Available Contract Methods</h5>';
+        output += '<ul>';
+        methods.forEach(method => {
+          if (typeof contract.methods[method] === 'function') {
+            output += `<li>${method}</li>`;
+          }
+        });
+        output += '</ul>';
+        
+        // Try to call basic getter functions
+        output += '<h5>Contract State</h5>';
+        
+        try {
+          // Try to get admin
+          try {
+            const admin = await contract.methods.admin().call();
+            output += `<p><strong>Admin:</strong> ${admin}</p>`;
+          } catch (adminErr) {
+            output += `<p><strong>Admin:</strong> Not accessible (${adminErr.message})</p>`;
+          }
+          
+          // Try to access loans 1, 2, 3
+          output += '<h5>Sample Loans</h5>';
+          
+          for (let i = 1; i <= 3; i++) {
+            try {
+              const loan = await contract.methods.loans(i).call();
+              output += `<div class="mb-3">`;
+              output += `<p><strong>Loan #${i}</strong></p>`;
+              output += `<ul>`;
+              
+              // Try to access common loan properties
+              Object.keys(loan).forEach(key => {
+                let value = loan[key];
+                
+                // Format values based on their type/name
+                if (key.toLowerCase().includes('amount') || key === 'principal' || key === 'collateral') {
+                  try {
+                    value = parseFloat(web3.utils.fromWei(value, 'ether')).toFixed(4) + ' BNB';
+                  } catch (e) {
+                    // Keep original value if conversion fails
+                  }
+                } else if (typeof value === 'boolean') {
+                  value = value ? '✓ Yes' : '✗ No';
+                } else if (key === 'borrower' || key === 'lender') {
+                  value = `${value.substring(0, 8)}...${value.substring(value.length - 6)}`;
+                }
+                
+                output += `<li><strong>${key}:</strong> ${value}</li>`;
+              });
+              
+              output += `</ul>`;
+              output += `</div>`;
+            } catch (loanErr) {
+              output += `<p>Loan #${i}: Not found or error (${loanErr.message})</p>`;
+            }
+          }
+        } catch (e) {
+          output += `<p>Error accessing contract state: ${e.message}</p>`;
+        }
+        
+        debugDiv.innerHTML = output;
+      } catch (error) {
+        debugDiv.innerHTML = `<div class="alert alert-danger">Error inspecting contract: ${error.message}</div>`;
+      }
+    });
+    
+    // Function to count loans based on internal transactions
+    async function countLoansFromInternalTxs() {
+      try {
+        const loansDiv = document.getElementById('totalLoans');
+        const activeLoansDiv = document.getElementById('activeLoans');
+        loansDiv.textContent = 'Analyzing...';
+        activeLoansDiv.textContent = 'Analyzing...';
+        
+        addApiLog("Analyzing internal transactions to count loans...");
+        
+        // First fetch internal transactions
+        const apiUrl = `https://api-testnet.bscscan.com/api?module=account&action=txlistinternal&address=${contractAddress}&startblock=0&endblock=99999999&sort=desc&apikey=${bscscanApiKey}`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        
+        if (data.status !== '1' || !data.result || data.result.length === 0) {
+          addApiLog("No internal transactions found to analyze", "warning");
+          loansDiv.textContent = '0';
+          activeLoansDiv.textContent = '0';
+          return;
+        }
+        
+        addApiLog(`Found ${data.result.length} internal transactions to analyze`, "info");
+        
+        // Look for loan creation pattern:
+        // 1. Transaction from an external address to the contract
+        // 2. Followed by a transaction from contract to admin (fee payment)
+        // By analyzing value and patterns, we identify loan creation events
+        
+        const transactions = data.result;
+        let loanCount = 0;
+        const loanDetails = [];
+        const processedHashes = new Set();
+        
+        // Group transactions by hash to analyze complete transactions
+        const txsByHash = {};
+        transactions.forEach(tx => {
+          if (!txsByHash[tx.hash]) {
+            txsByHash[tx.hash] = [];
+          }
+          txsByHash[tx.hash].push(tx);
+        });
+        
+        // Process each transaction group
+        for (const [hash, txs] of Object.entries(txsByHash)) {
+          if (processedHashes.has(hash)) continue;
+          
+          // Sort by traceId to get the sequence
+          txs.sort((a, b) => a.traceId.localeCompare(b.traceId));
+          
+          // Look for loan creation pattern
+          if (txs.length >= 2) {
+            // The first transaction is from an external address to the contract
+            const firstTx = txs[0];
+            // The second transaction is typically the fee payment from contract to admin
+            const secondTx = txs[1];
+            
+            if (firstTx.to.toLowerCase() === contractAddress.toLowerCase() && 
+                firstTx.isError === '0' && 
+                secondTx.from.toLowerCase() === contractAddress.toLowerCase()) {
+                
+              // This pattern suggests loan creation
+              loanCount++;
+              
+              // Store info about this loan
+              loanDetails.push({
+                hash,
+                borrower: firstTx.from,
+                value: firstTx.value,
+                timestamp: firstTx.timeStamp,
+                // Loan ID is inferred from count, but the actual ID may be different
+                inferredId: loanCount
+              });
+              
+              addApiLog(`Found potential loan #${loanCount} in tx ${shortenTxHash(hash)}`, "success");
+            }
+          }
+          
+          processedHashes.add(hash);
+        }
+        
+        // Now validate our count by querying the contract directly
+        let activeLoans = 0;
+        
+        // Try to verify each loan by ID
+        for (let i = 1; i <= Math.max(loanCount * 1.5, 20); i++) {
+          try {
+            const loan = await contract.methods.loans(i).call();
+            
+            // If we successfully got loan details
+            if (loan && loan.borrower && loan.borrower !== '0x0000000000000000000000000000000000000000') {
+              // Verify if it's active
+              if (!loan.isRepaid && !loan.isLiquidated) {
+                activeLoans++;
+              }
+              
+              const principal = web3.utils.fromWei(loan.principal, 'ether');
+              addApiLog(`Verified loan #${i}: Principal ${principal} BNB, Active: ${!loan.isRepaid && !loan.isLiquidated}`, "info");
+            }
+          } catch (err) {
+            // If error occurs, we likely have no more loans to check
+            if (i > loanCount) {
+              break;
+            }
+          }
+        }
+        
+        // Update UI
+        loansDiv.textContent = loanCount;
+        activeLoansDiv.textContent = activeLoans;
+        
+        addApiLog(`Analysis complete: Found ${loanCount} loans, ${activeLoans} active`, "success");
+        
+        // Add loan details to debug panel for inspection
+        const debugDiv = document.getElementById('contractDebug');
+        if (debugDiv) {
+          let output = `<h5>Loan Analysis Results</h5>`;
+          output += `<p>Found ${loanCount} potential loans based on transaction patterns</p>`;
+          output += `<p>Verified ${activeLoans} active loans on the contract</p>`;
+          
+          if (loanDetails.length > 0) {
+            output += `<h6>Detected Loans:</h6>`;
+            output += `<div class="table-responsive"><table class="table table-sm">`;
+            output += `<thead><tr><th>#</th><th>Borrower</th><th>Amount</th><th>Date</th><th>Tx</th></tr></thead>`;
+            output += `<tbody>`;
+            
+            loanDetails.forEach((loan, idx) => {
+              const amount = parseFloat(web3.utils.fromWei(loan.value, 'ether')).toFixed(4);
+              const date = new Date(parseInt(loan.timestamp) * 1000).toLocaleString();
+              
+              output += `<tr>`;
+              output += `<td>${idx + 1}</td>`;
+              output += `<td>${shortenAddress(loan.borrower)}</td>`;
+              output += `<td>${amount} BNB</td>`;
+              output += `<td>${date}</td>`;
+              output += `<td><a href="https://testnet.bscscan.com/tx/${loan.hash}" target="_blank">${shortenTxHash(loan.hash)}</a></td>`;
+              output += `</tr>`;
+            });
+            
+            output += `</tbody></table></div>`;
+          }
+          
+          debugDiv.innerHTML = output;
+        }
+        
+      } catch (error) {
+        addApiLog(`Error counting loans: ${error.message}`, "error");
+        document.getElementById('totalLoans').textContent = 'Error';
+        document.getElementById('activeLoans').textContent = 'Error';
+      }
+    }
+    
+    // Helper function to shorten transaction hash
+    function shortenTxHash(hash) {
+      if (!hash) return '';
+      return hash.substring(0, 8) + '...' + hash.substring(hash.length - 6);
+    }
+    
+    // Add a new button for direct loan analysis
+    document.getElementById('inspectContractBtn').insertAdjacentHTML('afterend', 
+      '<button id="analyzeTxnsBtn" class="btn btn-sm btn-primary ms-2">Analyze Loans</button>');
+    
+    document.getElementById('analyzeTxnsBtn')?.addEventListener('click', countLoansFromInternalTxs);
+    
+    // Function to fetch and display all loans
+    async function displayAllLoans() {
+      const loansDiv = document.getElementById('loanAnalysis');
+      const tableDiv = document.getElementById('loansTable');
+      const tableBody = document.getElementById('loansTableBody');
+      
+      if (!loansDiv || !tableBody) return;
+      
+      loansDiv.innerHTML = '<div class="alert alert-info">Analyzing loan data...</div>';
+      tableBody.innerHTML = '';
+      tableDiv.classList.add('d-none');
+      
+      try {
+        // We'll use two approaches and combine the results
+        
+        // 1. Try the pattern from listLoans (getting wallet loans)
+        const allLoans = [];
+        const loanMap = new Map();
+        
+        // First try to get admin's loans
+        try {
+          const adminAddress = "{{ admin_address }}";
+          if (contract.methods.getLoans) {
+            const adminLoans = await contract.methods.getLoans(adminAddress).call();
+            addApiLog(`Found ${adminLoans.length} loans for admin`, "info");
+            
+            for (const id of adminLoans) {
+              if (!loanMap.has(id)) {
+                const loan = await contract.methods.loans(parseInt(id)).call();
+                allLoans.push({...loan, id: id});
+                loanMap.set(id, loan);
+              }
+            }
+          }
+        } catch (err) {
+          addApiLog(`Could not get admin loans: ${err.message}`, "error");
+        }
+        
+        // 2. Try iterating through loans sequentially
+        let consecutiveErrors = 0;
+        for (let i = 1; i <= 100; i++) { // limit to 100 to prevent excessive requests
+          if (consecutiveErrors > 3) break; // Stop if we hit multiple errors in a row
+          
+          try {
+            if (!loanMap.has(i.toString())) {
+              const loan = await contract.methods.loans(i).call();
+              
+              // Check if the loan exists (has a non-zero principal)
+              if (loan && loan.principal && loan.principal !== '0') {
+                allLoans.push({...loan, id: i});
+                loanMap.set(i.toString(), loan);
+                consecutiveErrors = 0; // Reset error counter on success
+              } else {
+                consecutiveErrors++;
+              }
+            }
+          } catch (err) {
+            consecutiveErrors++;
+            addApiLog(`Error fetching loan #${i}: ${err.message}`, "warning");
+          }
+        }
+        
+        // Display the loans in the table
+        if (allLoans.length > 0) {
+          tableBody.innerHTML = '';
+          
+          allLoans.forEach(loan => {
+            const row = document.createElement('tr');
+            
+            // Calculate status
+            let statusText = 'Active';
+            let statusClass = 'bg-success';
+            
+            if (loan.isRepaid) {
+              statusText = 'Repaid';
+              statusClass = 'bg-secondary';
+            } else if (loan.isLiquidated) {
+              statusText = 'Liquidated';
+              statusClass = 'bg-danger';
+            } else {
+              const now = Math.floor(Date.now() / 1000);
+              if (parseInt(loan.dueDate) < now) {
+                statusText = 'Overdue';
+                statusClass = 'bg-warning';
+              }
+            }
+            
+            // Format due date
+            const dueDate = new Date(parseInt(loan.dueDate) * 1000).toLocaleString();
+            
+            row.innerHTML = `
+              <td>${loan.id}</td>
+              <td>${shortenAddress(loan.borrower)}</td>
+              <td>${web3.utils.fromWei(loan.principal, 'ether')} BNB</td>
+              <td>${web3.utils.fromWei(loan.collateral, 'ether')} BNB</td>
+              <td><span class="badge ${statusClass}">${statusText}</span></td>
+              <td>${dueDate}</td>
+            `;
+            
+            tableBody.appendChild(row);
+          });
+          
+          // Show the table
+          tableDiv.classList.remove('d-none');
+          loansDiv.innerHTML = `<div class="alert alert-success">Found ${allLoans.length} loans</div>`;
+        } else {
+          loansDiv.innerHTML = '<div class="alert alert-warning">No loans found in the contract</div>';
+        }
+        
+      } catch (error) {
+        loansDiv.innerHTML = `<div class="alert alert-danger">Error analyzing loans: ${error.message}</div>`;
+      }
+    }
+    
+    // Add event listener for the refresh loans button
+    document.getElementById('refreshLoansBtn')?.addEventListener('click', displayAllLoans);
+  });
+  
+  // Add visual feedback when data refreshes
+  function refreshEffect(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.classList.add('refreshing');
+      setTimeout(() => {
+        element.classList.remove('refreshing');
+      }, 1500);
+    }
+  }
+
+  // Format address with a copy button
+  function formatAddress(address) {
+    if (!address) return '';
+    const shortened = shortenAddress(address);
+    return `<span class="address-display">${shortened} <button class="btn btn-sm btn-outline-secondary copy-btn ms-1" data-clipboard="${address}" title="Copy full address"><i class="fas fa-copy"></i></button></span>`;
+  }
+
+  // Add event listeners for copy buttons after creating them
+  document.addEventListener('click', function(e) {
+    if (e.target && e.target.closest('.copy-btn')) {
+      const btn = e.target.closest('.copy-btn');
+      const textToCopy = btn.getAttribute('data-clipboard');
+      
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.classList.add('btn-success');
+        btn.classList.remove('btn-outline-secondary');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+          btn.classList.remove('btn-success');
+          btn.classList.add('btn-outline-secondary');
+        }, 1500);
+      });
+    }
+  });
+</script>
+{% endblock %}

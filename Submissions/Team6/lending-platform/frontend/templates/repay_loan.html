@@ -1,0 +1,762 @@
+{% extends "base.html" %}
+{% block title %}Repay Loan via Forwarder - Lending DApp{% endblock %}
+{% block content %}
+<div class="container my-5">
+  <div class="container-box">
+    <div class="card-header-custom mb-4">
+      <h2><i class="fas fa-hand-holding-usd me-3"></i>Repay Your Loan</h2>
+      <p class="text-light">Complete your loan repayment via secure meta-transaction with no gas fees</p>
+    </div>
+    
+    <!-- Status Alerts -->
+    <div id="statusArea" class="mb-4"></div>
+    
+    <!-- Wallet Status -->
+    <div class="loan-section wallet-status mb-4">
+      <div class="section-header">
+        <i class="fas fa-wallet me-2"></i>Wallet Status
+      </div>
+      <div class="section-content">
+        <div id="walletStatus" class="d-flex align-items-center">
+          <div class="spinner-border spinner-border-sm text-gold me-2" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span>Connecting to wallet...</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Loan Selection Card -->
+    <div class="loan-section mb-4" id="loanSelectSection">
+      <div class="section-header">
+        <i class="fas fa-search me-2"></i>Find Your Loan
+      </div>
+      <div class="section-content">
+        <div class="mb-3">
+          <label for="loanIdField" class="form-label">Loan ID</label>
+          <div class="input-group">
+            <input type="text" id="loanIdField" class="form-control" placeholder="Enter loan ID">
+            <button class="btn btn-primary" type="button" id="fetchDetailsBtn">
+              <i class="fas fa-search me-2"></i>Fetch Details
+            </button>
+          </div>
+          <div class="form-text">Enter the ID of the loan you want to repay</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loan Details Section -->
+    <div id="loanDetails" class="loan-section mb-4 d-none">
+      <div class="section-header">
+        <i class="fas fa-file-invoice-dollar me-2"></i>Loan Details
+      </div>
+      <div class="section-content">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="info-group mb-3">
+              <div class="info-label">Principal</div>
+              <div class="info-value-lg"><span id="principalAmount">-</span> <small>BNB</small></div>
+            </div>
+            <div class="info-group mb-3">
+              <div class="info-label">Interest Rate</div>
+              <div class="info-value"><span id="interestRate">-</span>%</div>
+            </div>
+            <div class="info-group mb-3">
+              <div class="info-label">Borrower</div>
+              <div class="info-value">
+                <span id="borrowerAddress" class="wallet-address-pill">-</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="info-group mb-3">
+              <div class="info-label">Due Date</div>
+              <div class="info-value"><span id="dueDate">-</span></div>
+            </div>
+            <div class="info-group mb-3">
+              <div class="info-label">Required Repayment</div>
+              <div class="info-value-lg"><span id="requiredRepayment">-</span> <small>BNB</small></div>
+            </div>
+            <div class="info-group mb-3">
+              <div class="info-label">Status</div>
+              <div class="info-value"><span id="loanStatus">-</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Repayment Form -->
+    <div class="loan-section mb-4">
+      <div class="section-header">
+        <i class="fas fa-money-bill-wave me-2"></i>Repayment Details
+      </div>
+      <div class="section-content">
+        <div class="form-group mb-4">
+          <label for="repayAmountField" class="form-label">Repayment Amount (BNB)</label>
+          <div class="input-group">
+            <input type="text" id="repayAmountField" class="form-control" placeholder="Amount to repay">
+            <span class="input-group-text gold-bg">BNB</span>
+          </div>
+          <div class="form-text">Enter the amount you wish to repay (principal + interest)</div>
+        </div>
+        
+        <div class="summary-box mb-4">
+          <div class="summary-item">
+            <span class="summary-label">Transaction Type:</span>
+            <span class="summary-value">Meta-Transaction (No Gas)</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Signature Required:</span>
+            <span class="summary-value">Yes (One-Time)</span>
+          </div>
+        </div>
+        
+        <div class="text-center">
+          <button id="repayBtn" class="btn btn-lg btn-primary py-2 px-5" disabled>
+            <i class="fas fa-paper-plane me-2"></i>Repay Loan Now
+          </button>
+        </div>
+        
+        <div class="alert alert-info-dark mt-4">
+          <i class="fas fa-info-circle me-2"></i>
+          <strong>How it works:</strong> Your signature authorizes our relayer to submit the repayment transaction on your behalf, 
+          covering the gas costs. You only pay the loan amount.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Processing Modal -->
+<div class="modal fade" id="processingModal" tabindex="-1" aria-labelledby="processingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="processingModalLabel">Processing Your Repayment</h5>
+      </div>
+      <div class="modal-body">
+        <div class="text-center">
+          <div class="spinner-border text-gold mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p id="processing-status" class="text-light">Preparing transaction...</p>
+          <div class="progress mb-3">
+            <div id="processingProgressBar" class="progress-bar bg-gold" role="progressbar" style="width: 0%" 
+                 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Web3.js from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+<script>
+  // Keep your existing JavaScript but with these UI improvements
+  
+  // Grab the query parameters from the URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const loanIdParam = urlParams.get("loan_id");
+  const amountParam = urlParams.get("amount"); // e.g. the repay_amount
+
+  // Populate the fields
+  document.getElementById("loanIdField").value = loanIdParam || "";
+  document.getElementById("repayAmountField").value = amountParam || "";
+
+  // Initialize web3 and contracts
+  let web3, userAddress;
+  if (window.ethereum) {
+    web3 = new Web3(window.ethereum);
+  } else {
+    showStatus("MetaMask is not installed. Please install MetaMask and try again.", "danger");
+  }
+
+  // Get contract details passed from Flask
+  const lendingAddress = "{{ CONTRACT_ADDRESS }}";
+  const lendingABI = {{ lending_abi|tojson }};
+  const forwarderAddress = "{{ FORWARDER_ADDRESS }}";
+  const forwarderABI = {{ forwarder_abi_json | safe }};
+
+  // Create contract instances for LendingPlatform and Forwarder
+  const lendingContract = new web3.eth.Contract(lendingABI, lendingAddress);
+  const forwarderContract = new web3.eth.Contract(forwarderABI, forwarderAddress);
+
+  // Enhanced status message with better UI
+  function showStatus(msg, type = "info") {
+    const area = document.getElementById("statusArea");
+    const alertDiv = document.createElement("div");
+    alertDiv.className = `alert alert-${type} fade show`;
+    
+    // Add icon based on message type
+    let icon = "";
+    switch(type) {
+      case "success":
+        icon = '<i class="fas fa-check-circle me-2"></i>';
+        break;
+      case "danger":
+        icon = '<i class="fas fa-exclamation-circle me-2"></i>';
+        break;
+      case "warning":
+        icon = '<i class="fas fa-exclamation-triangle me-2"></i>';
+        break;
+      default:
+        icon = '<i class="fas fa-info-circle me-2"></i>';
+    }
+    
+    alertDiv.innerHTML = `${icon}${msg}`;
+    
+    // Add dismissible button
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "btn-close";
+    closeButton.setAttribute("data-bs-dismiss", "alert");
+    closeButton.setAttribute("aria-label", "Close");
+    alertDiv.appendChild(closeButton);
+    
+    area.prepend(alertDiv);
+    
+    // Auto-remove success and info messages after 10 seconds
+    if (type === "success" || "info") {
+      setTimeout(() => {
+        const alert = bootstrap.Alert.getOrCreateInstance(alertDiv);
+        alert.close();
+      }, 10000);
+    }
+  }
+
+  function clearStatus() {
+    document.getElementById("statusArea").innerHTML = "";
+  }
+
+  // Helper: Convert amount to wei (assumes 18 decimals)
+  function toWei(amount) {
+    return web3.utils.toWei(amount.toString(), "ether");
+  }
+  
+  // Helper: Convert from wei to ETH
+  function fromWei(amount) {
+    return web3.utils.fromWei(amount.toString(), "ether");
+  }
+
+  // Helper function to safely handle BigInt conversions
+  function safeNumber(value) {
+    if (typeof value === 'bigint') {
+      return Number(value);
+    }
+    if (typeof value === 'string') {
+      return parseFloat(value);
+    }
+    return value;
+  }
+
+  // Helper for truncating addresses
+  function truncateAddress(address) {
+    return address.substring(0, 6) + '...' + address.substring(address.length - 4);
+  }
+
+  // Add this helper function at the top of your script
+  function replaceBigIntsWithStrings(obj) {
+    return JSON.parse(JSON.stringify(obj, (key, value) =>
+      typeof value === 'bigint' ? value.toString() : value
+    ));
+  }
+
+  // Get user's wallet
+  async function connectWallet() {
+    try {
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      userAddress = accounts[0];
+      console.log("Connected:", userAddress);
+      return userAddress;
+    } catch (error) {
+      console.error("Error connecting wallet:", error);
+      showStatus("Failed to connect wallet: " + error.message, "danger");
+      return null;
+    }
+  }
+
+  // New function to fetch loan details
+  async function fetchLoanDetails() {
+    try {
+      clearStatus();
+      showStatus("Connecting to blockchain...");
+      
+      const loanId = document.getElementById("loanIdField").value;
+      if (!loanId) {
+        showStatus("Please enter a loan ID", "danger");
+        return;
+      }
+
+      // Connect wallet if not already connected
+      if (!userAddress) {
+        userAddress = await connectWallet();
+      }
+
+      showStatus("Fetching loan details...");
+
+      // Call the smart contract to get loan details
+      const loanDetails = await lendingContract.methods.loans(loanId).call();
+      console.log("Loan details:", loanDetails);
+      
+      // For debugging
+      console.log("Principal value:", loanDetails.principal, "Type:", typeof loanDetails.principal);
+      console.log("Interest rate:", loanDetails.interestRate, "Type:", typeof loanDetails.interestRate);
+      
+      // Extract loan information - using safe conversions
+      const principal = fromWei(loanDetails.principal || "0");
+      const interestRate = safeNumber(loanDetails.interestRate || 0) / 100;
+      
+      // Handle date conversion safely
+      let dueDate = "-";
+      try {
+        if (loanDetails.dueDate) {
+          dueDate = new Date(parseInt(loanDetails.dueDate) * 1000).toLocaleString();
+        }
+      } catch (e) {
+        console.error("Error parsing due date:", e);
+      }
+      
+      // Get loan status
+      const isRepaid = loanDetails.isRepaid || false;
+      const statusText = isRepaid ? "Repaid" : "Active";
+      const statusClass = isRepaid ? "text-success" : "text-warning";
+      
+      // Calculate required repayment using safe string operations
+      const principalFloat = parseFloat(principal);
+      const interestAmount = principalFloat * (interestRate / 100);
+      const totalRepayment = (principalFloat + interestAmount).toFixed(6);
+      
+      // Format borrower address
+      const borrowerAddress = loanDetails.borrower || "-";
+      const formattedBorrower = borrowerAddress !== "-" ? 
+        `${truncateAddress(borrowerAddress)}` : "-";
+      
+      // Update the UI
+      document.getElementById("principalAmount").textContent = principal;
+      document.getElementById("interestRate").textContent = interestRate;
+      document.getElementById("dueDate").textContent = dueDate;
+      document.getElementById("requiredRepayment").textContent = totalRepayment;
+      document.getElementById("borrowerAddress").textContent = formattedBorrower;
+      document.getElementById("loanStatus").textContent = statusText;
+      document.getElementById("loanStatus").className = statusClass;
+      
+      // If loan is already repaid, show warning
+      if (isRepaid) {
+        showStatus("This loan has already been repaid!", "warning");
+        document.getElementById("repayBtn").disabled = true;
+      } else {
+        document.getElementById("repayBtn").disabled = false;
+      }
+      
+      // Show loan details card
+      document.getElementById("loanDetails").classList.remove("d-none");
+      
+      // Update repayment amount field if it's empty
+      const repaymentField = document.getElementById("repayAmountField");
+      if (!repaymentField.value) {
+        repaymentField.value = totalRepayment;
+      }
+      
+      showStatus("Loan details fetched successfully!", "success");
+    } catch (error) {
+      console.error("Error fetching loan details:", error);
+      showStatus(`Error: ${error.message || JSON.stringify(error)}`, "danger");
+    }
+  }
+  
+  // Add event listener for fetch details button
+  document.getElementById("fetchDetailsBtn").addEventListener("click", fetchLoanDetails);
+
+  // Add this function to handle nonce retries
+  async function repayLoanWithNonce(userAddress, loanId, repayAmount, nonce, automaticRetry = true) {
+    try {
+      showStatus(`Attempting with nonce: ${nonce}`, "info");
+      
+      // Show the processing modal
+      const processingModal = new bootstrap.Modal(document.getElementById('processingModal'));
+      processingModal.show();
+      
+      // Set initial status
+      updateProcessingStatus("Preparing transaction...", 10);
+      
+      // Encode the repayLoan function call
+      const encodedData = lendingContract.methods.repayLoan(loanId).encodeABI();
+      
+      // Set deadline to 1 hour in the future
+      const deadline = Math.floor(Date.now() / 1000) + 3600;
+      
+      // Get chain ID
+      const chainId = await web3.eth.getChainId();
+      console.log("Chain ID:", chainId);
+      
+      // Convert the repayment to wei - as string to avoid BigInt issues
+      const repayAmountWei = web3.utils.toWei(repayAmount.toString(), "ether");
+      
+      // Build the meta-transaction request object with checksummed addresses
+      const forwardRequest = {
+        from: web3.utils.toChecksumAddress(userAddress),
+        to: web3.utils.toChecksumAddress(lendingAddress),
+        value: repayAmountWei,
+        gas: "2000000",
+        nonce: nonce.toString(), 
+        deadline: deadline.toString(),
+        data: encodedData
+      };
+      
+      // Build the EIP-712 domain object
+      const domain = {
+        name: "LendingForwarder",
+        version: "1",
+        chainId: chainId.toString(),
+        verifyingContract: web3.utils.toChecksumAddress(forwarderAddress)
+      };
+      
+      // Define the types - using uint48 for deadline to match contract
+      const types = {
+        EIP712Domain: [
+          { name: "name", type: "string" },
+          { name: "version", type: "string" },
+          { name: "chainId", type: "uint256" },
+          { name: "verifyingContract", type: "address" }
+        ],
+        ForwardRequest: [
+          { name: "from", type: "address" },
+          { name: "to", type: "address" },
+          { name: "value", type: "uint256" },
+          { name: "gas", type: "uint256" },
+          { name: "nonce", type: "uint256" },
+          { name: "deadline", type: "uint48" },
+          { name: "data", type: "bytes" }
+        ]
+      };
+      
+      // Build the typed data structure
+      const typedData = { 
+        domain: domain,
+        primaryType: "ForwardRequest",
+        types: types,
+        message: forwardRequest
+      };
+      
+      // Handle BigInt serialization explicitly
+      let typedDataString;
+      try {
+        typedDataString = JSON.stringify(typedData);
+      } catch (jsonError) {
+        console.error("JSON stringify error:", jsonError);
+        const sanitizedTypedData = replaceBigIntsWithStrings(typedData);
+        typedDataString = JSON.stringify(sanitizedTypedData);
+        console.log("Using sanitized typed data:", sanitizedTypedData);
+      }
+      
+      showStatus("Requesting your signature through wallet...");
+      
+      // Sign the typed data with MetaMask
+      const signature = await window.ethereum.request({
+        method: "eth_signTypedData_v4",
+        params: [userAddress, typedDataString]
+      });
+      
+      console.log("Signature:", signature);
+      showStatus("Signature obtained!", "success");
+      
+      // Verify the signature on-chain
+      try {
+        showStatus("Verifying signature on-chain...");
+        const isValid = await forwarderContract.methods.verify(forwardRequest, signature).call();
+        
+        if (isValid) {
+          console.log("On-chain signature verification successful");
+          showStatus("Signature verified on-chain!", "success");
+        } else {
+          console.warn("On-chain signature verification FAILED");
+          showStatus("Signature validation failed on-chain! Transaction will likely revert.", "danger");
+          
+          // Ask for confirmation before proceeding
+          if (!confirm("Signature verification failed. Do you still want to proceed? (Transaction may fail)")) {
+            showStatus("Transaction cancelled by user.", "info");
+            return false;
+          }
+        }
+      } catch (verifyError) {
+        console.error("Error verifying signature:", verifyError);
+        showStatus(`Could not verify signature on-chain: ${verifyError.message}`, "warning");
+      }
+      
+      // Build payload for the backend
+      const payload = {
+        loanId: loanId,
+        repayment: repayAmount,
+        message: replaceBigIntsWithStrings(forwardRequest),
+        signature: signature
+      };
+      
+      // Send payload to backend meta-transaction endpoint
+      showStatus("Sending meta-transaction...");
+      const response = await fetch("/meta/repay-loan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+        showStatus(`Meta-transaction sent! Processing...`, "success");
+        updateProcessingStatus("Transaction complete!", 100);
+        
+        // Store transaction data in session storage for the success page
+        const successData = {
+          txHash: result.txHash,
+          loanId: loanId,
+          repayAmount: repayAmount,
+          timestamp: new Date().toISOString()
+        };
+        
+        sessionStorage.setItem('loanRepaymentData', JSON.stringify(successData));
+        
+        // Show final success message
+        showStatus("Repayment successful! Redirecting to success page...", "success");
+        
+        // Redirect to success page after a short delay
+        setTimeout(() => {
+          window.location.href = '/repayment-success';
+        }, 1500);
+        
+        return true; // Success
+      } else {
+        // Check if it's a nonce error and we should retry
+        if (automaticRetry && result.error && result.error.includes("Nonce mismatch")) {
+          showStatus(`Nonce error detected: ${result.error}`, "warning");
+          showStatus(`Trying with nonce ${nonce - 1} instead...`, "info");
+          // Try again with nonce - 1
+          return await repayLoanWithNonce(userAddress, loanId, repayAmount, nonce - 1, false);
+        } else {
+          showStatus(`Error: ${result.error}`, "danger");
+          return false;
+        }
+      }
+    } catch (error) {
+      console.error("Meta-transaction error with nonce " + nonce + ":", error);
+      showStatus(`Error with nonce ${nonce}: ${error.message || JSON.stringify(error)}`, "danger");
+      
+      // If this is our first try and it looks like a nonce issue, try with nonce-1
+      if (automaticRetry && error.message && (
+          error.message.includes("nonce") || 
+          error.message.includes("Nonce") || 
+          error.message.includes("transaction")
+      )) {
+        showStatus(`Error suggests nonce issue, trying with nonce ${nonce - 1}...`, "info");
+        return await repayLoanWithNonce(userAddress, loanId, repayAmount, nonce - 1, false);
+      }
+      return false;
+    }
+  }
+
+  // Replace the existing repayLoanViaMeta function with this simplified version
+
+  async function repayLoanViaMeta() {
+    try {
+      clearStatus();
+      showStatus("Connecting to wallet...");
+      
+      // Show the processing modal
+      const processingModal = new bootstrap.Modal(document.getElementById('processingModal'));
+      processingModal.show();
+      updateProcessingStatus("Connecting to wallet...", 5);
+      
+      // Request account access and get user's address
+      if (!userAddress) {
+        userAddress = await connectWallet();
+        if (!userAddress) {
+          updateProcessingStatus("Failed to connect wallet", 100);
+          setTimeout(() => processingModal.hide(), 1500);
+          showStatus("Failed to connect wallet", "danger");
+          return;
+        }
+      }
+      
+      updateProcessingStatus("Wallet connected successfully", 15);
+      showStatus(`Connected to wallet: ${userAddress}`, "success");
+      
+      // Check that we have loanId/amount
+      const loanId = document.getElementById("loanIdField").value;
+      const repayAmount = document.getElementById("repayAmountField").value;
+      
+      if (!loanId || !repayAmount) {
+        showStatus("Loan ID or Repayment Amount is missing.", "danger");
+        return;
+      }
+
+      showStatus("Preparing meta-transaction data...");
+      showStatus("Retrieving nonce...");
+      
+      // Get the current nonce directly from the contract
+      let nonce;
+      try {
+        nonce = Number(await forwarderContract.methods.nonces(userAddress).call());
+        console.log("Nonce retrieved directly from contract:", nonce);
+        showStatus(`Nonce retrieved from contract: ${nonce}`, "success");
+      } catch (contractNonceError) {
+        console.error("Error getting nonce from contract:", contractNonceError);
+        showStatus(`Error retrieving nonce: ${contractNonceError.message}`, "danger");
+        return;
+      }
+      
+      // Call the helper function to process the transaction with the correct nonce
+      await repayLoanWithNonce(userAddress, loanId, repayAmount, nonce, false);
+      
+    } catch (error) {
+      console.error("Meta-transaction error:", error);
+      
+      // Hide the processing modal
+      try {
+        const processingModalEl = document.getElementById('processingModal');
+        const processingModal = bootstrap.Modal.getInstance(processingModalEl);
+        if (processingModal) {
+          processingModal.hide();
+        }
+      } catch (modalError) {
+        console.error("Error hiding modal:", modalError);
+      }
+      
+      showStatus(`Error: ${error.message || JSON.stringify(error)}`, "danger");
+      return false;
+    }
+  }
+
+  // Attach click handlers
+  document.getElementById("repayBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    repayLoanViaMeta();
+  });
+  
+  // Initialize
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Update wallet status
+    await updateWalletStatus();
+    
+    // If we have a loan ID from URL param, fetch its details immediately
+    if (loanIdParam) {
+      setTimeout(fetchLoanDetails, 500);
+    }
+    
+    // Enhance button interactions with visual feedback
+    const repayBtn = document.getElementById("repayBtn");
+    repayBtn.addEventListener("mouseover", function() {
+      this.classList.add("btn-glow");
+    });
+    repayBtn.addEventListener("mouseout", function() {
+      this.classList.remove("btn-glow");
+    });
+    
+    // Add click event listener for the fetch details button
+    document.getElementById("fetchDetailsBtn").addEventListener("click", fetchLoanDetails);
+  });
+
+  // Add this function to your JavaScript section in repay_loan.html
+
+  // Function to connect and update wallet status
+  async function connectWallet() {
+    try {
+      // Request account access
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      const accounts = await web3.eth.getAccounts();
+      userAddress = accounts[0]; // Store in the global variable
+      
+      // Update the UI
+      await updateWalletStatus();
+      
+      return userAddress;
+    } catch (error) {
+      console.error("Error connecting wallet:", error);
+      document.getElementById("walletStatus").innerHTML = `
+        <span class="badge bg-danger me-2">Error</span>
+        <span>${error.message || "Could not connect wallet"}</span>
+      `;
+      return null;
+    }
+  }
+
+  // Update wallet status display
+  async function updateWalletStatus() {
+    const statusElement = document.getElementById("walletStatus");
+    
+    try {
+      if (!userAddress) {
+        // Try to get accounts
+        const accounts = await web3.eth.getAccounts();
+        userAddress = accounts.length > 0 ? accounts[0] : null;
+      }
+      
+      if (userAddress) {
+        statusElement.innerHTML = `
+          <div class="d-flex align-items-center">
+            <span class="badge bg-success me-2">Connected</span>
+            <span class="wallet-address-pill">${truncateAddress(userAddress)}</span>
+          </div>
+        `;
+        
+        // Enable repay button if we have a loan ID
+        const loanId = document.getElementById("loanIdField").value;
+        if (loanId) {
+          document.getElementById("repayBtn").disabled = false;
+        }
+      } else {
+        statusElement.innerHTML = `
+          <div class="d-flex align-items-center">
+            <span class="badge bg-warning text-dark me-2">Not Connected</span>
+            <button class="btn btn-sm btn-outline-gold" onclick="connectWallet()">Connect Wallet</button>
+          </div>
+        `;
+        // Disable repay button
+        document.getElementById("repayBtn").disabled = true;
+      }
+    } catch (error) {
+      statusElement.innerHTML = `
+        <div class="d-flex align-items-center">
+          <span class="badge bg-danger me-2">Error</span>
+          <span class="text-danger">${error.message || "Could not connect wallet"}</span>
+        </div>
+      `;
+      // Disable repay button
+      document.getElementById("repayBtn").disabled = true;
+    }
+  }
+
+  // Helper function to truncate address for display
+  function truncateAddress(address) {
+    if (!address) return "-";
+    return address.substring(0, 6) + "..." + address.substring(address.length - 4);
+  }
+
+  // Add this function to your JavaScript section
+
+/**
+ * Updates the processing modal status message and progress bar
+ * @param {string} message - The status message to display
+ * @param {number} progress - Progress percentage (0-100)
+ */
+function updateProcessingStatus(message, progress) {
+  // Update the status message
+  const statusElement = document.getElementById('processing-status');
+  if (statusElement) {
+    statusElement.textContent = message;
+  }
+  
+  // Update the progress bar
+  const progressBar = document.getElementById('processingProgressBar');
+  if (progressBar) {
+    progressBar.style.width = `${progress}%`;
+    progressBar.setAttribute('aria-valuenow', progress);
+  }
+  
+  // Log for debugging
+  console.log(`Processing status: ${message} (${progress}%)`);
+}
+</script>
+{% endblock %}

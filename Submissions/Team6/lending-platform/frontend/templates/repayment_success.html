@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% block title %}Loan Repayment Successful - Lending DApp{% endblock %}
+{% block content %}
+<div class="container my-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="container-box">
+        <!-- Success Header -->
+        <div class="text-center mb-4 success-header">
+          <div class="success-icon-circle mb-4">
+            <i class="fas fa-check-circle fa-4x"></i>
+          </div>
+          <h2 class="text-gold">Loan Repayment Successful!</h2>
+          <p class="text-light">Your loan repayment has been submitted to the blockchain.</p>
+        </div>
+        
+        <!-- Transaction Details -->
+        <div class="loan-section mb-4">
+          <div class="section-header">
+            <i class="fas fa-file-invoice-dollar me-2"></i>Repayment Details
+          </div>
+          <div class="section-content">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="info-group mb-3">
+                  <div class="info-label">Loan ID</div>
+                  <div class="info-value-lg"><span id="loan-id-value">--</span></div>
+                </div>
+                <div class="info-group mb-3">
+                  <div class="info-label">Repayment Amount</div>
+                  <div class="info-value-lg"><span id="repayment-value">--</span> <small>BNB</small></div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-group mb-3">
+                  <div class="info-label">Date</div>
+                  <div class="info-value"><span id="date-value">--</span></div>
+                </div>
+                <div class="info-group mb-3">
+                  <div class="info-label">Status</div>
+                  <div class="info-value"><span class="badge bg-success">Completed</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Transaction Status -->
+        <div class="loan-section mb-4">
+          <div class="section-header">
+            <i class="fas fa-exchange-alt me-2"></i>Transaction Status
+          </div>
+          <div class="section-content">
+            <div class="info-group">
+              <div class="info-label">Transaction Hash</div>
+              <div class="tx-hash-container">
+                <span id="tx-hash-value" class="tx-hash">--</span>
+                <button id="copy-tx-btn" class="btn btn-sm btn-outline-gold ms-2" title="Copy to clipboard">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div class="text-center mt-4">
+              <a id="explorer-link" href="#" target="_blank" class="btn btn-outline-gold mb-3">
+                <i class="fas fa-external-link-alt me-2"></i>View on Block Explorer
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Next Steps -->
+        <div class="loan-section mb-4">
+          <div class="section-header">
+            <i class="fas fa-tasks me-2"></i>What's Next?
+          </div>
+          <div class="section-content">
+            <div class="alert alert-success-dark mb-4">
+              <i class="fas fa-check-circle me-2"></i> Your loan has been fully repaid. Any collateral held against this loan will be returned to your wallet automatically.
+            </div>
+            
+            <div class="text-center mt-4">
+              <p id="redirect-message" class="text-light mb-3">Redirecting to dashboard in <span id="countdown">10</span> seconds...</p>
+              <a href="/dashboard" class="btn btn-primary">
+                <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if we have loan repayment data in session storage
+  const repaymentDataString = sessionStorage.getItem('loanRepaymentData');
+  
+  if (!repaymentDataString) {
+    // If no data, redirect to dashboard immediately
+    window.location.href = '/dashboard';
+    return;
+  }
+  
+  try {
+    // Parse the loan data from session storage
+    const repaymentData = JSON.parse(repaymentDataString);
+    
+    // Populate the repayment details
+    document.getElementById('loan-id-value').textContent = repaymentData.loanId || '--';
+    document.getElementById('repayment-value').textContent = repaymentData.repayAmount || '--';
+    
+    // Format and display the date
+    const txDate = new Date(repaymentData.timestamp);
+    document.getElementById('date-value').textContent = txDate.toLocaleString();
+    
+    // Set transaction hash and explorer link
+    const txHash = repaymentData.txHash || '';
+    if (txHash) {
+      document.getElementById('tx-hash-value').textContent = txHash;
+      
+      // Set explorer link (for BSC Testnet)
+      const explorerUrl = `https://testnet.bscscan.com/tx/${txHash}`;
+      document.getElementById('explorer-link').href = explorerUrl;
+    } else {
+      document.getElementById('tx-hash-value').textContent = 'Transaction hash not available';
+      document.getElementById('explorer-link').classList.add('disabled');
+    }
+    
+    // Handle copy button
+    document.getElementById('copy-tx-btn').addEventListener('click', function() {
+      navigator.clipboard.writeText(txHash).then(() => {
+        // Show feedback
+        const btn = this;
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        btn.classList.add('btn-success');
+        btn.classList.remove('btn-outline-gold');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+          btn.classList.remove('btn-success');
+          btn.classList.add('btn-outline-gold');
+        }, 2000);
+      });
+    });
+    
+    // Start countdown for redirect
+    let countdown = 10;
+    const countdownElement = document.getElementById('countdown');
+    
+    const timer = setInterval(() => {
+      countdown--;
+      countdownElement.textContent = countdown;
+      
+      if (countdown <= 0) {
+        clearInterval(timer);
+        // Clean up session storage before redirect
+        sessionStorage.removeItem('loanRepaymentData');
+        // Redirect to dashboard
+        window.location.href = '/dashboard';
+      }
+    }, 1000);
+    
+  } catch (error) {
+    console.error('Error parsing repayment data:', error);
+  }
+});
+</script>
+{% endblock %}

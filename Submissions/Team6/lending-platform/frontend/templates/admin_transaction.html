@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Transaction Details - Lending DApp{% endblock %}
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Transaction Details</h2>
+  
+  <div class="card">
+    <div class="card-header">
+      <h4 class="mb-0">Transaction: {{ tx.hash }}</h4>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <th style="width: 150px;">Status</th>
+              <td>
+                <span class="badge {% if tx.status == 'Success' %}bg-success{% else %}bg-danger{% endif %}">
+                  {{ tx.status }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th>Block</th>
+              <td>{{ tx.blockNumber }}</td>
+            </tr>
+            <tr>
+              <th>Timestamp</th>
+              <td>{{ tx.timestamp }}</td>
+            </tr>
+            <tr>
+              <th>From</th>
+              <td>{{ tx.from }}</td>
+            </tr>
+            <tr>
+              <th>To</th>
+              <td>{{ tx.to }}</td>
+            </tr>
+            <tr>
+              <th>Value</th>
+              <td>{{ tx.value }} BNB</td>
+            </tr>
+            <tr>
+              <th>Gas</th>
+              <td>{{ tx.gas }}</td>
+            </tr>
+            <tr>
+              <th>Gas Price</th>
+              <td>{{ tx.gasPrice }} Gwei</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="mt-3">
+        <a href="https://testnet.bscscan.com/tx/{{ tx.hash }}" target="_blank" class="btn btn-info">
+          View on BscScan
+        </a>
+        <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-secondary">
+          Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

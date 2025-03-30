@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% block title %}Profile - Lending DApp{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="profile-header">
+    <div class="row align-items-center">
+      <div class="col-md-3 text-center mb-4 mb-md-0">
+        <div class="profile-avatar">
+          <div class="avatar-placeholder">{{ user.name|first|upper }}</div>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <h2 class="mb-3">{{ user.name }}</h2>
+        <p class="fs-5 mb-1">
+          <i class="fas fa-envelope gold-icon me-2"></i> {{ user.email }}
+        </p>
+        <p class="fs-5 mb-0 d-flex align-items-center">
+          <i class="fas fa-wallet gold-icon me-2"></i>
+          <span class="wallet-address" id="wallet-display">{{ user.wallet_address or "Not set" }}</span>
+          {% if user.wallet_address %}
+            <button class="btn btn-sm btn-icon ms-2" onclick="copyWalletToClipboard()">
+              <i class="fas fa-copy"></i>
+            </button>
+          {% endif %}
+        </p>
+        {% if user.wallet_address %}
+        <div class="mt-2">
+          <a href="https://testnet.bscscan.com/address/{{ user.wallet_address }}" target="_blank" class="btn btn-outline-gold btn-sm">
+            <i class="fas fa-external-link-alt me-1"></i> View on Explorer
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <!-- Account Information Card -->
+    <div class="col-md-8">
+      <div class="container-box profile-card">
+        <div class="card-header-custom">
+          <h3><i class="fas fa-user-circle me-2"></i>Account Information</h3>
+        </div>
+        <div class="card-content">
+          <!-- Form to update wallet address -->
+          <form action="{{ url_for('users.update_wallet') }}" method="POST" class="wallet-form">
+            <div class="form-group mb-4">
+              <label for="wallet_address" class="form-label">
+                <i class="fas fa-wallet me-2"></i>Update Wallet Address
+              </label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="wallet_address" name="wallet_address" 
+                       placeholder="0x..." value="{{ user.wallet_address or '' }}">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save me-2"></i>Update
+                </button>
+              </div>
+              <small class="form-text text-light">Enter your Ethereum wallet address to interact with the platform.</small>
+            </div>
+          </form>
+          
+          <!-- Display Account Type Information -->
+          <div class="account-info mt-4">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <div class="info-label">Account Type</div>
+                <div class="info-value">
+                  {% if session.role == "admin" %}
+                    <span class="badge bg-warning">Admin</span>
+                  {% else %}
+                    <span class="badge bg-info">User</span>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="info-label">Member Since</div>
+                <div class="info-value">{{ user.created_at.strftime('%b %d, %Y') if user.created_at else 'N/A' }}</div>
+              </div>
+              <div class="col-md-4 mb-3">
+                <div class="info-label">Last Login</div>
+                <div class="info-value">{{ user.last_login.strftime('%b %d, %Y %H:%M') if user.last_login else 'N/A' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Change Password Section -->
+      <div class="container-box profile-card mt-4">
+        <div class="card-header-custom">
+          <h3><i class="fas fa-key me-2"></i>Security</h3>
+        </div>
+        <div class="card-content">
+          <form action="{{ url_for('users.change_password') }}" method="POST" class="password-form">
+            <div class="form-group mb-3">
+              <label for="current_password" class="form-label">Current Password</label>
+              <input type="password" class="form-control" id="current_password" name="current_password" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="new_password" class="form-label">New Password</label>
+              <input type="password" class="form-control" id="new_password" name="new_password" required>
+            </div>
+            <div class="form-group mb-4">
+              <label for="confirm_password" class="form-label">Confirm New Password</label>
+              <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-lock me-2"></i>Change Password
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Activity and Stats Column -->
+    <div class="col-md-4">
+      <!-- User Activity Card -->
+      <div class="container-box profile-card">
+        <div class="card-header-custom">
+          <h3><i class="fas fa-chart-line me-2"></i>Activity</h3>
+        </div>
+        <div class="card-content">
+          <div class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div class="activity-details">
+              <div class="activity-title">Loans</div>
+              <div class="activity-value" id="loan-count">
+                <div class="spinner-border spinner-border-sm text-gold" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-piggy-bank"></i>
+            </div>
+            <div class="activity-details">
+              <div class="activity-title">Deposits</div>
+              <div class="activity-value">{{ user.deposits|default(0, true) }}</div>
+            </div>
+          </div>
+          
+          <div class="activity-item">
+            <div class="activity-icon">
+              <i class="fas fa-hand-holding-usd"></i>
+            </div>
+            <div class="activity-details">
+              <div class="activity-title">Withdrawals</div>
+              <div class="activity-value">{{ user.withdrawals|default(0, true) }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Account Balance Card -->
+      <div class="container-box profile-card mt-4">
+        <div class="card-header-custom">
+          <h3><i class="fas fa-balance-scale me-2"></i>Balance</h3>
+        </div>
+        <div class="card-content">
+          <div class="balance-display">
+            <div class="balance-value">{{ user.balance|default('0', true) }}</div>
+            <div class="balance-currency">BNB</div>
+          </div>
+          
+          <div class="d-grid gap-2 mt-3">
+            <a href="/deposit" class="btn btn-outline-gold">
+              <i class="fas fa-arrow-down me-2"></i>Deposit
+            </a>
+            <a href="/withdraw" class="btn btn-outline-gold">
+              <i class="fas fa-arrow-up me-2"></i>Withdraw
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function copyWalletToClipboard() {
+    const walletAddress = "{{ user.wallet_address or '' }}";
+    navigator.clipboard.writeText(walletAddress).then(() => {
+      // Show a tooltip or notification
+      alert('Wallet address copied to clipboard!');
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    // Format wallet address for display (e.g., 0x1234...5678)
+    const walletDisplay = document.getElementById('wallet-display');
+    if (walletDisplay) {
+      const address = walletDisplay.textContent;
+      if (address && address !== 'Not set' && address.length > 10) {
+        walletDisplay.textContent = `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+        // Set the full address as a title/tooltip
+        walletDisplay.title = address;
+      }
+    }
+    
+    // Fetch loan count from the blockchain
+    const userWallet = "{{ user.wallet_address or '' }}";
+    if (userWallet && userWallet !== 'Not set') {
+      fetchLoanCount(userWallet);
+    } else {
+      document.getElementById('loan-count').textContent = '0';
+    }
+  });
+  
+  // Function to fetch loan count for the user
+  async function fetchLoanCount(walletAddress) {
+    try {
+      // Fetch loans for the user from your API endpoint
+      const response = await fetch(`/loans/user/${walletAddress}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch loan data');
+      }
+      
+      const data = await response.json();
+      
+      // Update the loan count element
+      const loanCountElement = document.getElementById('loan-count');
+      if (data && Array.isArray(data.loans)) {
+        loanCountElement.textContent = data.loans.length;
+      } else {
+        loanCountElement.textContent = '0';
+      }
+    } catch (error) {
+      console.error('Error fetching loan data:', error);
+      document.getElementById('loan-count').textContent = '0';
+    }
+  }
+</script>
+{% endblock %}

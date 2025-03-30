@@ -1,0 +1,277 @@
+{
+  "address": "0x97991FD7E50c010523f3901ff7c9Df7d764679fb",
+  "abi": [
+    {
+      "type": "constructor",
+      "stateMutability": "undefined",
+      "payable": false,
+      "inputs": []
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "DebugOriginalSender",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "originalSender",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "DebugVerify",
+      "inputs": [
+        {
+          "type": "bytes32",
+          "name": "digest",
+          "indexed": false
+        },
+        {
+          "type": "address",
+          "name": "recovered",
+          "indexed": false
+        },
+        {
+          "type": "address",
+          "name": "expected",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "ForwardingAttempt",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "from",
+          "indexed": false
+        },
+        {
+          "type": "address",
+          "name": "to",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "value",
+          "indexed": false
+        },
+        {
+          "type": "uint256",
+          "name": "dataLength",
+          "indexed": false
+        }
+      ]
+    },
+    {
+      "type": "fallback",
+      "stateMutability": "payable"
+    },
+    {
+      "type": "function",
+      "name": "NAME",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "string",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "VERSION",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "string",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "domainSeparator",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [
+        {
+          "type": "bytes32",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "execute",
+      "constant": false,
+      "stateMutability": "payable",
+      "payable": true,
+      "inputs": [
+        {
+          "type": "tuple",
+          "name": "req",
+          "components": [
+            {
+              "type": "address",
+              "name": "from"
+            },
+            {
+              "type": "address",
+              "name": "to"
+            },
+            {
+              "type": "uint256",
+              "name": "value"
+            },
+            {
+              "type": "uint256",
+              "name": "gas"
+            },
+            {
+              "type": "uint256",
+              "name": "nonce"
+            },
+            {
+              "type": "bytes",
+              "name": "data"
+            },
+            {
+              "type": "address",
+              "name": "originalSender"
+            }
+          ]
+        },
+        {
+          "type": "bytes",
+          "name": "signature"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        },
+        {
+          "type": "bytes",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "executeTest",
+      "constant": false,
+      "stateMutability": "payable",
+      "payable": true,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "to"
+        },
+        {
+          "type": "bytes",
+          "name": "data"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        },
+        {
+          "type": "bytes",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "getNonce",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [
+        {
+          "type": "address",
+          "name": "user"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "function",
+      "name": "verify",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        {
+          "type": "tuple",
+          "name": "req",
+          "components": [
+            {
+              "type": "address",
+              "name": "from"
+            },
+            {
+              "type": "address",
+              "name": "to"
+            },
+            {
+              "type": "uint256",
+              "name": "value"
+            },
+            {
+              "type": "uint256",
+              "name": "gas"
+            },
+            {
+              "type": "uint256",
+              "name": "nonce"
+            },
+            {
+              "type": "bytes",
+              "name": "data"
+            },
+            {
+              "type": "address",
+              "name": "originalSender"
+            }
+          ]
+        },
+        {
+          "type": "bytes",
+          "name": "signature"
+        }
+      ],
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ]
+    },
+    {
+      "type": "receive",
+      "stateMutability": "payable"
+    }
+  ]
+}
