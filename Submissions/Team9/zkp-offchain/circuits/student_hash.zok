@@ -1,0 +1,8 @@
+def main(private field studentId, field minValidId, field maxValidId) -> bool {
+    // Compute whether the studentId is within the valid range
+    bool isValid = studentId >= minValidId && studentId <= maxValidId;
+    
+    // Return 1 if valid, 0 otherwise
+    return isValid;
+    
+}

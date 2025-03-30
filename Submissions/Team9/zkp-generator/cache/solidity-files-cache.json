@@ -1,0 +1,40 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "C:\\Users\\elzzh\\GitLocal\\zkp-generator\\contracts\\UserRegistration.sol": {
+      "lastModificationDate": 1739644585659,
+      "contentHash": "699b09c7bb7156f224cf41c1fd7b550e",
+      "sourceName": "contracts/UserRegistration.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "UserRegistration"
+      ]
+    }
+  }
+}

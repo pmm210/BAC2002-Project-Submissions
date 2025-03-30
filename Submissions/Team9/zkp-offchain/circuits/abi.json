@@ -1,0 +1,22 @@
+{
+  "inputs": [
+    {
+      "name": "studentId",
+      "public": false,
+      "type": "field"
+    },
+    {
+      "name": "minValidId",
+      "public": true,
+      "type": "field"
+    },
+    {
+      "name": "maxValidId",
+      "public": true,
+      "type": "field"
+    }
+  ],
+  "output": {
+    "type": "bool"
+  }
+}

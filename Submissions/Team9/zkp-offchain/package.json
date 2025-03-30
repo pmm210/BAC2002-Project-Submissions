@@ -1,0 +1,47 @@
+{
+  "name": "nextjs",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@pinata/sdk": "^2.1.0",
+    "@truffle/hdwallet-provider": "^2.1.15",
+    "@types/snarkjs": "^0.7.9",
+    "circomlib": "^2.0.5",
+    "dotenv": "^16.4.7",
+    "ipfs-core": "^0.18.1",
+    "ipfs-http-client": "^60.0.1",
+    "jsqr": "^1.4.0",
+    "keccak256": "^1.0.6",
+    "merkletreejs": "^0.5.1",
+    "next": "15.1.6",
+    "qrcode": "^1.5.4",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "snarkjs": "^0.7.5",
+    "solc": "^0.8.0",
+    "web3": "^1.10.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@types/node": "^20.17.25",
+    "@types/qrcode": "^1.5.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.6",
+    "ethers": "^6.13.5",
+    "hardhat": "^2.22.18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
