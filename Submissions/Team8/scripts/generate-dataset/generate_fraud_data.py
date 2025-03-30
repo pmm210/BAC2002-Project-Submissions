@@ -2,9 +2,35 @@ import pandas as pd
 import numpy as np
 import os
 
-# Update the file path to your creditcard.csv location
-file_path = r"C:\Users\Yusri Abdullah\Desktop\private-prism\federated\clients\data\creditcard.csv"
-df = pd.read_csv(file_path)
+# Set up paths using relative paths - go up from scripts/generate-dataset to the project root
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Try multiple possible paths for creditcard.csv
+possible_paths = [
+    os.path.join(BASE_DIR, "federated", "clients", "data", "creditcard.csv"),
+    os.path.join(BASE_DIR, "Submissions", "Team8", "federated", "clients", "data", "creditcard.csv"),
+    # Add a direct path option for when script is run from Submissions directory
+    os.path.join(".", "federated", "clients", "data", "creditcard.csv")
+]
+
+file_path = None
+for path in possible_paths:
+    if os.path.exists(path):
+        file_path = path
+        print(f"Found creditcard.csv at: {path}")
+        break
+
+# Check if file exists and provide helpful error if not
+if file_path is None:
+    print("Could not find creditcard.csv. Creating synthetic data instead...")
+    # Create synthetic data as fallback
+    columns = [f"V{i}" for i in range(1, 29)]
+    df = pd.DataFrame(np.random.randn(10000, 28), columns=columns)
+    df["Time"] = np.random.randint(0, 24 * 3600, 10000)
+    df["Amount"] = np.random.exponential(scale=100, size=10000)
+    df["Class"] = np.random.choice([0, 1], size=10000, p=[0.95, 0.05])
+else:
+    df = pd.read_csv(file_path)
 
 # Normalize transaction amount
 df["Amount"] = (df["Amount"] - df["Amount"].mean()) / df["Amount"].std()
@@ -43,8 +69,7 @@ def generate_fraud_data(bank_name, num_samples=50000, fraud_ratio=0.5, random_se
         fraud_samples["V3"] = fraud_samples["V3"] * np.random.uniform(-1.2, -0.5, size=num_fraud)
         
     # For OCBC amount-based fraud
-    # Instead of using np.random.choice on arrays, let's use a different approach
-    if bank_name == "OCBC":
+    elif bank_name == "OCBC":
         fraud_samples = df.sample(n=num_fraud, random_state=np.random.randint(0, 1000)).copy()
         
         # Generate different amount patterns
@@ -96,11 +121,11 @@ def generate_fraud_data(bank_name, num_samples=50000, fraud_ratio=0.5, random_se
     
     return bank_df
 
-# Define directories
-dbs_train_dir = r"C:\Users\Yusri Abdullah\Desktop\private-prism\federated\clients\data\dbs"
-ing_train_dir = r"C:\Users\Yusri Abdullah\Desktop\private-prism\federated\clients\data\ing"
-ocbc_train_dir = r"C:\Users\Yusri Abdullah\Desktop\private-prism\federated\clients\data\ocbc"
-eval_dir = r"C:\Users\Yusri Abdullah\Desktop\private-prism\scripts\evaluation"
+# Define directories using relative paths
+dbs_train_dir = os.path.join(BASE_DIR, "federated", "clients", "data", "dbs")
+ing_train_dir = os.path.join(BASE_DIR, "federated", "clients", "data", "ing")
+ocbc_train_dir = os.path.join(BASE_DIR, "federated", "clients", "data", "ocbc")
+eval_dir = os.path.join(BASE_DIR, "scripts", "evaluation")
 
 # Ensure directories exist
 os.makedirs(dbs_train_dir, exist_ok=True)
@@ -115,10 +140,10 @@ dbs_train_data = generate_fraud_data("DBS", num_samples=100000, fraud_ratio=0.5,
 ocbc_train_data = generate_fraud_data("OCBC", num_samples=100000, fraud_ratio=0.5, random_seed=43)
 ing_train_data = generate_fraud_data("ING", num_samples=100000, fraud_ratio=0.5, random_seed=44)
 
-# Save training datasets to respective bank folders
-dbs_train_data.to_csv(f"{dbs_train_dir}\\fraud_data.csv", index=False)
-ocbc_train_data.to_csv(f"{ocbc_train_dir}\\fraud_data.csv", index=False)
-ing_train_data.to_csv(f"{ing_train_dir}\\fraud_data.csv", index=False)
+# Save training datasets to respective bank folders (using os.path.join for cross-platform compatibility)
+dbs_train_data.to_csv(os.path.join(dbs_train_dir, "fraud_data.csv"), index=False)
+ocbc_train_data.to_csv(os.path.join(ocbc_train_dir, "fraud_data.csv"), index=False)
+ing_train_data.to_csv(os.path.join(ing_train_dir, "fraud_data.csv"), index=False)
 
 print(f"✅ Training datasets generated with 50/50 class balance:")
 print(f"   DBS: {len(dbs_train_data)} samples ({dbs_train_data['Class'].sum()} fraud)")
@@ -143,11 +168,11 @@ combined_eval_data = pd.concat([
     ing_eval_data.sample(20000)
 ])
 
-# Save evaluation datasets
-dbs_eval_data.to_csv(f"{eval_dir}\\dbs_fraud_data.csv", index=False)
-ocbc_eval_data.to_csv(f"{eval_dir}\\ocbc_fraud_data.csv", index=False)
-ing_eval_data.to_csv(f"{eval_dir}\\ing_fraud_data.csv", index=False)
-combined_eval_data.to_csv(f"{eval_dir}\\combined_fraud_data.csv", index=False)
+# Save evaluation datasets (using os.path.join for cross-platform compatibility)
+dbs_eval_data.to_csv(os.path.join(eval_dir, "dbs_fraud_data.csv"), index=False)
+ocbc_eval_data.to_csv(os.path.join(eval_dir, "ocbc_fraud_data.csv"), index=False)
+ing_eval_data.to_csv(os.path.join(eval_dir, "ing_fraud_data.csv"), index=False)
+combined_eval_data.to_csv(os.path.join(eval_dir, "combined_fraud_data.csv"), index=False)
 
 print(f"✅ Evaluation datasets generated with 50/50 class balance:")
 print(f"   DBS: {len(dbs_eval_data)} samples ({dbs_eval_data['Class'].sum()} fraud)")

@@ -1,8 +1,9 @@
 from minio import Minio
 import os
 
-# Define evaluation directory
-eval_dir = r"C:\Users\Yusri Abdullah\Desktop\private-prism\scripts\evaluation"
+# Define evaluation directory using relative path
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+eval_dir = os.path.join(BASE_DIR, "scripts", "evaluation")
 os.makedirs(eval_dir, exist_ok=True)
 
 # MinIO connection details
@@ -10,7 +11,7 @@ MINIO_ENDPOINT = "localhost:9000"
 ACCESS_KEY = "fladmin"
 SECRET_KEY = "flsecret"
 SECURE = False  # Set to True if using HTTPS
-ROUND_ID = "round:70"
+ROUND_ID = "round:1"
 
 # Initialize MinIO client
 client = Minio(
@@ -31,8 +32,6 @@ def download_model(bucket_name, object_name, file_path):
 # Download models to evaluation directory
 print("Downloading models from MinIO...")
 download_model("models", f"{ROUND_ID}/aggregator.weights", f"{eval_dir}/aggregator.weights")
-
 download_model("models", f"{ROUND_ID}/ocbc.weights", f"{eval_dir}/ocbc.weights")
-
 
 print("✅ Download complete!")

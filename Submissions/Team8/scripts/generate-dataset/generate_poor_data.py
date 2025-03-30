@@ -10,7 +10,7 @@ It creates synthetic data with various quality issues that will result in
 poor models when used for training, causing the bank's reputation to decrease.
 """
 
-def generate_poor_quality_data(bank_name, problem_type="noisy", output_dir="./data"):
+def generate_poor_quality_data(bank_name, problem_type="noisy", output_dir=None):
     """
     Generates data with specific quality issues to test reputation system.
     
@@ -25,6 +25,11 @@ def generate_poor_quality_data(bank_name, problem_type="noisy", output_dir="./da
             - "random": Complete random data with no patterns
         output_dir: Directory to save the generated data
     """
+    # Set up paths using relative paths if not specified
+    if output_dir is None:
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        output_dir = os.path.join(BASE_DIR, "federated", "clients", "data")
+    
     print(f"Generating {problem_type} data for {bank_name}...")
     
     # Check if the data directory exists
@@ -34,14 +39,23 @@ def generate_poor_quality_data(bank_name, problem_type="noisy", output_dir="./da
     
     # Try to load the Kaggle fraud dataset if available
     try:
-        file_path = os.path.join(output_dir, "creditcard.csv")
-        if not os.path.exists(file_path):
-            # If original data not found, create synthetic data
-            print(f"Original data not found at {file_path}. Creating synthetic data...")
-            df = create_synthetic_data(10000)
+        # First try to find in submission structure
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        submission_path = os.path.join(base_dir, "Submissions", "Team8", "federated", "clients", "data", "creditcard.csv")
+        
+        # Fallback to local path
+        local_path = os.path.join(output_dir, "creditcard.csv")
+        
+        # Check which path exists
+        if os.path.exists(submission_path):
+            file_path = submission_path
+        elif os.path.exists(local_path):
+            file_path = local_path
         else:
-            df = pd.read_csv(file_path)
-            print(f"Loaded original data with shape: {df.shape}")
+            raise FileNotFoundError(f"Could not find creditcard.csv in either {submission_path} or {local_path}")
+        
+        df = pd.read_csv(file_path)
+        print(f"Loaded original data from {file_path} with shape: {df.shape}")
         
         # Normalize the dataset
         if "Amount" in df.columns:
@@ -113,7 +127,7 @@ def generate_poor_quality_data(bank_name, problem_type="noisy", output_dir="./da
     if not os.path.exists(bank_folder):
         os.makedirs(bank_folder)
         
-    output_path = os.path.join(bank_folder, f"{bank_name.lower()}_fraud_data.csv")
+    output_path = os.path.join(bank_folder, "fraud_data.csv")
     bank_df.to_csv(output_path, index=False)
     
     print(f"✅ Generated poor quality data ({problem_type}) for {bank_name} at {output_path}")
@@ -151,7 +165,7 @@ if __name__ == "__main__":
     parser.add_argument("--problem", type=str, 
                         choices=["noisy", "biased", "missing", "outliers", "constant", "random"], 
                         default="noisy", help="Type of quality problem to introduce")
-    parser.add_argument("--output", type=str, default="./data", 
+    parser.add_argument("--output", type=str, default=None, 
                         help="Output directory to save generated data")
     
     args = parser.parse_args()
