@@ -3,12 +3,17 @@ import psycopg2
 import psycopg2.extras
 import os
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env
+load_dotenv()
+
 
 # Initialize Flask Blueprint
 policy_bp = Blueprint("policy", __name__)
 
 # Database connection string from environment
-DB_URL = os.getenv("DB_URL", "postgresql://postgres.lhjufhdvrctcnxrjtpld:password@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres")
+DB_URL = os.getenv('DATABASE_URL')
 
 def get_db_connection():
     """Create and return a database connection"""

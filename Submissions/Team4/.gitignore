@@ -1,0 +1,19 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# Node modules
+node_modules/
+
+# Cache directories
+cache/
+.cache/
+
+# Other large files you might want to exclude
+*.zip
+*.tar
+*.gz

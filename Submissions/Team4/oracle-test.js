@@ -609,7 +609,7 @@ async function main() {
     }
     
     // Initialize Web3
-    const web3 = new Web3(env.POLYGON_AMOY_RPC || 'https://polygon-amoy.g.alchemy.com/v2/fHKyGrLKWcmZxxDL3on5gp-ZNkTn7G9A');
+    const web3 = new Web3(env.POLYGON_RPC_URL);
     
     // Get account
     const account = web3.eth.accounts.privateKeyToAccount(privateKey);
@@ -617,7 +617,7 @@ async function main() {
     console.log('Connected with wallet address:', walletAddress);
     
     // Create contract instance
-    const contractAddress = env.CONTRACT_ADDRESS || '0x596dc51CfEbD10D31CBcc37583D15C6DF56C2aAb';
+    const contractAddress = env.CONTRACT_ADDRESS;
     const contract = new web3.eth.Contract(contractABI, contractAddress);
     
     // Check if contract is updated version

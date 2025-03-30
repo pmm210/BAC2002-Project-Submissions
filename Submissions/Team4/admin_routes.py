@@ -22,8 +22,8 @@ admin_bp = Blueprint("admin", __name__)
 # Constants from environment
 CONTRACT_ADDRESS = os.getenv("CONTRACT_ADDRESS")
 ADMIN_WALLET = os.getenv("ADMIN_WALLET")
-AMOY_RPC_URL = os.getenv("AMOY_RPC_URL")
-DB_URL = os.getenv("DB_URL")
+AMOY_RPC_URL = os.getenv("POLYGON_RPC_URL")
+DB_URL = os.getenv("DATABASE_URL")
 
 logger.info(f"Starting with CONTRACT_ADDRESS: {CONTRACT_ADDRESS}")
 logger.info(f"AMOY_RPC_URL: {AMOY_RPC_URL}")

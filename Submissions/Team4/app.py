@@ -13,7 +13,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = "super_secret_key"
-CORS(app)
+CORS(app, supports_credentials=True) 
 
 # Register the blueprint
 app.register_blueprint(policy_bp)
@@ -30,6 +30,14 @@ def home():
 def admin():
     """ Admin login page """
     return render_template('adminhome.html')  
+
+
+@app.route('/check_auth')
+def check_auth():
+    """ Check if user is authenticated """
+    if "admin_logged_in" not in session:
+        return jsonify({"authenticated": False}), 401
+    return jsonify({"authenticated": True})
 
 @app.route('/admindashboard')
 def admindashboard():
@@ -59,6 +67,7 @@ def login():
 
     if admin:
         session["admin_logged_in"] = True
+        session.modified = True 
         return jsonify({"status": "success", "message": "Login successful!"})
     else:
         return jsonify({"status": "error", "error": "Invalid username or password"}), 401
@@ -67,6 +76,7 @@ def login():
 def logout():
     """ Admin logout functionality """
     session.pop("admin_logged_in", None)
+    session.modified = True  
     return redirect(url_for("admin"))
 
 @app.route('/policies')  

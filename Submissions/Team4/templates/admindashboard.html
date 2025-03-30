@@ -481,29 +481,6 @@ table.table thead {
             </div>
         </div>
 
-        <!-- Policy Management Section -->
-        <div class="config-card">
-            <h4>Policy Management Actions</h4>
-            <p>Force policy rechecks and manage specific policy states.</p>
-
-            <div class="input-group mb-3">
-                <input type="text" id="policyIdInput" class="form-control" placeholder="Enter Policy ID (0x...)">
-                <button class="btn btn-primary" onclick="checkPolicyDetails()">
-                    <i class="fas fa-search me-1"></i>Check Policy
-                </button>
-            </div>
-
-            <div id="policyDetails" style="display: none;" class="mt-3 p-3 bg-light rounded">
-                <h5>Policy Details</h5>
-                <div id="policyDetailsContent"></div>
-                
-                <div class="mt-3">
-                    <button class="btn btn-warning" onclick="forceRecheckPolicy()">
-                        <i class="fas fa-sync-alt me-1"></i>Force Recheck
-                    </button>
-                </div>
-            </div>
-        </div>
 
         <!-- Policies Table with Pagination -->
         <h3 class="mt-4 mb-3">All Policies</h3>
@@ -588,6 +565,22 @@ table.table thead {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+
+(function checkAuth() {
+    fetch('/check_auth', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(response => {
+        if (!response.ok) {
+            window.location.href = "/401";
+        }
+    })
+    .catch(() => {
+        window.location.href = "/401";
+    });
+})();
+
 // Contract configuration
 const CONTRACT_ADDRESS = "0x1159d7d7F1f55C8c31265a59Bb6A952917896C8E";
 const ADMIN_WALLET = "0xF51EE95f3cEA7D1f474fE678720D3E126FED364B";

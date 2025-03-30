@@ -41,6 +41,22 @@ The system consists of several interconnected components:
 4. **Blockchain Listener**: Background service that listens for blockchain events
 5. **Database**: Stores policy details and synchronizes with blockchain data
 
+### Architecture Design Rationale
+
+Our architecture combines blockchain and traditional web technologies:
+
+1. **Blockchain Layer (Polygon Amoy)**:
+   - **Why Layer 2**: We chose Polygon as a Layer 2 solution because it offers lower gas fees while maintaining EVM compatibility, making insurance policies economically viable.
+   - **Perfect for Flight Insurance**: Flight delay insurance requires trustless execution (automatic payouts) and transparency (verified flight data), making blockchain ideal.
+   - **Polygon Advantages**: Lower transaction costs, faster confirmations (2s), and EVM compatibility.
+
+2. **Web Application Layer**:
+   - Provides intuitive interface accessible to non-crypto users
+   - Off-chain database improves performance for policy information access
+   - Dedicated API delivers real-time flight information
+
+This architecture leverages blockchain's security and trustlessness while maintaining good user experience and keeping costs low.
+
 ## Technology Stack
 
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap, Web3.js
@@ -67,31 +83,48 @@ The system consists of several interconnected components:
    npm install
    ```
 
-2. Install required Python packages:
+2. Create a `.env` file based on the provided `.env.example`:
+   ```
+   cp .env.example .env
+   ```
+
+3. Update your `.env` file with your specific credentials:
+   ```
+   # Blockchain Configuration
+   POLYGON_RPC_URL=https://polygon-amoy.g.alchemy.com/v2/YOUR_API_KEY
+   PRIVATE_KEY=YOUR_PRIVATE_KEY_HERE  # Required for oracle-test.js to sign transactions
+   CONTRACT_ADDRESS=0x1159d7d7F1f55C8c31265a59Bb6A952917896C8E
+   ADMIN_WALLET=0xF51EE95f3cEA7D1f474fE678720D3E126FED364B  # Only this wallet can withdraw funds
+
+   # Database Configuration
+   DATABASE_URL=postgresql://username:password@host:port/database
+   ```
+
+4. Install required Python packages:
    ```
    pip install flask web3 psycopg2-binary python-dotenv requests websockets chainlink-utils filelock
    ```
 
-3. Run the blockchain listener:
+5. Run the blockchain listener:
    ```
    python blockchain_listener.py
    ```
 
-4. Run the Flask application:
+6. Run the Flask application:
    ```
    python app.py
    ```
 
-5. Access the application:
-   - Web app: http://localhost:3000
-   - Admin dashboard: http://localhost:3000/admin (username: admin, password: password)
+7. Access the application:
+   - Web app: http://localhost:5000
+   - Admin dashboard: http://localhost:5000/admin (username: admin, password: password)
    - Test API: https://decentraflightapi.onrender.com/test.html
 
 ## Usage Guide
 
 ### For Users
 
-1. Visit the DecentraFlight website at http://localhost:3000
+1. Visit the DecentraFlight website at http://localhost:5000
 2. Connect your MetaMask wallet (ensure it's configured for Polygon Amoy testnet)
 3. Enter your flight details (airline, flight number, departure date)
 4. Review the premium and coverage details
@@ -100,7 +133,7 @@ The system consists of several interconnected components:
 
 ### For Admins
 
-1. Access the admin dashboard at http://localhost:3000/admin
+1. Access the admin dashboard at http://localhost:5000/admin
 2. Login with username: admin, password: password
 3. Connect your admin wallet
 4. Monitor system statistics, policy statuses, and funds
@@ -108,12 +141,24 @@ The system consists of several interconnected components:
 6. Force policy rechecks if needed
 7. Withdraw protocol fees when appropriate
 
+### Admin Access Security
+
+The admin dashboard requires proper authentication. Attempting to access the dashboard without logging in will automatically redirect to the unauthorized (401) page. This security measure ensures that only authorized personnel can access sensitive contract controls and fund management functions.
+
+### Testing Features
+
+Several features in the admin dashboard are specifically designed for testing purposes:
+
+- **Force Recheck**: This functionality allows admins to manually trigger flight status checks instead of waiting for the automated Chainlink Keeper checks. This is particularly useful during testing and demonstrations.
+
+- **Flight Date Modification**: The ability to modify flight dates through the test API is intended solely for testing and demonstration purposes. In a production environment, flight data would come exclusively from verified aviation data providers.
+
 ## Testing Flight Delays
 
 To test the flight delay insurance flow, follow these steps:
 
 1. Purchase insurance for flight AV43:
-   - Visit http://localhost:3000
+   - Visit http://localhost:5000
    - Connect your MetaMask wallet
    - Select Airline "Avianca (AV)" from the dropdown
    - Enter Flight Number "43"
@@ -163,6 +208,14 @@ The core smart contract (`FlightDelayInsurance.sol`) handles:
 - **Check Interval**: How often Chainlink Keepers scan for flights to check
 - **Recheck Interval**: Minimum time between rechecking the same flight
 
+### Admin Functionality
+
+The contract includes protected admin functionality that can only be accessed by the designated ADMIN_WALLET address (`0xF51EE95f3cEA7D1f474fE678720D3E126FED364B`). This administrative control is implemented for:
+
+1. **Fund Management**: Only the admin wallet can withdraw protocol fees through the `withdrawExcessFunds` function
+2. **Parameter Adjustment**: Admin can update check and recheck intervals to optimize protocol operations
+3. **Emergency Controls**: Admin can force manual rechecks of flights if needed
+
 ### Contract Functions
 
 #### User Functions
@@ -198,6 +251,8 @@ The contract is deployed on Polygon Amoy testnet at address: `0x1159d7d7F1f55C8c
 ## API Services
 
 DecentraFlight uses a dedicated API for flight data, already deployed at https://decentraflightapi.onrender.com/
+
+The DecentraFlight API is developed and maintained by Celeste Tan Jia Yu, and the source code is available at: https://github.com/celestegracetan/DecentraFlightAPI
 
 ### API Endpoints
 
@@ -259,13 +314,15 @@ This will keep the database in sync with on-chain events and process policy upda
 
 You can test the oracle functionality using the `oracle-test.js` script. This script provides an interactive interface to test flight data requests and verify Chainlink Oracle responses.
 
+> **Important**: The `oracle-test.js` script requires your private key to sign transactions when interacting with the smart contract. This is necessary because requesting flight data from Chainlink oracles and forcing rechecks are blockchain transactions that need to be signed.
+
 To use your own contract address:
 
 1. Create or modify the `.env` file in your project root with your contract address:
    ```
    CONTRACT_ADDRESS=0xYourContractAddressHere
    PRIVATE_KEY=YourPrivateKeyHere
-   POLYGON_AMOY_RPC=https://your-rpc-url-here
+   POLYGON_RPC_URL=https://your-rpc-url-here
    ```
 
 2. Run the script:

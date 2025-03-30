@@ -5,6 +5,10 @@ from web3 import Web3
 import psycopg2
 from datetime import datetime
 import logging
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  
 
 # Setup logging
 logging.basicConfig(
@@ -18,9 +22,9 @@ logging.basicConfig(
 logger = logging.getLogger("blockchain_listener")
 
 # Environment variables
-CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS', '0x1159d7d7F1f55C8c31265a59Bb6A952917896C8E')
-POLYGON_AMOY_RPC = os.getenv('POLYGON_AMOY_RPC', 'https://polygon-amoy.g.alchemy.com/v2/fHKyGrLKWcmZxxDL3on5gp-ZNkTn7G9A')
-DB_URL = os.getenv('DB_URL', 'postgresql://postgres.lhjufhdvrctcnxrjtpld:password@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres')
+CONTRACT_ADDRESS = os.getenv('CONTRACT_ADDRESS')
+POLYGON_AMOY_RPC = os.getenv('POLYGON_RPC_URL') 
+DB_URL = os.getenv('DATABASE_URL')  
 
 # Connect to blockchain
 w3 = Web3(Web3.HTTPProvider(POLYGON_AMOY_RPC))
