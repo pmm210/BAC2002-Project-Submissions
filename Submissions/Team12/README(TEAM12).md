@@ -118,9 +118,12 @@ go version
 
 ---
 
-## Step 2: Set Up the Hyperledger Fabric Test Network (NOTE: All commands need to be run on WSL2/Ubuntu/Gitbash)
+## Step 2: Set Up the Hyperledger Fabric Network (NOTE: All commands need to be run on WSL2/Ubuntu/Gitbash)
 
-The necessary `fabric-samples` files are already included in this package under the `fabric-samples` directory. You don’t need to clone the repository, but you’ll need to download the Fabric binaries and Docker images.
+The necessary `fabric-samples` and `node_modules` files are provided in the links below. Please download and place them into the project folder. You don’t need to clone the repository, but you’ll need to download the Fabric binaries and Docker images.
+
+fabric-samples: https://drive.google.com/drive/folders/1ZoMGKioXohnbYUdODji4hAGCZyv-ydKA?usp=sharing
+node_modules: https://drive.google.com/drive/folders/10G2tOffZ4vey0Gi1nN0IFrYXQkubS18Y?usp=sharing
 
 ### 2.1 Navigate to the Provided Directory
 Navigate to the directory containing the provided files: 
