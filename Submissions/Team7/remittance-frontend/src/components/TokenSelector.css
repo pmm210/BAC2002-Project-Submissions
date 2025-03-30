@@ -1,0 +1,190 @@
+.token-selector-container {
+  position: relative;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.token-selected-display {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background-color: white;
+  cursor: pointer;
+  height: 44px;
+  transition: all 0.2s ease;
+}
+
+.token-selected-display:hover {
+  border-color: #adb5bd;
+}
+
+.token-selected-display.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+}
+
+.token-icon {
+  font-size: 20px;
+  margin-right: 8px;
+  width: 24px;
+  text-align: center;
+}
+
+.token-symbol {
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+.token-price {
+  margin: 0 8px;
+  font-size: 12px;
+}
+
+.dropdown-arrow {
+  margin-left: 8px;
+  font-size: 10px;
+  color: #6c757d;
+}
+
+.token-dropdown-container {
+  position: absolute;
+  top: 46px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1050;
+  max-height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.token-search-container {
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.token-search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.token-search-input:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
+}
+
+.token-list-container {
+  overflow-y: auto;
+  max-height: 280px;
+}
+
+.token-list-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-bottom: 1px solid #f9f9f9;
+}
+
+.token-list-item:hover {
+  background-color: #f8f9fa;
+}
+
+.token-list-item.selected {
+  background-color: #f0f7ff;
+}
+
+.token-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-right: 8px;
+  min-width: 0; /* Ensures text truncation works */
+}
+
+.token-info .token-symbol {
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.token-info .token-name {
+  color: #6c757d;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.token-metadata {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  min-width: 80px;
+}
+
+.category-badge {
+  font-size: 10px;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+.token-price {
+  color: #495057;
+  font-size: 13px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.token-selected-check {
+  color: #0d6efd;
+  margin-left: 6px;
+}
+
+.token-loading,
+.token-no-results {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #6c757d;
+  font-size: 14px;
+  text-align: center;
+}
+
+.token-loading > *:first-child {
+  margin-right: 10px;
+}
+
+.token-selector-container {
+  position: relative;
+  z-index: 10;
+}
+
+/* Give different z-index to send vs receive selectors */
+#token-selector-send {
+  z-index: 20;
+}
+
+#token-selector-receive {
+  z-index: 10;
+}
+
+/* Make sure the dropdown is above everything else when open */
+.token-dropdown-container {
+  z-index: 30;
+}

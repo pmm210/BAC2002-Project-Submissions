@@ -1,0 +1,30 @@
+{
+  "name": "remittance",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run dev --prefix remittance-backend\" \"npm start --prefix remittance-frontend -- --config remittance-frontend/webpack.config.js\"",
+    "install-all": "npm install --prefix remittance-backend && npm install --prefix remittance-frontend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.2.0",
+    "dotenv": "^16.4.7",
+    "hardhat": "^2.17.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/graceanneteo/remittance.git"
+  },
+  "bugs": {
+    "url": "https://github.com/graceanneteo/remittance/issues"
+  },
+  "homepage": "https://github.com/graceanneteo/remittance#readme",
+  "description": ""
+}
