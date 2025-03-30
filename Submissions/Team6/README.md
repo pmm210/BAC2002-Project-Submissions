@@ -149,10 +149,10 @@ https://youtu.be/sDsQA-k3lG0
 
 ## Team Members and (User ID)
 1. Mok Ji Yong, Jason (2303089)
-2. Jasbir ()
+2. Jasbir Kaur (2302990)
 3. Andrew Yaputra(2303129)
 4. Varsha Kulkarni (2303153)
-5. Ranson ()
+5. Ranson Chong (2303174)
 
 ## Contributing
 1. Fork the repository
