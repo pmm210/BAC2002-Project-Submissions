@@ -44,10 +44,12 @@ Before you begin, ensure your computer meets the following requirements:
 
 ### 1.1 Install Docker and Docker Compose
 1. **Install Docker**:
-   - On Ubuntu: sudo apt update
-		sudo apt install -y docker.io
-		sudo systemctl start docker
-		sudo systemctl enable docker
+   - On Ubuntu:
+     
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
 
 - On macOS:
 - Download and install Docker Desktop from https://www.docker.com/products/docker-desktop.
@@ -58,6 +60,7 @@ Before you begin, ensure your computer meets the following requirements:
 - Follow the Ubuntu steps above within your WSL2 environment.
 
 2. **Add Your User to the Docker Group** (Linux only):
+   
 sudo usermod -aG docker $USER
 
 Log out and log back in for the change to take effect.
