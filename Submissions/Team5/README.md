@@ -34,7 +34,9 @@ The NFT market faces a critical bottleneck: prohibitive entry costs locking out 
 
 ## 🎬 See It In Action
 Watch our comprehensive project walkthrough:  
-[🔗 BNPL NFT System Demo](https://youtu.be/rt04hzt1Dbs)
+[04042025 Updated Version: Multi-Chain Feature][🔗 BNPL NFT System Demo](https://youtu.be/BiBypvKp3wA)
+[Deprecated: Original Version][🔗 BNPL NFT System Demo](https://youtu.be/rt04hzt1Dbs)
+
 
 ## 📊 Protocol Overview vs Traditional 
 
