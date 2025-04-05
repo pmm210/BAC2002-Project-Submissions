@@ -63,9 +63,11 @@ Check out our demo of **PowPow** in action:
 
 1. **Clone project from GitHub** and open in your IDE
 
-2. In the `.env` file, add your wallet private key:
+2. Create an `.env` file at the root directory, add your wallet private key, verifier address and stablecoin address:
    ```
    PRIVATE_KEY=your_wallet_private_key
+   VERIFIER_ADDRESS=verifier_contract_address
+   STABLECOIN_ADDRESS=0xAe045DE5638162fa134807Cb558E15A3F5A7F853
    ```
 
 3. **Install dependencies**:
@@ -108,9 +110,10 @@ Check out our demo of **PowPow** in action:
    xattr -r -d com.apple.quarantine node_modules ##macOs
    ```
 
-3. Add contract address to `/charity-dapp/.env`:
+3. Add contract and stable coin address to `/charity-dapp/.env`:
    ```
    VITE_CONTRACT_ADDRESS=your_charityDonation_contract_address
+   VITE_TOKEN_ADDRESS=0xAe045DE5638162fa134807Cb558E15A3F5A7F853
    ```
 
 4. Start the frontend:
