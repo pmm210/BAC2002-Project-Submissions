@@ -3,6 +3,8 @@ Welcome to the official project submission repository for **BAC2002: Blockchain 
 
 Each student/group is assigned a specific folder under `/Submissions` to upload their **source code**, **Readme file**, and **Demo Video**.
 
+The student team owns the project folder. This folder is only for assessment purposes. 
+
 ---
 
 ## Submission Guidelines
